@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import moment from 'moment';
 import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-material.css';
+// import 'ag-grid-community/styles/ag-theme-alpine-dark.css'; 
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import './Grid.css';
@@ -48,6 +48,7 @@ const Grid = forwardRef(
         sortable: true,
         flex: props.columnFlex ? 1 : 0,
         visible: false,
+        autoSize: true,
         ...props.defaultColDef,
       };
     }, []);
@@ -199,31 +200,18 @@ const Grid = forwardRef(
       document.body.removeChild(textarea);
     };
 
-
     return (
-      <AgGridReact
-        ref={ref}
-        rowData={rows}
-        columnDefs={columnsOrder}
-        defaultColDef={defaultColDef}
-        dataTypeDefinitions={dataTypeDefinitions}
-        navigateToNextCell={navigateToNextCell}
-        multiSortKey="ctrl"
-        components={components}
-        pagination={true}
-        // domLayout={maxRows && rows?.length <= maxRows && 'autoHeight'}
-        onColumnResized={setPreference}
-        onColumnMoved={setPreference}
-        onColumnVisible={setPreference}
-        onSortChanged={setPreference}
-        onColumnPinned={setPreference}
-        onColumnPivotChanged={setPreference}
-        onColumnRowGroupChanged={setPreference}
-        onColumnValueChanged={setPreference}
-        enableCellTextSelection
-        onCellKeyDown={onCellKeyDown}
-        {...props}
-      />
+      <div className="ag-theme-quartz-dark" style={{ height: '100%', width: '100%' }}>
+    <AgGridReact
+      ref={ref}
+      rowData={rows}
+      columnDefs={columnsOrder}
+      defaultColDef={defaultColDef}
+      navigateToNextCell={navigateToNextCell}
+      components={components}
+      pagination={true}
+    />
+  </div>
     );
   },
 );

@@ -1,4 +1,4 @@
-import React, {
+  import React, {
     forwardRef,
     useCallback,
     useEffect,
@@ -9,6 +9,7 @@ import React, {
     Box,
     Button,
     Checkbox,
+    Divider,
     FormControlLabel,
     FormGroup,
     IconButton,
@@ -27,20 +28,20 @@ import React, {
   import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
   import GridOnIcon from '@mui/icons-material/GridOn';
   import { openPdf } from './ExportPdf';
-//   import { openExcel } from './ExportExcel';
-  
+    import { openExcel } from './ExportExcel';
+
   const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
     minHeight: '38px !important',
     '& .MuiTabs-indicator': {
       backgroundColor: '#8884D9',
     },
-  
+
     '& .Mui-selected': {
       color: 'rgba(0, 0, 0, 0.85)',
     },
   });
-  
+
   const AntTab = styled((props) => <Tab disableRipple {...props} />)(
     ({ theme }) => ({
       textTransform: 'none',
@@ -52,7 +53,7 @@ import React, {
       width: '49%',
     }),
   );
-  
+
   const BpIcon = styled('span')(({ theme }) => ({
     borderRadius: 3,
     width: 16,
@@ -74,7 +75,7 @@ import React, {
       background: 'rgba(136, 132, 217,.5)',
     },
   }));
-  
+
   const BpCheckedIcon = styled(BpIcon)({
     backgroundColor: '#8884D9',
     backgroundImage:
@@ -93,7 +94,7 @@ import React, {
       backgroundColor: '#8884D9',
     },
   });
-  
+
   function BpCheckbox(props) {
     return (
       <Checkbox
@@ -109,15 +110,15 @@ import React, {
       />
     );
   }
-  
+
   const Label = styled(Typography)({
     fontSize: '0.65vw',
     fontWeight: '500',
   });
-  
+
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
-  
+
     return (
       <div
         role="tabpanel"
@@ -130,13 +131,13 @@ import React, {
       </div>
     );
   }
-  
+
   TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
   };
-  
+
   const HeaderGrid = forwardRef((props, ref) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [value, setValue] = React.useState(0);
@@ -144,28 +145,28 @@ import React, {
     const [descSort, setDescSort] = useState('inactive');
     const [noSort, setNoSort] = useState('inactive');
     const [term, setTerm] = useState('');
-  
+
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
-  
+
     const handleClick = (event) => {
       event.stopPropagation();
       setAnchorEl(event.currentTarget);
     };
-  
+
     const handleClose = () => {
       setAnchorEl(null);
     };
-  
+
     const handleVisibility = (name, value) => {
       props.columnApi.setColumnVisible(name, !value);
     };
-  
+
     const onSortRequested = (order, event) => {
       props.column.colDef.sortable && props.progressSort(event.shiftKey);
     };
-  
+
     const onSortChanged = () => {
       setAscSort(props.column.isSortAscending() ? 'active' : 'inactive');
       setDescSort(props.column.isSortDescending() ? 'active' : 'inactive');
@@ -175,17 +176,17 @@ import React, {
           : 'inactive',
       );
     };
-  
+
     useEffect(() => {
       props.column.addEventListener('sortChanged', onSortChanged);
       onSortChanged();
     }, []);
-  
+
     const onFilterTextBoxChanged = (e) => {
       setTerm(e.target.value);
       props.api.setQuickFilter(e.target.value);
     };
-  
+
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
     return (
@@ -200,25 +201,30 @@ import React, {
           onClick={(event) => onSortRequested('asc', event)}
           onTouchEnd={(event) => onSortRequested('asc', event)}
         >
-          {props.api.getAllDisplayedColumns().indexOf(props.column) == 0 ? (
+          {
+            
+          // props.api.getAllDisplayedColumns().indexOf(props.column) == 0 ? (
+          //   <>
+          //     {/* <IconButton
+          //       aria-describedby={id}
+          //       sx={{
+          //         p: 0,
+          //         // position: 'absolute',
+          //         // left: 0,
+          //       }}
+          //       onClick={handleClick}
+          //     >
+          //       <TuneRoundedIcon />
+          //     </IconButton> */}
+          //     <h style={{ marginLeft: '10px', fontSize: '5rem' }}>{props.displayName}</h>
+          //   </>
+          // ) : 
+          (
             <>
-              <IconButton
-                aria-describedby={id}
-                sx={{
-                  p: 0,
-                  // position: 'absolute',
-                  // left: 0,
-                }}
-                onClick={handleClick}
-              >
-                <TuneRoundedIcon />
-              </IconButton>
-              <h style={{ marginLeft: '10px' }}>{props.displayName}</h>
+            <h style={{ fontSize: '1rem', fontWeight: 'bold', paddingLeft: 0, left: 0 }}>{props.displayName}</h>
             </>
-          ) : (
-            <h styled>{props.displayName}</h>
           )}
-  
+
           {ascSort !== 'inactive' && (
             <ArrowUpwardIcon
               sx={{ position: 'absolute', right: 0, marginRight: '5px' }}
@@ -230,7 +236,7 @@ import React, {
             />
           )}
         </Box>
-        <Popover
+        {/* <Popover
           id={id}
           open={open}
           anchorEl={anchorEl}
@@ -266,38 +272,7 @@ import React, {
                     onChange={onFilterTextBoxChanged}
                   />
                 </Box>
-                {/* <Box>
-                  <Label>Ocultar:</Label>
-                  <FormGroup
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flexWrap: 'nowrap',
-                      pl: 1,
-                      maxHeight: '20vh',
-                      overflowY: 'auto',
-                    }}
-                  >
-                    {props.api.columnModel.gridColumns.map((column) => {
-                      return (
-                        <FormControlLabel
-                          control={
-                            <BpCheckbox
-                              defaultChecked={column.visible}
-                              onChange={() =>
-                                handleVisibility(
-                                  column.userProvidedColDef.field,
-                                  column.visible,
-                                )
-                              }
-                            />
-                          }
-                          label={column.userProvidedColDef.headerName}
-                        />
-                      );
-                    })}
-                  </FormGroup>
-                </Box> */}
+                
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -312,7 +287,7 @@ import React, {
                   Exportar Pdf
                 </Button>
                 <Button
-                  // onClick={() => openExcel(ref)}
+                  onClick={() => openExcel(ref)}
                   variant="outlined"
                   startIcon={<GridOnIcon />}
                 >
@@ -321,9 +296,9 @@ import React, {
               </Box>
             </TabPanel>
           </Box>
-        </Popover>
+        </Popover> */}
       </>
     );
   });
-  
+
   export default HeaderGrid;

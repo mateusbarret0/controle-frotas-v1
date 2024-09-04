@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { pdfMake as pdfFonts } from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.vfs;
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const openPdf = (ref) => {
   const params = {

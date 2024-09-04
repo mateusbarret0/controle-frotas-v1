@@ -124,6 +124,7 @@
     --ag-header-background-color: #fff;
     --ag-header-foreground-color: #0000008a;
     --ag-font-size: 11px;
+    background-color: #222b45;
   }
   
   .ag-theme-quartz .ag-header-row{
@@ -138,4 +139,20 @@
   
   .ag-theme-quartz .ag-row .line-text-red{
     color: red;
+  }
+
+  .ag-theme-quartz-dark {
+    --ag-background-color: #222b45;
+  }
+  
+  .ag-theme-quartz-dark .ag-root {
+    background-color: #222b45;
+  }
+  .ag-theme-quartz-dark .ag-header {
+    background-color: #222b45;
+    width: 100;
+  }
+
+  .ag-theme-quartz-dark .ag-row{
+    height: 100;
   }
