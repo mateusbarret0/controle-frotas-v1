@@ -6,19 +6,19 @@ import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import ControleFrotas from '../../Pages/ControleFrotas/ControleFrotas';
 
-
-const MainDesktop = () => {
-
+const MainDesktop = ({ children }) => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#222b45' }}>
       <CssBaseline />
-      <AppBar sx={{ 
+      <AppBar
+        sx={{
           backgroundColor: '#222b45',
           zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}>
+        }}
+      >
         <ToolbarCustom />
       </AppBar>
-      <Drawer variant="permanent" sx={{ borderColor: '#222b45' }} >
+      <Drawer variant="permanent" sx={{ borderColor: '#222b45' }}>
         <Box
           sx={{
             display: 'flex',
@@ -26,12 +26,12 @@ const MainDesktop = () => {
             justifyContent: 'space-between',
             height: '100vh',
             backgroundColor: '#222b45',
-            width: 250
+            width: 250,
           }}
         >
           <Box>
             <Toolbar />
-            <MenuList  />
+            <MenuList />
             <Divider />
           </Box>
         </Box>
@@ -43,12 +43,12 @@ const MainDesktop = () => {
           flexGrow: 1,
           height: '91.6vh',
           overflow: 'auto',
-          mt:10,
-          ml:32,
-          p: 2
+          mt: 10,
+          ml: 32,
+          p: 2,
         }}
       >
-        <ControleFrotas/>
+        {children}
         <Toolbar />
       </Box>
     </Box>

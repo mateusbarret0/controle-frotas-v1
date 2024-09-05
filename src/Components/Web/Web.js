@@ -4,6 +4,7 @@ import { createContext, useMemo, useState } from 'react';
 import { alpha, createTheme, ThemeProvider } from '@mui/material/styles';
 import './Web.module.css';
 import ControleFrotas from './Pages/ControleFrotas/ControleFrotas';
+import Historico from './Pages/ControleFrotas/Components/Historico/Historico';
 
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -246,14 +247,17 @@ const Web = () => {
       }),
     [mode],
   );
-console.log('teste')
+  console.log('teste');
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <HashRouter>
-          <Routes>     
-              <Route path="/" element={<Main />} />
-          </Routes>
+          <Main>
+            <Routes>
+              <Route path="/" element={<ControleFrotas />} />
+              <Route path="/historico" element={<Historico />} />
+            </Routes>
+          </Main>
         </HashRouter>
       </ThemeProvider>
     </ColorModeContext.Provider>

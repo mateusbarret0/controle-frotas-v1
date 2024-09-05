@@ -15,6 +15,7 @@ import ModalUser from '../../Components/Modal/ModalUser';
 
 const routes = [
   { name: 'Controle de Frotas', path: '/' },
+  { name: 'Historico de Frotas', path: '/historico' },
   { name: '404', path: '*' },
 ];
 
@@ -32,12 +33,12 @@ const useMatchedRoute = () => {
 const ToolbarCustom = () => {
   const route = useMatchedRoute();
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [openModal, setOpenModal] = useState(false); 
+  const [openModal, setOpenModal] = useState(false);
 
   const open = Boolean(anchorElUser);
 
   const handleClick = (e) => {
-    setOpenModal(true); 
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
@@ -46,7 +47,7 @@ const ToolbarCustom = () => {
 
   const handleCloseUserMenu = () => setAnchorElUser(null);
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
-  
+
   useEffect(() => {
     const curTitle = routes.find((item) => item.path === route.path);
     if (curTitle && route.name) {
@@ -86,10 +87,14 @@ const ToolbarCustom = () => {
           </Typography>
         </Breadcrumbs>
         <Button
-          sx={{ textTransform: 'none', color: '#3366FF', borderColor: '#3366FF', mr: 2 }}
+          sx={{
+            textTransform: 'none',
+            color: '#3366FF',
+            borderColor: '#3366FF',
+            mr: 2,
+          }}
           variant="outlined"
           startIcon={<QuestionAnswerIcon />}
-
         >
           CHAMADOS TI / ALFAID
         </Button>
@@ -117,19 +122,29 @@ const ToolbarCustom = () => {
             onClose={handleCloseUserMenu}
             sx={{ mt: 1, '& ul': { p: 0 } }}
           >
-            <Box sx={{ width: isMobileOnly ? '20vw' : '10vw', backgroundColor: '#222b45' }}>
-                <Button component="label" fullWidth sx={{ color: 'white' }} onClick={(e) => {
-            setOpenModal(true);
-          }}>
-                  PERFIL
-                </Button>
+            <Box
+              sx={{
+                width: isMobileOnly ? '20vw' : '10vw',
+                backgroundColor: '#222b45',
+              }}
+            >
+              <Button
+                component="label"
+                fullWidth
+                sx={{ color: 'white' }}
+                onClick={(e) => {
+                  setOpenModal(true);
+                }}
+              >
+                PERFIL
+              </Button>
               {settings.map((setting) => (
                 <Button
                   sx={{ color: 'white' }}
                   component="label"
                   fullWidth
                   key={setting}
-                  onClick={handleClick} 
+                  onClick={handleClick}
                 >
                   {setting}
                 </Button>
@@ -139,7 +154,7 @@ const ToolbarCustom = () => {
         </Box>
       </Toolbar>
 
-      <ModalUser open={openModal} close={handleCloseModal} /> 
+      <ModalUser open={openModal} close={handleCloseModal} />
     </>
   );
 };
