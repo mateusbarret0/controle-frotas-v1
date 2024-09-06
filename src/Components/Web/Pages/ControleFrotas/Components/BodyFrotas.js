@@ -8,23 +8,25 @@ import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModalEditVeiculo from '../../../Components/Modal/ModalEditVeiculo';
+import ModalQrCode from '../../../Components/Modal/ModalQrCode';
 import { useNavigate } from 'react-router-dom';
 
 const BodyFrotas = () => {
   const columns = [
-    { field: 'modelo', headerName: 'MODELO' },
-    { field: 'placa', headerName: 'PLACA' },
-    { field: 'capacidade', headerName: 'CAPACIDADE' },
-    { field: 'manutencao', headerName: 'MANUTENÇÃO' },
+    { field: 'modelo', headerName: 'MODELO', flex: 1 },
+    { field: 'placa', headerName: 'PLACA', flex: 1 },
+    { field: 'capacidade', headerName: 'CAPACIDADE', flex: 1 },
+    { field: 'manutencao', headerName: 'MANUTENÇÃO', flex: 1 },
     {
       field: 'histórico',
-      headerName: 'HISTÓRICO',
+      headerName: 'HISTÓRICO', flex: 1,
       cellRenderer: () => (
-        <Button sx={{ border: '1px solid #00FF57', width: '50%' }}>
+        <Button sx={{ border: '1px solid #00FF57', width: '50%' }}
+        onClick={() => navigate('/historico')}>
           <IconButton
             size="large"
             sx={{ p: 0, width: '100%', color: '#00FF57' }}
-            onClick={() => navigate('/historico')}
+            
           >
             <HistoryOutlinedIcon fontSize="small" />
           </IconButton>
@@ -33,9 +35,10 @@ const BodyFrotas = () => {
     },
     {
       field: 'qrCode',
-      headerName: 'QR CODE',
+      headerName: 'QR CODE', flex: 1,
       cellRenderer: () => (
-        <Button sx={{ border: '1px solid #ffff', width: '50%' }}>
+        <Button sx={{ border: '1px solid #ffff', width: '50%' }}
+        onClick={() => setQr(true)}>
           <IconButton size="large" sx={{ p: 0, width: '100%', color: '#ffff' }}>
             <QrCodeScannerOutlinedIcon fontSize="small" />
           </IconButton>
@@ -44,13 +47,14 @@ const BodyFrotas = () => {
     },
     {
       field: 'editar',
-      headerName: 'EDITAR',
+      headerName: 'EDITAR', flex: 1,
       cellRenderer: () => (
-        <Button sx={{ border: '1px solid #FFAA00', width: '50%' }}>
+        <Button sx={{ border: '1px solid #FFAA00', width: '50%' }} 
+        onClick={() => setOpenEdit(true)}
+        >
           <IconButton
             size="large"
             sx={{ p: 0, width: '100%', color: '#FFAA00' }}
-            onClick={() => setOpenEdit(true)}
           >
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
@@ -59,7 +63,7 @@ const BodyFrotas = () => {
     },
     {
       field: 'apagar',
-      headerName: 'APAGAR',
+      headerName: 'APAGAR', flex: 1,
       cellRenderer: () => (
         <Button sx={{ border: '1px solid #FF3D71', width: '50%' }}>
           <IconButton
@@ -170,7 +174,9 @@ const BodyFrotas = () => {
 
   const [openEdit, setOpenEdit] = useState(false);
   const closeEdit = () => setOpenEdit(false);
-  const navigate = useNavigate();
+  const [openQr, setQr] = useState(false);
+  const closeQr = () => setQr(false);
+    const navigate = useNavigate();
 
   return (
     <>
@@ -179,6 +185,7 @@ const BodyFrotas = () => {
       </Box>
 
       <ModalEditVeiculo open={openEdit} close={closeEdit} />
+      <ModalQrCode open={openQr} close={closeQr} />
     </>
   );
 };

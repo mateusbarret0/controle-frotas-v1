@@ -4,7 +4,7 @@ import { createContext, useMemo, useState } from 'react';
 import { alpha, createTheme, ThemeProvider } from '@mui/material/styles';
 import './Web.module.css';
 import ControleFrotas from './Pages/ControleFrotas/ControleFrotas';
-import Historico from './Pages/ControleFrotas/Components/Historico/Historico';
+import Historico from './Pages/ControleFrotas//Historico';
 
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
