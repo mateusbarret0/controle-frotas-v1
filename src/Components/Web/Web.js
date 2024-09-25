@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Main from './Layouts/Main';
 import { createContext, useMemo, useState } from 'react';
 import { alpha, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -247,14 +247,16 @@ const Web = () => {
       }),
     [mode],
   );
-  console.log('teste');
+
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <HashRouter>
           <Main>
             <Routes>
-              <Route path="/" element={<ControleFrotas />} />
+              <Route path="*" element={<Navigate to="/veiculos" replace />} />
+              <Route path="/veiculos" element={<ControleFrotas />} />
               <Route path="/historico" element={<Historico />} />
             </Routes>
           </Main>

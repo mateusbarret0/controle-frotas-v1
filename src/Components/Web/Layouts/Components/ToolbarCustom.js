@@ -14,7 +14,7 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ModalUser from '../../Components/Modal/ModalUser';
 
 const routes = [
-  { name: 'Controle de Frotas', path: '/' },
+  { name: 'Controle de Frotas', path: '/veiculos' },
   { name: 'Historico de Frotas', path: '/historico' },
   { name: '404', path: '*' },
 ];
