@@ -7,7 +7,7 @@ const ControleFrotas = () => {
 
     return (
       <Box >
-      <HeaderFrotas/>
+      {/* <HeaderFrotas/> */}
       <BodyFrotas/>
       </Box>
     );

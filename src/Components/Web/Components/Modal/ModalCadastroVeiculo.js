@@ -1,14 +1,20 @@
-import { React, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ModalStyle from '../Modal/ModalStyle';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Button, Divider, FormControl, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CREATE_VEICULOS, GET_VEICULOS } from '../../../../api';
+import { CREATE_VEICULOS } from '../../../../api';
+import { toast } from 'react-toastify';
+import InputDate from '../Input/InputDate';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'; 
 
-const ModalCadastroVeiculo = ({ open, close, color }) => {
+const ModalCadastroVeiculo = ({ open, close, color, getVeiculos  }) => {
+  console.log("🚀 ~ ModalCadastroVeiculo ~ getVeiculos:", getVeiculos)
   const [loading, setLoading] = useState(false);
   const [modelo, setModelo] = useState('');
   const [placa, setPlaca] = useState('');
@@ -18,6 +24,7 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
   const [dataUltManutencao, setDataUltManutencao] = useState('');
   const [empresa, setEmpresa] = useState('');
   const [motorista, setMotorista] = useState('');
+  const [tipoVeiculo, setTipoVeiculo] = useState('');
 
   const darkTheme = createTheme({
     palette: {
@@ -33,9 +40,26 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
     },
   });
 
+  const clearFields = () => {
+    setModelo('');
+    setPlaca('');
+    setAno('');
+    setCapacidade('');
+    setDataProxManutencao('');
+    setDataUltManutencao('');
+    setEmpresa('');
+    setMotorista('');
+    setTipoVeiculo('');
+  };
+
   const createVeiculo = async () => {
-    const { url, options } = CREATE_VEICULOS(); 
-    const body = {
+    if (!modelo || !placa || !ano || !capacidade || !dataProxManutencao || !dataUltManutencao || !empresa || !motorista || !tipoVeiculo) {
+      console.log("Campos obrigatórios não preenchidos");
+      toast.error('Por favor, preencha todos os campos obrigatórios!');
+      return; 
+    }
+
+    const { url, options } = CREATE_VEICULOS({
       modelo,
       placa,
       ano,
@@ -44,29 +68,26 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
       dataUltManutencao,
       empresa,
       motorista,
-    };
-  
+      tipoVeiculo,
+    });
+
+    setLoading(true);
     try {
-      const response = await fetch(url, {
-        ...options,
-        body: JSON.stringify(body), 
-      });
+      const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        console.log('Veículo cadastrado com sucesso!');
-        setModelo('');
-        setPlaca('');
-        setAno('');
-        setCapacidade('');
-        setDataProxManutencao('');
-        setDataUltManutencao('');
-        setEmpresa('');
-        setMotorista('');
+        toast.success('Veículo cadastrado com sucesso!');
+        getVeiculos();
+        clearFields();
+        close();
       } else {
-        console.log('Erro ao cadastrar veículo:', json);
+        toast.error('Erro ao cadastrar o veículo');
+        console.log('Erro ao cadastrar o veículo:', json);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,15 +118,16 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  label="Tipo de Veículo"
+                  value={tipoVeiculo}
+                  onChange={(e) => setTipoVeiculo(e.target.value)}
                   sx={{
                     color: '#FFFFFF',
                     backgroundColor: '#192038',
                     borderRadius: 3,
                   }}
                 >
-                  <MenuItem value={10}>Van</MenuItem>
-                  <MenuItem value={20}>Ônibus</MenuItem>
+                  <MenuItem value="Van">Van</MenuItem>
+                  <MenuItem value="Ônibus">Ônibus</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -113,7 +135,7 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
         }
         color={color}
         content={
-          <>
+          <LocalizationProvider dateAdapter={AdapterDayjs}> 
             <Box sx={{ width: '100%', height: '100%' }}>
               <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
                 <ThemeProvider theme={darkTheme}>
@@ -121,7 +143,6 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '50%',
                       fontSize: '1rem',
                     }}
@@ -130,12 +151,12 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     variant="outlined"
                     value={modelo}
                     onChange={(e) => setModelo(e.target.value)}
+                    
                   />
                   <TextField
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '25%',
                       fontSize: '1rem',
                     }}
@@ -144,20 +165,22 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     variant="outlined"
                     value={placa}
                     onChange={(e) => setPlaca(e.target.value)}
+                    
                   />
                   <TextField
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '25%',
                       fontSize: '1rem',
                     }}
                     id="ano"
                     label="Ano:"
                     variant="outlined"
+                    type="number"
                     value={ano}
                     onChange={(e) => setAno(e.target.value)}
+                    
                   />
                 </ThemeProvider>
               </Box>
@@ -168,53 +191,47 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '33%',
                       fontSize: '1rem',
                     }}
                     id="capacidade"
                     label="Capacidade:"
                     variant="outlined"
+                    type="number"
                     value={capacidade}
                     onChange={(e) => setCapacidade(e.target.value)}
-                  />
-                  <TextField
-                    sx={{
-                      backgroundColor: '#192038',
-                      borderRadius: 3,
-                      color: '#FFFFFF',
-                      width: '33%',
-                      fontSize: '1rem',
-                    }}
-                    id="dataProxManutencao"
-                    label="Data da próxima manutenção:"
-                    variant="outlined"
-                    value={dataProxManutencao}
-                    onChange={(e) => setDataProxManutencao(e.target.value)}
-                  />
-                  <TextField
-                    sx={{
-                      backgroundColor: '#192038',
-                      borderRadius: 3,
-                      color: '#FFFFFF',
-                      width: '33%',
-                      fontSize: '1rem',
-                    }}
-                    id="dataUltManutencao"
-                    label="Data da última manutenção:"
-                    variant="outlined"
+                  />  
+                  <InputDate
                     value={dataUltManutencao}
-                    onChange={(e) => setDataUltManutencao(e.target.value)}
+                    setValue={setDataUltManutencao}
+                    label="Data da última manutenção"
+                    sx={{
+                      backgroundColor: '#192038',
+                      borderRadius: 3,
+                      width: '33%',
+                      fontSize: '1rem',
+                    }}
+                  />
+                  <InputDate
+                    value={dataProxManutencao}
+                    setValue={setDataProxManutencao}
+                    label="Data da próxima manutenção"
+                    sx={{
+                      backgroundColor: '#192038',
+                      borderRadius: 3,
+                      width: '33%',
+                      fontSize: '1rem',
+                    }}
                   />
                 </ThemeProvider>
               </Box>
+              
               <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
                 <ThemeProvider theme={darkTheme}>
                   <TextField
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '50%',
                       fontSize: '1rem',
                     }}
@@ -223,12 +240,12 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     variant="outlined"
                     value={empresa}
                     onChange={(e) => setEmpresa(e.target.value)}
+                    
                   />
                   <TextField
                     sx={{
                       backgroundColor: '#192038',
                       borderRadius: 3,
-                      color: '#FFFFFF',
                       width: '50%',
                       fontSize: '1rem',
                     }}
@@ -237,11 +254,12 @@ const ModalCadastroVeiculo = ({ open, close, color }) => {
                     variant="outlined"
                     value={motorista}
                     onChange={(e) => setMotorista(e.target.value)}
+                    
                   />
                 </ThemeProvider>
               </Box>
             </Box>
-          </>
+          </LocalizationProvider> 
         }
         action={
           <>
