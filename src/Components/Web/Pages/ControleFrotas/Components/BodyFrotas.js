@@ -71,7 +71,7 @@ const BodyFrotas = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openQr, setQr] = useState(false);
   const [openDelete, setDelete] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null); // Novo estado para a linha selecionada
+  const [selectedRow, setSelectedRow] = useState(null); 
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
   const closeQr = () => setQr(false);
@@ -105,9 +105,9 @@ const BodyFrotas = () => {
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 
-      <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} /> {/* Passa a linha selecionada */}
-      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} /> {/* Passa a linha selecionada */}
-      <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} /> {/* Passa a linha selecionada */}
+      <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} />
+      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} /> 
+      <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} /> 
     </>
   );
 };
