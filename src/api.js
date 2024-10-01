@@ -25,7 +25,47 @@ export function GET_VEICULOS() {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-        body: JSON.stringify(data),  // Enviar os dados no corpo da requisição
+        body: JSON.stringify(data), 
+      },
+    };
+  }
+  export function DELETE_VEICULOS(data) {
+    const token = localStorage.getItem('token'); 
+    return {
+      url: API_URL + 'delete/veiculos',
+      options: {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ placa: data.placa }),
+      },
+    };
+  }
+  export function EDIT_VEICULOS(data) {
+    const token = localStorage.getItem('token');
+    return {
+      url: API_URL + 'edit/veiculos',
+      options: {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          placa: data.placa,
+          modelo: data.modelo,
+          ano: data.ano,
+          capacidade: data.capacidade,
+          dataProxManutencao: data.dataProxManutencao,
+          dataUltManutencao: data.dataUltManutencao,
+          empresa: data.empresa,
+          motorista: data.motorista,
+          tipoVeiculo: data.tipoVeiculo,
+        }),
       },
     };
   }

@@ -19,7 +19,7 @@ const BodyFrotas = () => {
     { field: 'modelo', headerName: 'MODELO', flex: 1 },
     { field: 'placa', headerName: 'PLACA', flex: 1 },
     { field: 'capacidade', headerName: 'CAPACIDADE', flex: 1 },
-    { field: 'manutencao', headerName: 'MANUTENÇÃO', flex: 1 },
+    { field: 'dt_ultim_manu', headerName: 'MANUTENÇÃO', flex: 1 },
     {
       field: 'histórico',
       headerName: 'HISTÓRICO', flex: 1,
@@ -71,14 +71,14 @@ const BodyFrotas = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openQr, setQr] = useState(false);
   const [openDelete, setDelete] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null); // Novo estado para a linha selecionada
+  const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
   const closeQr = () => setQr(false);
   const closeDelete = () => setDelete(false);
   
   const navigate = useNavigate();
-
+  
   const getVeiculos = async () => {
     const { url, options } = GET_VEICULOS();
     try {
@@ -86,6 +86,7 @@ const BodyFrotas = () => {
       const json = await response.json();
       if (response.ok) {
         setRows(json);
+        console.log("🚀 ~ BodyFrotas ~ rows:", rows)
       } else {
         console.log('Erro ao buscar veículos');
       }
@@ -101,13 +102,14 @@ const BodyFrotas = () => {
   return (
     <>
       <HeaderFrotas getVeiculos={getVeiculos} />
+      
       <Box sx={{ height: 670, width: '100%', color: 'white' }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 
-      <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} /> {/* Passa a linha selecionada */}
-      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} /> {/* Passa a linha selecionada */}
-      <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} /> {/* Passa a linha selecionada */}
+      <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} getVeiculos={getVeiculos} /> 
+      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} />
+      <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} getVeiculos={getVeiculos} /> 
     </>
   );
 };

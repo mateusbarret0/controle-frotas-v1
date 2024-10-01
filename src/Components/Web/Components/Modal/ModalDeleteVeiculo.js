@@ -1,13 +1,14 @@
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 import ModalStyle from '../Modal/ModalStyle';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Button, Divider, FormControl, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { DELETE_VEICULOS } from '../../../../api';
 
-const ModalDeleteVeiculo = ({ open, close, color, data }) => {
+const ModalDeleteVeiculo = ({ open, close, color, data, getVeiculos }) => {
     const [loading, setLoading] = useState(false);
     console.log("🚀 ~ ModalEditVeiculo ~ data:", data)
 
@@ -24,6 +25,26 @@ const ModalDeleteVeiculo = ({ open, close, color, data }) => {
       },
     },
   });
+
+  const deleteVeiculo = async () => {
+    const { url, options } = DELETE_VEICULOS(data);
+    setLoading(true);
+    try {
+      const response = await fetch(url, options);
+      const json = await response.json();
+      if (response.ok) {
+        getVeiculos();
+        close();
+      } else {
+        console.log('Erro ao deletar o veículo:', json);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box>
       <ModalStyle
@@ -102,11 +123,11 @@ const ModalDeleteVeiculo = ({ open, close, color, data }) => {
                 }}
                 variant="outlined"
                 startIcon={<CheckIcon />}
-                // onClick={createVeiculo}
+                onClick={deleteVeiculo}
               >
                 DELETAR
               </Button>
-  </Box>
+              </Box>
           </>
         }
       />

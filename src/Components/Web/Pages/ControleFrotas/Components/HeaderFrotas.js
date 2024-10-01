@@ -1,18 +1,28 @@
 import { Box, Button, Divider, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalCadastroVeiculo from "../../../Components/Modal/ModalCadastroVeiculo";
 
-const HeaderFrotas = ({getVeiculos}) => {
+const HeaderFrotas = ({ getVeiculos }) => {
   const [openCadastro, setOpenCadastro] = useState(false);
-  
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleClick = () => {
     setOpenCadastro(true);
   };
 
   const handleCloseModal = () => {
     setOpenCadastro(false);
+  };
+
+
+  useEffect(() => {
+    getVeiculos(searchTerm);
+  }, [searchTerm, getVeiculos]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); 
   };
 
   return (
@@ -46,6 +56,8 @@ const HeaderFrotas = ({getVeiculos}) => {
               fontSize: '15px',
             },
           }}
+          value={searchTerm}
+          onChange={handleSearchChange} 
         />
         <Button
           sx={{
