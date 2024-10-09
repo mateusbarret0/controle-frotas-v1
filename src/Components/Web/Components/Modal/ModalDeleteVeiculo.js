@@ -10,7 +10,6 @@ import { DELETE_VEICULOS } from '../../../../api';
 
 const ModalDeleteVeiculo = ({ open, close, color, data, getVeiculos }) => {
     const [loading, setLoading] = useState(false);
-    console.log("🚀 ~ ModalEditVeiculo ~ data:", data)
 
   const darkTheme = createTheme({
     palette: {

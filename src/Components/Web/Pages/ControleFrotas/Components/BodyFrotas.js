@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, Divider, IconButton, TextField } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Grid from '../../../Components/Grid/Grid';
@@ -13,13 +13,28 @@ import ModalDeleteVeiculo from '../../../Components/Modal/ModalDeleteVeiculo';
 import { useNavigate } from 'react-router-dom';
 import { GET_VEICULOS } from '../../../../../api';
 import HeaderFrotas from './HeaderFrotas';
-
+import ModalCadastroVeiculo from '../../../Components/Modal/ModalCadastroVeiculo';
+import ModalCreateRotas from '../../../Components/Modal/ModalCreateRotas';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import MapIcon from '@mui/icons-material/Map';
 const BodyFrotas = () => {
   const columns = [
     { field: 'modelo', headerName: 'MODELO', flex: 1 },
     { field: 'placa', headerName: 'PLACA', flex: 1 },
     { field: 'capacidade', headerName: 'CAPACIDADE', flex: 1 },
     { field: 'dt_ultim_manu', headerName: 'MANUTENÇÃO', flex: 1 },
+    {
+      field: 'rota',
+      headerName: 'ROTAS', flex: 1,
+      cellRenderer: ({ data }) => (
+        <Button sx={{ border: '1px solid #23f6bb', width: '50%' }} onClick={() => { setCreateRotas(true); setSelectedRow(data); }}>
+          <IconButton size="large" sx={{ p: 0, width: '100%', color: '#23f6bb' }}>
+            <MapIcon fontSize="small" />
+          </IconButton>
+        </Button>
+      ),
+    },
     {
       field: 'histórico',
       headerName: 'HISTÓRICO', flex: 1,
@@ -71,11 +86,13 @@ const BodyFrotas = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openQr, setQr] = useState(false);
   const [openDelete, setDelete] = useState(false);
+  const [openCreateRotas, setCreateRotas] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
   const closeQr = () => setQr(false);
   const closeDelete = () => setDelete(false);
+  const closeCreateRotas = () => setCreateRotas(false);
   
   const navigate = useNavigate();
   
@@ -99,17 +116,89 @@ const BodyFrotas = () => {
     getVeiculos();
   }, []);
 
+  const [openCadastro, setOpenCadastro] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleClick = () => {
+    setOpenCadastro(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenCadastro(false);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); 
+  };
+
   return (
     <>
-      <HeaderFrotas getVeiculos={getVeiculos} />
+      {/* <HeaderFrotas getVeiculos={getVeiculos} /> */}
       
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 2
+        }}
+      >
+        <TextField
+          label={
+            <Box sx={{ display: 'flex', alignItems: 'center', color: '#FFFFFF', fontSize: '15px' }}>
+              <SearchIcon sx={{ marginRight: 1 }} />
+              Insira o modelo, a placa ou o motorista do veículo.
+            </Box>
+          }
+          variant="filled"
+          sx={{
+            backgroundColor: '#192038',
+            borderRadius: 3,
+            color: '#FFFFFF',
+            width: '40%',
+          }}
+          InputProps={{
+            style: {
+              color: '#FFFFFF',
+              fontSize: '15px',
+            },
+          }}
+          value={searchTerm}
+          onChange={handleSearchChange} 
+        />
+        <Button
+          sx={{
+            textTransform: 'none',
+            color: '#3366FF',
+            borderColor: '#3366FF',
+            width: '30%',
+            height: 40,
+            '&:hover': {
+              color: '#FFFFFF',
+              border: '2px solid #FFFFFF'
+            }
+          }}
+          variant="outlined"
+          startIcon={<AddIcon />}
+          onClick={handleClick}
+        >
+          CADASTRAR VEÍCULO
+        </Button>
+      </Box>
+
+      <Divider sx={{ mb: 2 }} />
+
+
       <Box sx={{ height: 670, width: '100%', color: 'white' }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 
+      <ModalCadastroVeiculo open={openCadastro} close={handleCloseModal} getVeiculos={getVeiculos} />
       <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} getVeiculos={getVeiculos} /> 
       <ModalQrCode open={openQr} close={closeQr} data={selectedRow} />
       <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} getVeiculos={getVeiculos} /> 
+      <ModalCreateRotas open={openCreateRotas} close={closeCreateRotas} data={selectedRow} getVeiculos={getVeiculos} /> 
     </>
   );
 };

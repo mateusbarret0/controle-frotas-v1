@@ -3,7 +3,21 @@ export const API_URL = 'http://localhost:8000/api/'
 export function GET_VEICULOS() {
     const token = localStorage.getItem('token'); 
     return {
-      url: API_URL + 'veiculos',
+      url: API_URL + `veiculos`,
+      options: {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json', 
+          Accept: 'application/json' 
+        },
+      },
+    };
+  }
+export function GET_ROTAS() {
+    const token = localStorage.getItem('token'); 
+    return {
+      url: API_URL + `get/rotas`,
       options: {
         method: 'GET',
         headers: {
@@ -65,6 +79,24 @@ export function GET_VEICULOS() {
           empresa: data.empresa,
           motorista: data.motorista,
           tipoVeiculo: data.tipoVeiculo,
+        }),
+      },
+    };
+  }
+  export function INSERT_ROTA(data) {
+    const token = localStorage.getItem('token');
+    return {
+      url: API_URL + 'insert/rota',
+      options: {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          localPartida: data.localPartida,
+          localChegada: data.localChegada,
         }),
       },
     };

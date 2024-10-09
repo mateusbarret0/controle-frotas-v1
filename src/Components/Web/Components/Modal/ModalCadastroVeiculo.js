@@ -14,7 +14,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'; 
 
 const ModalCadastroVeiculo = ({ open, close, color, getVeiculos  }) => {
-  console.log("🚀 ~ ModalCadastroVeiculo ~ getVeiculos:", getVeiculos)
   const [loading, setLoading] = useState(false);
   const [modelo, setModelo] = useState('');
   const [placa, setPlaca] = useState('');
