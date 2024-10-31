@@ -7,56 +7,20 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import ModalEditVeiculo from '../../../Components/Modal/ModalEditVeiculo';
-import ModalQrCode from '../../../Components/Modal/ModalQrCode';
-import ModalDeleteVeiculo from '../../../Components/Modal/ModalDeleteVeiculo';
+import ModalEditUsuario from '../../../Components/Modal/ModalEditUsuario';
+import ModalDeleteUsuario from '../../../Components/Modal/ModalDeleteUsuario';
 import { useNavigate } from 'react-router-dom';
-import { GET_VEICULOS } from '../../../../../api';
-import HeaderFrotas from './HeaderFrotas';
-import ModalCadastroVeiculo from '../../../Components/Modal/ModalCadastroVeiculo';
-import ModalCreateRotas from '../../../Components/Modal/ModalCreateRotas';
+import { GET_USUARIOS } from '../../../../../api';
+import ModalCadastroUsuario from '../../../Components/Modal/ModalCadastroUsuario';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import MapIcon from '@mui/icons-material/Map';
 const BodyFrotas = () => {
   const columns = [
-    { field: 'modelo', headerName: 'MODELO', flex: 1 },
-    { field: 'placa', headerName: 'PLACA', flex: 1 },
-    { field: 'capacidade', headerName: 'CAPACIDADE', flex: 1 },
-    { field: 'dt_ultim_manu', headerName: 'MANUTENÇÃO', flex: 1 },
-    // {
-    //   field: 'rota',
-    //   headerName: 'ROTAS', flex: 1,
-    //   cellRenderer: ({ data }) => (
-    //     <Button sx={{ border: '1px solid #23f6bb', width: '50%' }} onClick={() => { setCreateRotas(true); setSelectedRow(data); }}>
-    //       <IconButton size="large" sx={{ p: 0, width: '100%', color: '#23f6bb' }}>
-    //         <MapIcon fontSize="small" />
-    //       </IconButton>
-    //     </Button>
-    //   ),
-    // },
-    {
-      field: 'histórico',
-      headerName: 'HISTÓRICO', flex: 1,
-      cellRenderer: ({ data }) => (
-        <Button sx={{ border: '1px solid #00FF57', width: '50%' }} onClick={() => navigate('/historico')}>
-          <IconButton size="large" sx={{ p: 0, width: '100%', color: '#00FF57' }}>
-            <HistoryOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Button>
-      ),
-    },
-    {
-      field: 'qrCode',
-      headerName: 'QR CODE', flex: 1,
-      cellRenderer: ({ data }) => (
-        <Button sx={{ border: '1px solid #ffff', width: '50%' }} onClick={() => { setQr(true); setSelectedRow(data); }}>
-          <IconButton size="large" sx={{ p: 0, width: '100%', color: '#ffff' }}>
-            <QrCodeScannerOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Button>
-      ),
-    },
+    { field: 'nome', headerName: 'NOME', flex: 1 },
+    { field: 'cpf', headerName: 'CPF', flex: 1 },
+    { field: 'email', headerName: 'EMAIL', flex: 1 },
+    { field: 'tipo', headerName: 'TIPO', flex: 1 },
+    { field: 'acesso', headerName: 'ACESSO', flex: 1 },
     {
       field: 'editar',
       headerName: 'EDITAR', flex: 1,
@@ -84,20 +48,14 @@ const BodyFrotas = () => {
   const gridRef = useRef(null);
 
   const [openEdit, setOpenEdit] = useState(false);
-  const [openQr, setQr] = useState(false);
   const [openDelete, setDelete] = useState(false);
-  const [openCreateRotas, setCreateRotas] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
-  const closeQr = () => setQr(false);
   const closeDelete = () => setDelete(false);
-  // const closeCreateRotas = () => setCreateRotas(false);
-  
-  const navigate = useNavigate();
-  
-  const getVeiculos = async () => {
-    const { url, options } = GET_VEICULOS();
+    
+  const getUsuarios = async () => {
+    const { url, options } = GET_USUARIOS();
     try {
       const response = await fetch(url, options);
       const json = await response.json();
@@ -113,18 +71,18 @@ const BodyFrotas = () => {
   };
 
   useEffect(() => {
-    getVeiculos();
+    getUsuarios();
   }, []);
 
-  const [openCadastro, setOpenCadastro] = useState(false);
+  const [openCadastroUsuario, setOpenCadastroUsuario] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleClick = () => {
-    setOpenCadastro(true);
+    setOpenCadastroUsuario(true);
   };
 
   const handleCloseModal = () => {
-    setOpenCadastro(false);
+    setOpenCadastroUsuario(false);
   };
 
   const handleSearchChange = (e) => {
@@ -133,7 +91,6 @@ const BodyFrotas = () => {
 
   return (
     <>
-      {/* <HeaderFrotas getVeiculos={getVeiculos} /> */}
       
       <Box
         sx={{
@@ -148,7 +105,7 @@ const BodyFrotas = () => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', color: '#FFFFFF', fontSize: '15px' }}>
               <SearchIcon sx={{ marginRight: 1 }} />
-              Insira o modelo, a placa ou o motorista do veículo.
+              Insira o nome, CPF ou e-mail do funcionário para buscar.
             </Box>
           }
           variant="filled"
@@ -183,7 +140,7 @@ const BodyFrotas = () => {
           startIcon={<AddIcon />}
           onClick={handleClick}
         >
-          CADASTRAR VEÍCULO
+          CADASTRAR USUÁRIO
         </Button>
       </Box>
 
@@ -194,11 +151,9 @@ const BodyFrotas = () => {
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 
-      <ModalCadastroVeiculo open={openCadastro} close={handleCloseModal} getVeiculos={getVeiculos} />
-      <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} getVeiculos={getVeiculos} /> 
-      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} />
-      <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} getVeiculos={getVeiculos} /> 
-      {/* <ModalCreateRotas open={openCreateRotas} close={closeCreateRotas} data={selectedRow} getVeiculos={getVeiculos} />  */}
+      <ModalCadastroUsuario open={openCadastroUsuario} close={handleCloseModal} getUsuarios={getUsuarios} />
+      <ModalEditUsuario open={openEdit} close={closeEdit} data={selectedRow} getUsuarios={getUsuarios} /> 
+      <ModalDeleteUsuario open={openDelete} close={closeDelete} data={selectedRow} getUsuarios={getUsuarios} /> 
     </>
   );
 };

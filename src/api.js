@@ -99,5 +99,71 @@ export function GET_ROTAS() {
           localChegada: data.localChegada,
         }),
       },
-    };
+    }
   }
+    export function CREATE_USUARIO(data) {
+      const token = localStorage.getItem('token'); 
+      return {
+        url: API_URL + 'insert/usuario',
+        options: {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(data), 
+        },
+      };
+    }
+    export function GET_USUARIOS() {
+      const token = localStorage.getItem('token'); 
+      return {
+        url: API_URL + `usuarios`,
+        options: {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json', 
+            Accept: 'application/json' 
+          },
+        },
+      };
+    }
+    export function EDIT_USUARIO(data) {
+      console.log("🚀 ~ EDIT_USUARIO ~ data:", data)
+      const token = localStorage.getItem('token');
+      return {
+        url: API_URL + 'edit/usuario',
+        options: {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            cpf: data.cpf,
+            nome: data.nome,
+            email: data.email,
+            status: data.status,
+            tipo: data.tipoUsuario,
+          }),
+        },
+      };
+    }
+    export function DELETE_USUARIOS(data) {
+      const token = localStorage.getItem('token'); 
+      return {
+        url: API_URL + 'delete/usuario',
+        options: {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({ cpf: data.cpf }),
+        },
+      };
+    }

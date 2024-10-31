@@ -16,6 +16,7 @@ import ModalUser from '../../Components/Modal/ModalUser';
 const routes = [
   { name: 'Controle de Frotas', path: '/veiculos' },
   { name: 'Historico de Frotas', path: '/historico' },
+  { name: 'Usuários', path: '/usuarios' },
   { name: '404', path: '*' },
 ];
 
