@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { isMobileOnly } from 'react-device-detect';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ModalUser from '../../Components/Modal/ModalUser';
-import { toast } from 'react-toastify'; // Importar toast para mostrar mensagens
+import { toast } from 'react-toastify'; 
 
 const routes = [
   { name: 'Controle de Frotas', path: '/veiculos' },

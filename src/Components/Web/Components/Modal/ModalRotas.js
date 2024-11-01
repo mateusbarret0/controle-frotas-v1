@@ -106,13 +106,13 @@ const ModalUser = ({ open, close, color }) => {
     justifyContent: 'center', 
     alignItems: 'center', 
     width: '100%', 
-    height: '40vh', // ajusta a altura da imagem ao restante do modal
-    overflow: 'hidden', // impede rolagem
+    height: '40vh', 
+    overflow: 'hidden', 
 }}>
   <img src={teste} alt="Descrição da Imagem" style={{ 
       maxWidth: '100%', 
       maxHeight: '100%', 
-      objectFit: 'cover', // garante que a imagem se ajuste sem distorção
+      objectFit: 'cover', 
       }} 
   />
 </Box>

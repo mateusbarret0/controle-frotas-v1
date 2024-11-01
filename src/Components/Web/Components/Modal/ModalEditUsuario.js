@@ -162,7 +162,6 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       mask="999.999.999-99"
       value={cpf}
       onChange={(e) => setCpf(e.target.value)}
-      // Sempre manter placeholder vazio para evitar conflito com o label do TextField
       placeholder=""
     >
       {() => (
