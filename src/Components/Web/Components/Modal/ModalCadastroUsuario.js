@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CREATE_USUARIO } from '../../../../api';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import InputDate from '../Input/InputDate';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -45,15 +45,16 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios  }) => {
   };
 
   const createUsuario = async () => {
-    if (!nome || !cpf || !tipoUsuario) {
-      console.log("Campos obrigatórios não preenchidos");
+    if (loading) return;
+    
+    if (!nome || !cpf || !tipoUsuario || !status || !email) {
       toast.error('Por favor, preencha todos os campos obrigatórios!');
       return; 
     }
-
+  
     const { url, options } = CREATE_USUARIO({
-        nome,
-        cpf,
+      nome,
+      cpf,
       tipoUsuario,
       status,
       email,
@@ -63,12 +64,11 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios  }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        toast.success('Usuário cadastrado com sucesso!');
         getUsuarios();
         clearFields();
+        toast.success('Usuário cadastrado com sucesso!');
         close();
       } else {
-        toast.error('Erro ao cadastrar o usuário');
         console.log('Erro ao cadastrar o usuário:', json);
       }
     } catch (error) {
@@ -78,7 +78,22 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios  }) => {
     }
   };
 
-  return (
+  return (<>
+    <ToastContainer
+  position="top-right"
+  autoClose={7000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  toastStyle={{
+    backgroundColor: '#192038', 
+    color: '#FFFFFF', 
+  }}
+/>
     <Box>
       <ModalStyle
         loading={loading}
@@ -254,6 +269,8 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios  }) => {
         }
       />
     </Box>
+  </>
+
   );
 };
 

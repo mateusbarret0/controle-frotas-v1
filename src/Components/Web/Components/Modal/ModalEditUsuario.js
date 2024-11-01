@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { EDIT_USUARIO } from '../../../../api';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import InputDate from '../Input/InputDate';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -62,12 +62,12 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        toast.success('Veículo atualizado com sucesso!');
         getUsuarios();
+        // toast.success('Usuário atualizado com sucesso!');
         close();
       } else {
-        toast.error('Erro ao atualizar o veículo');
-        console.log('Erro ao atualizar o veículo:', json);
+        toast.error('Erro ao atualizar o usuário');
+        console.log('Erro ao atualizar o usuário:', json);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -77,6 +77,21 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
   };
 
   return (
+    <>    <ToastContainer
+    position="top-right"
+    autoClose={7000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    toastStyle={{
+      backgroundColor: '#192038', 
+      color: '#FFFFFF', 
+    }}
+  />
     <Box>
       <ModalStyle
         loading={loading}
@@ -252,6 +267,7 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
         }
       />
     </Box>
+    </>
   );
 };
 
