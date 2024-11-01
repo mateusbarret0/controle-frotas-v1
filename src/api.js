@@ -1,5 +1,37 @@
 export const API_URL = 'http://localhost:8000/api/'
 
+
+export function LOGIN(usuario, senha) {
+  const token = localStorage.getItem('token'); 
+  return {
+    url: API_URL + 'auth/login',
+    options: {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({usuario, senha}), 
+    },
+  };
+}
+
+export function GET_USUR() {
+  const token = localStorage.getItem('token'); 
+  return {
+    url: API_URL + `get/usur`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json', 
+        Accept: 'application/json' 
+      },
+    },
+  };
+}
+
 export function GET_VEICULOS() {
     const token = localStorage.getItem('token'); 
     return {
@@ -116,16 +148,20 @@ export function GET_ROTAS() {
         },
       };
     }
-    export function GET_USUARIOS() {
-      const token = localStorage.getItem('token'); 
+    export function GET_USUARIOS(searchTerm) {
+      const token = localStorage.getItem('token');
+      const url = new URL(API_URL + 'usuarios'); 
+      if (searchTerm) {
+        url.searchParams.append('search', searchTerm);
+      }
       return {
-        url: API_URL + `usuarios`,
+        url: url.toString(),
         options: {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', 
-            Accept: 'application/json' 
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
         },
       };

@@ -6,7 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import ControleFrotas from '../../Pages/ControleFrotas/ControleFrotas';
 
-const MainDesktop = ({ children }) => {
+const MainDesktop = ({ children, setIsAuthenticated  }) => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#222b45' }}>
       <CssBaseline />
@@ -16,8 +16,8 @@ const MainDesktop = ({ children }) => {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <ToolbarCustom />
-      </AppBar>
+        <ToolbarCustom setIsAuthenticated={setIsAuthenticated} /> 
+             </AppBar>
       <Drawer variant="permanent" sx={{ borderColor: '#222b45' }}>
         <Box
           sx={{

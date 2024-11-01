@@ -6,6 +6,7 @@ import './Web.module.css';
 import ControleFrotas from './Pages/ControleFrotas/ControleFrotas';
 import Historico from './Pages/ControleFrotas/Historico';
 import BodyUsuarios from './Pages/Usuarios/Components/BodyUsuarios';
+import Login from './Pages/Login';
 
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -249,19 +250,23 @@ const Web = () => {
     [mode],
   );
 
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <HashRouter>
-          <Main>
-            <Routes>
-              <Route path="*" element={<Navigate to="/veiculos" replace />} />
-              <Route path="/veiculos" element={<ControleFrotas />} />
-              <Route path="/historico" element={<Historico />} />
-              <Route path="/usuarios" element={<BodyUsuarios />} />
-            </Routes>
-          </Main>
+          {!isAuthenticated ? (
+            <Login path="/login" setIsAuthenticated={setIsAuthenticated} /> 
+          ) : (
+            <Main setIsAuthenticated={setIsAuthenticated}>
+              <Routes>
+                <Route path="*" element={<Navigate to="/veiculos" replace />} />
+                <Route path="/veiculos" element={<ControleFrotas />} />
+                <Route path="/historico" element={<Historico />} />
+                <Route path="/usuarios" element={<BodyUsuarios />} />
+              </Routes>
+            </Main>
+          )}
         </HashRouter>
       </ThemeProvider>
     </ColorModeContext.Provider>

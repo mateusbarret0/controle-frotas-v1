@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { isMobileOnly } from 'react-device-detect';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ModalUser from '../../Components/Modal/ModalUser';
+import { toast } from 'react-toastify'; // Importar toast para mostrar mensagens
 
 const routes = [
   { name: 'Controle de Frotas', path: '/veiculos' },
@@ -31,16 +32,12 @@ const useMatchedRoute = () => {
   }
 };
 
-const ToolbarCustom = () => {
+const ToolbarCustom = ({ setIsAuthenticated }) => { 
   const route = useMatchedRoute();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   const open = Boolean(anchorElUser);
-
-  const handleClick = (e) => {
-    setOpenModal(true);
-  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -55,6 +52,12 @@ const ToolbarCustom = () => {
       document.title = `Alfa ID │ ${curTitle.name}`;
     }
   }, [route]);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isAuthenticated'); 
+    setIsAuthenticated(false); 
+    toast.success('Logout bem-sucedido!'); 
+  };
 
   return (
     <>
@@ -129,23 +132,13 @@ const ToolbarCustom = () => {
                 backgroundColor: '#222b45',
               }}
             >
-              <Button
-                component="label"
-                fullWidth
-                sx={{ color: 'white' }}
-                onClick={(e) => {
-                  setOpenModal(true);
-                }}
-              >
-                PERFIL
-              </Button>
               {settings.map((setting) => (
                 <Button
                   sx={{ color: 'white' }}
                   component="label"
                   fullWidth
                   key={setting}
-                  onClick={handleClick}
+                  onClick={handleLogout} 
                 >
                   {setting}
                 </Button>

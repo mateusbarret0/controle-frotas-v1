@@ -86,7 +86,6 @@ const BodyFrotas = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openQr, setQr] = useState(false);
   const [openDelete, setDelete] = useState(false);
-  const [openCreateRotas, setCreateRotas] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
@@ -198,7 +197,6 @@ const BodyFrotas = () => {
       <ModalEditVeiculo open={openEdit} close={closeEdit} data={selectedRow} getVeiculos={getVeiculos} /> 
       <ModalQrCode open={openQr} close={closeQr} data={selectedRow} />
       <ModalDeleteVeiculo open={openDelete} close={closeDelete} data={selectedRow} getVeiculos={getVeiculos} /> 
-      {/* <ModalCreateRotas open={openCreateRotas} close={closeCreateRotas} data={selectedRow} getVeiculos={getVeiculos} />  */}
     </>
   );
 };

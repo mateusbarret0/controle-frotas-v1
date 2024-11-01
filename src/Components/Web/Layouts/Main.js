@@ -2,19 +2,16 @@ import MainDesktop from './Components/MainDesktop';
 import { isMobileOnly } from 'react-device-detect';
 import MainMobile from './Components/MainMobile';
 
-const Main = ({ children }) => {
-
+const Main = ({ children, setIsAuthenticated }) => {
   return (
     <>
       {!isMobileOnly ? (
-        <MainDesktop>{children}</MainDesktop>
+        <MainDesktop setIsAuthenticated={setIsAuthenticated}>{children}</MainDesktop> 
       ) : (
-        <MainMobile>{children}</MainMobile>
+        <MainMobile setIsAuthenticated={setIsAuthenticated}>{children}</MainMobile> 
       )}
     </>
   );
 };
 
 export default Main;
-
-// OK

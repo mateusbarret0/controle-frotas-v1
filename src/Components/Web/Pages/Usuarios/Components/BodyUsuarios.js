@@ -1,29 +1,53 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Divider, IconButton, TextField } from '@mui/material';
+import { Box, Button, Divider, IconButton, TextField, Tooltip } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Grid from '../../../Components/Grid/Grid';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModalEditUsuario from '../../../Components/Modal/ModalEditUsuario';
 import ModalDeleteUsuario from '../../../Components/Modal/ModalDeleteUsuario';
-import { useNavigate } from 'react-router-dom';
-import { GET_USUARIOS } from '../../../../../api';
 import ModalCadastroUsuario from '../../../Components/Modal/ModalCadastroUsuario';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import CircleIcon from '@mui/icons-material/Circle';
+import { GET_USUARIOS } from '../../../../../api';
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 const BodyFrotas = () => {
   const columns = [
+    {
+      field: 'status',
+      headerName: 'STATUS',
+      flex: 0.4,
+      cellRenderer: ({ data }) => {
+        const iconColor = data.status === 'ativo' ? '#03ef55' : '#ff3d71';
+        const tooltipText = data.status === 'ativo' ? 'Usuário Ativo' : 'Usuário Inativo';
+  
+        return (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <Tooltip title={tooltipText} arrow>
+              <IconButton sx={{ color: iconColor }}>
+                <CircleIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
     { field: 'nome', headerName: 'NOME', flex: 1 },
     { field: 'cpf', headerName: 'CPF', flex: 1 },
     { field: 'email', headerName: 'EMAIL', flex: 1 },
     { field: 'tipo', headerName: 'TIPO', flex: 1 },
-    { field: 'acesso', headerName: 'ACESSO', flex: 1 },
     {
       field: 'editar',
-      headerName: 'EDITAR', flex: 1,
+      headerName: 'EDITAR',
+      flex: 1,
       cellRenderer: ({ data }) => (
         <Button sx={{ border: '1px solid #FFAA00', width: '50%' }} onClick={() => { setOpenEdit(true); setSelectedRow(data); }}>
           <IconButton size="large" sx={{ p: 0, width: '100%', color: '#FFAA00' }}>
@@ -34,7 +58,8 @@ const BodyFrotas = () => {
     },
     {
       field: 'apagar',
-      headerName: 'APAGAR', flex: 1,
+      headerName: 'APAGAR',
+      flex: 1,
       cellRenderer: ({ data }) => (
         <Button sx={{ border: '1px solid #FF3D71', width: '50%' }} onClick={() => { setDelete(true); setSelectedRow(data); }}>
           <IconButton size="large" sx={{ p: 0, width: '100%', color: '#FF3D71' }}>
@@ -46,36 +71,33 @@ const BodyFrotas = () => {
   ];
 
   const gridRef = useRef(null);
-
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
   const closeEdit = () => setOpenEdit(false);
   const closeDelete = () => setDelete(false);
-    
-  const getUsuarios = async () => {
-    const { url, options } = GET_USUARIOS();
+  const [openCadastroUsuario, setOpenCadastroUsuario] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const getUsuarios = async (searchTerm) => {
+    const { url, options } = GET_USUARIOS(searchTerm);
     try {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
         setRows(json);
-        console.log("🚀 ~ BodyFrotas ~ rows:", rows)
       } else {
-        console.log('Erro ao buscar veículos');
+        toast.error('Erro ao buscar usuários'); 
       }
     } catch (error) {
-      console.error('Erro na requisição:', error);
+      toast.error('Erro na requisição: ' + error.message); 
     }
   };
 
   useEffect(() => {
-    getUsuarios();
-  }, []);
-
-  const [openCadastroUsuario, setOpenCadastroUsuario] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+    getUsuarios(); 
+  }, []); 
 
   const handleClick = () => {
     setOpenCadastroUsuario(true);
@@ -85,13 +107,32 @@ const BodyFrotas = () => {
     setOpenCadastroUsuario(false);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value); 
+  const handleSearchUser = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+
+  const handleSearchBlur = () => {
+    getUsuarios(searchTerm);
   };
 
   return (
     <>
-      
+<ToastContainer
+  position="top-right"
+  autoClose={7000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  toastStyle={{
+    backgroundColor: '#192038', 
+    color: '#FFFFFF', 
+  }}
+/>
       <Box
         sx={{
           width: '100%',
@@ -122,7 +163,8 @@ const BodyFrotas = () => {
             },
           }}
           value={searchTerm}
-          onChange={handleSearchChange} 
+          onChange={handleSearchUser} 
+          onBlur={handleSearchBlur} 
         />
         <Button
           sx={{
@@ -145,7 +187,6 @@ const BodyFrotas = () => {
       </Box>
 
       <Divider sx={{ mb: 2 }} />
-
 
       <Box sx={{ height: 670, width: '100%', color: 'white' }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
