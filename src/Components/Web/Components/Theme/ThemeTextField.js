@@ -1,15 +1,15 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     background: {
-      default: '#121212',
-      paper: '#192038',
+      default: "#121212",
+      paper: "#192038",
     },
     text: {
-      primary: '#FFFFFF',
-      secondary: '#B0B0B0',
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
   },
 });

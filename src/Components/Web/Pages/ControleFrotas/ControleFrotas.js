@@ -3,14 +3,12 @@ import HeaderFrotas from "./Components/HeaderFrotas";
 import BodyFrotas from "./Components/BodyFrotas";
 
 const ControleFrotas = () => {
-  
-
-    return (
-      <Box >
+  return (
+    <Box>
       {/* <HeaderFrotas/> */}
-      <BodyFrotas/>
-      </Box>
-    );
-  };
-  
-  export default ControleFrotas;
+      <BodyFrotas />
+    </Box>
+  );
+};
+
+export default ControleFrotas;

@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import dayjs from "dayjs";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const openPdf = (ref) => {
@@ -13,13 +13,13 @@ const openPdf = (ref) => {
 
     PDF_ROW_HEIGHT: 15,
     PDF_HEADER_HEIGHT: 25,
-    PDF_HEADER_COLOR: '#f8f8f8',
-    PDF_ODD_BKG_COLOR: '#fcfcfc',
-    PDF_EVEN_BKG_COLOR: '#fff',
+    PDF_HEADER_COLOR: "#f8f8f8",
+    PDF_ODD_BKG_COLOR: "#fcfcfc",
+    PDF_EVEN_BKG_COLOR: "#fff",
 
-    PDF_INNER_BORDER_COLOR: '#dde2eb',
-    PDF_OUTER_BORDER_COLOR: '#babfc7',
-    PDF_PAGE_ORITENTATION: 'landscape',
+    PDF_INNER_BORDER_COLOR: "#dde2eb",
+    PDF_OUTER_BORDER_COLOR: "#babfc7",
+    PDF_PAGE_ORITENTATION: "landscape",
 
     PDF_WITH_FOOTER_PAGE_COUNT: true,
   };
@@ -27,10 +27,10 @@ const openPdf = (ref) => {
   const pdfDefinition = getPdfDefinition(
     params,
     ref.current.api,
-    ref.current.columnApi,
+    ref.current.columnApi
   );
 
-  pdfMake.createPdf(pdfDefinition).open({}, window.open('', '_blank'));
+  pdfMake.createPdf(pdfDefinition).open({}, window.open("", "_blank"));
 };
 
 const getPdfDefinition = (printParams, agGridApi, agGridColumnApi) => {
@@ -67,8 +67,8 @@ const getPdfDefinition = (printParams, agGridApi, agGridColumnApi) => {
       //   : {},
       PDF_WITH_HEADER_DATE
         ? {
-            text: dayjs().format('DD/MM/YYYY HH:mm:ss'),
-            alignment: 'right',
+            text: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+            alignment: "right",
             margin: [20, 20, 20, 0],
           }
         : {},
@@ -78,8 +78,8 @@ const getPdfDefinition = (printParams, agGridApi, agGridColumnApi) => {
   const footer = PDF_WITH_FOOTER_PAGE_COUNT
     ? (currentPage, pageCount) => ({
         margin: [20, 5, 20, 0],
-        alignment: 'right',
-        text: currentPage.toString() + ' de ' + pageCount,
+        alignment: "right",
+        text: currentPage.toString() + " de " + pageCount,
       })
     : null;
 
@@ -128,9 +128,9 @@ const getPdfDefinition = (printParams, agGridApi, agGridColumnApi) => {
     header,
     footer,
     content: [
-      { style: 'title', text: PDF_TITLE ? 'Relatório ' + PDF_TITLE : '' },
+      { style: "title", text: PDF_TITLE ? "Relatório " + PDF_TITLE : "" },
       {
-        style: 'myTable',
+        style: "myTable",
         table: { headerRows: 1, widths, body },
         layout: { fillColor, hLineWidth, vLineWidth, hLineColor, vLineColor },
       },
@@ -154,7 +154,7 @@ const getColumnsToExport = (columnApi) => {
       width: col.getActualWidth(),
       valueFormatter: col.colDef.valueFormatter,
       exportOptions: col.colDef.exportOptions,
-      style: 'tableHeader',
+      style: "tableHeader",
     });
   });
 
@@ -169,7 +169,7 @@ const getExportedColumnsWidths = (columnsToExport) => {
     return col.width;
   });
 
-  return widthColumns.map((width) => (width / widthTotal) * 100 + '%');
+  return widthColumns.map((width) => (width / widthTotal) * 100 + "%");
 };
 
 const getRowsToExport = (api, columnsToExport) => {
@@ -182,9 +182,9 @@ const getRowsToExport = (api, columnsToExport) => {
         cellValue = col.valueFormatter({ value: cellValue });
 
       return {
-        text: cellValue || '',
+        text: cellValue || "",
         colId: col.colId,
-        style: 'tableCell',
+        style: "tableCell",
       };
     });
 

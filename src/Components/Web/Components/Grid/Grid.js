@@ -1,19 +1,19 @@
-import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { AgGridReact } from 'ag-grid-react';
-import moment from 'moment';
-import 'ag-grid-community/styles/ag-grid.css';
-// import 'ag-grid-community/styles/ag-theme-alpine-dark.css'; 
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
-import './Grid.css';
-import HeaderGrid from './HeaderGrid';
-import { toast } from 'react-toastify';
+import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { AgGridReact } from "ag-grid-react";
+import moment from "moment";
+import "ag-grid-community/styles/ag-grid.css";
+// import 'ag-grid-community/styles/ag-theme-alpine-dark.css';
+import "ag-grid-community/styles/ag-theme-alpine.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import "./Grid.css";
+import HeaderGrid from "./HeaderGrid";
+import { toast } from "react-toastify";
 
 const Grid = forwardRef(
   (
     { columns, rows, loading, blockNavigate = false, preferences, ...props },
-    ref,
+    ref
   ) => {
     const params = useLocation();
     const [alterPreference, setAlterPreference] = useState(0);
@@ -22,11 +22,10 @@ const Grid = forwardRef(
     useEffect(() => {
       let newColumns = [];
 
-
       columns.map((col) => {
         let existe = newColumns.find((state) => state.field === col.field);
         if (!existe) {
-          if (['int', 'moeda', 'numero'].includes(col.cellDataType)) {
+          if (["int", "moeda", "numero"].includes(col.cellDataType)) {
             col.comparator = (valueA, valueB) =>
               Number(valueA) - Number(valueB);
           }
@@ -44,7 +43,7 @@ const Grid = forwardRef(
     const defaultColDef = useMemo(() => {
       return {
         resizable: true,
-        cellDataType: 'text',
+        cellDataType: "text",
         sortable: true,
         flex: props.columnFlex ? 1 : 0,
         visible: false,
@@ -62,50 +61,50 @@ const Grid = forwardRef(
     const dataTypeDefinitions = useMemo(() => {
       return {
         date: {
-          baseDataType: 'dateString',
-          extendsDataType: 'dateString',
+          baseDataType: "dateString",
+          extendsDataType: "dateString",
           valueFormatter: (params) =>
-            params.value && moment(params.value).format('DD/MM/YYYY'),
+            params.value && moment(params.value).format("DD/MM/YYYY"),
         },
         datetime: {
-          baseDataType: 'dateString',
-          extendsDataType: 'dateString',
+          baseDataType: "dateString",
+          extendsDataType: "dateString",
           valueFormatter: (params) =>
-            params.value && moment(params.value).format('DD/MM/YYYY HH:mm:ss'),
+            params.value && moment(params.value).format("DD/MM/YYYY HH:mm:ss"),
         },
         moeda: {
-          baseDataType: 'text',
-          extendsDataType: 'text',
+          baseDataType: "text",
+          extendsDataType: "text",
           valueFormatter: (params) =>
             params.value &&
-            parseFloat(params.value).toLocaleString('pt-br', {
-              style: 'currency',
-              currency: 'BRL',
+            parseFloat(params.value).toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
             }),
         },
         numero: {
-          baseDataType: 'text',
-          extendsDataType: 'text',
+          baseDataType: "text",
+          extendsDataType: "text",
           valueFormatter: (params) =>
             params.value &&
-            parseFloat(params.value).toLocaleString('pt-BR', {
+            parseFloat(params.value).toLocaleString("pt-BR", {
               maximumFractionDigits: 2,
             }),
         },
         porcent: {
-          baseDataType: 'text',
-          extendsDataType: 'text',
+          baseDataType: "text",
+          extendsDataType: "text",
           valueFormatter: (params) =>
             params.value &&
-            `${parseFloat(params.value).toLocaleString('pt-BR', {
+            `${parseFloat(params.value).toLocaleString("pt-BR", {
               maximumFractionDigits: 2,
             })}%`,
         },
         celular: {
-          baseDataType: 'text',
-          extendsDataType: 'text',
+          baseDataType: "text",
+          extendsDataType: "text",
           valueFormatter: (params) => {
-            const v = params.value ? params.value.replace(/\D/g, '') : '';
+            const v = params.value ? params.value.replace(/\D/g, "") : "";
 
             return v.length === 11
               ? `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`
@@ -118,7 +117,7 @@ const Grid = forwardRef(
     const navigateToNextCell = (params) => {
       const nextCell = params.nextCellPosition;
       if (nextCell && !blockNavigate) {
-        if (params.key !== 'ArrowDown' && params.key !== 'ArrowUp')
+        if (params.key !== "ArrowDown" && params.key !== "ArrowUp")
           return nextCell;
 
         params.api.forEachNode((node) => {
@@ -128,24 +127,21 @@ const Grid = forwardRef(
       }
     };
 
-
     const setPreference = (e) => {
       if (
         [
-          'columnVisible',
-          'sortChanged',
-          'columnPinned',
-          'columnRowGroupChanged',
-          'columnValueChanged',
-          'columnPivotChanged',
+          "columnVisible",
+          "sortChanged",
+          "columnPinned",
+          "columnRowGroupChanged",
+          "columnValueChanged",
+          "columnPivotChanged",
         ].includes(e.type) ||
         (e.finished && preferences && /ui.*/.test(e.source))
       ) {
         setAlterPreference((state) => state + 1);
       }
     };
-
-
 
     const copyTextToClipboard = (text) => {
       if (!navigator.clipboard) {
@@ -154,45 +150,45 @@ const Grid = forwardRef(
       }
       navigator.clipboard.writeText(text).then(
         () =>
-          toast.success('Texto copiado com sucesso!', {
+          toast.success("Texto copiado com sucesso!", {
             hideProgressBar: true,
             autoClose: 500,
           }),
-        () => fallBackCopyClipboard(text),
+        () => fallBackCopyClipboard(text)
       );
     };
 
     const onCellKeyDown = useCallback((e) => {
-      if (e.event.ctrlKey && e.event.key === 'c') {
+      if (e.event.ctrlKey && e.event.key === "c") {
         const text = e.value;
         copyTextToClipboard(text);
       }
     }, []);
 
     const fallBackCopyClipboard = (text) => {
-      let textarea = document.createElement('textarea');
+      let textarea = document.createElement("textarea");
       textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.top = '0';
-      textarea.style.left = '0';
+      textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
 
       document.body.appendChild(textarea);
       textarea.focus();
       textarea.select();
 
       try {
-        let successful = document.execCommand('copy');
+        let successful = document.execCommand("copy");
         successful
-          ? toast.success('Texto copiado com sucesso!', {
+          ? toast.success("Texto copiado com sucesso!", {
               hideProgressBar: true,
               autoClose: 500,
             })
-          : toast.error('Erro ao copiar texto!', {
+          : toast.error("Erro ao copiar texto!", {
               hideProgressBar: true,
               autoClose: 500,
             });
       } catch (err) {
-        toast.error('Erro ao copiar texto!', {
+        toast.error("Erro ao copiar texto!", {
           hideProgressBar: true,
           autoClose: 500,
         });
@@ -201,19 +197,22 @@ const Grid = forwardRef(
     };
 
     return (
-      <div className="ag-theme-quartz-dark" style={{ height: '100%', width: '100%' }}>
-    <AgGridReact
-      ref={ref}
-      rowData={rows}
-      columnDefs={columnsOrder}
-      defaultColDef={defaultColDef}
-      navigateToNextCell={navigateToNextCell}
-      components={components}
-      pagination={true}
-    />
-  </div>
+      <div
+        className="ag-theme-quartz-dark"
+        style={{ height: "100%", width: "100%" }}
+      >
+        <AgGridReact
+          ref={ref}
+          rowData={rows}
+          columnDefs={columnsOrder}
+          defaultColDef={defaultColDef}
+          navigateToNextCell={navigateToNextCell}
+          components={components}
+          pagination={true}
+        />
+      </div>
     );
-  },
+  }
 );
 
 export default Grid;

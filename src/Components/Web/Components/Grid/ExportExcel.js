@@ -1,24 +1,24 @@
-import { Workbook } from 'exceljs';
-import dayjs from 'dayjs';
+import { Workbook } from "exceljs";
+import dayjs from "dayjs";
 
 const openExcel = (ref) => {
   const excelDefinition = getExcelDefinition(
     ref.current.props.title,
     ref.current.api,
-    ref.current.columnApi,
+    ref.current.columnApi
   );
 
   excelDefinition.xlsx.writeBuffer().then((data) => {
     let blob = new Blob([data], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
     if (blob instanceof Blob) {
-      let link = document.createElement('a');
+      let link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download =
-        (ref.current.props.title ? ref.current.props.title + '-' : '') +
-        `${dayjs().format('DD-MM-YYYY HH:mm:ss')}.xlsx`;
+        (ref.current.props.title ? ref.current.props.title + "-" : "") +
+        `${dayjs().format("DD-MM-YYYY HH:mm:ss")}.xlsx`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -38,20 +38,20 @@ const getExcelDefinition = (title, agGridApi, agGridColumnApi) => {
 
   for (let rowIndex = 1; rowIndex <= worksheet.rowCount; rowIndex++) {
     worksheet.getRow(rowIndex).alignment = {
-      vertical: 'top',
-      horizontal: 'left',
+      vertical: "top",
+      horizontal: "left",
       wrapText: true,
     };
   }
 
   worksheet.getRow(1).eachCell((cell) => {
     cell.fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: '000000' },
-      bgColor: { argb: '000000' },
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "000000" },
+      bgColor: { argb: "000000" },
     };
-    cell.font = { color: { argb: 'ffffff' }, bold: true };
+    cell.font = { color: { argb: "ffffff" }, bold: true };
   });
 
   worksheet.autoFilter = {
@@ -71,7 +71,7 @@ const getColumnsToExport = (columnApi) => {
       key: col.getColId(),
       header: col.colDef.headerName,
       width: col.getActualWidth() / 5,
-      valueFormatter: ['date', 'datetime'].includes(col.colDef.cellDataType)
+      valueFormatter: ["date", "datetime"].includes(col.colDef.cellDataType)
         ? col.colDef.valueFormatter
         : null,
       exportOptions: col.colDef.exportOptions,

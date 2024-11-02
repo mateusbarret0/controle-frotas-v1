@@ -1,27 +1,27 @@
-import { useContext, useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import PersonIcon from '@mui/icons-material/Person';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import { Breadcrumbs, Button, Icon, Menu, Tooltip } from '@mui/material';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { NavLink, useLocation, matchPath } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import { isMobileOnly } from 'react-device-detect';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import ModalUser from '../../Components/Modal/ModalUser';
-import { toast } from 'react-toastify'; 
+import { useContext, useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import PersonIcon from "@mui/icons-material/Person";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import { Breadcrumbs, Button, Icon, Menu, Tooltip } from "@mui/material";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { NavLink, useLocation, matchPath } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { isMobileOnly } from "react-device-detect";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import ModalUser from "../../Components/Modal/ModalUser";
+import { toast } from "react-toastify";
 
 const routes = [
-  { name: 'Controle de Frotas', path: '/veiculos' },
-  { name: 'Historico de Frotas', path: '/historico' },
-  { name: 'Usuários', path: '/usuarios' },
-  { name: '404', path: '*' },
+  { name: "Controle de Frotas", path: "/veiculos" },
+  { name: "Historico de Frotas", path: "/historico" },
+  { name: "Usuários", path: "/usuarios" },
+  { name: "404", path: "*" },
 ];
 
-const settings = ['Logout'];
+const settings = ["Logout"];
 
 const useMatchedRoute = () => {
   const { pathname } = useLocation();
@@ -32,7 +32,7 @@ const useMatchedRoute = () => {
   }
 };
 
-const ToolbarCustom = ({ setIsAuthenticated }) => { 
+const ToolbarCustom = ({ setIsAuthenticated }) => {
   const route = useMatchedRoute();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -54,47 +54,47 @@ const ToolbarCustom = ({ setIsAuthenticated }) => {
   }, [route]);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('isAuthenticated'); 
-    setIsAuthenticated(false); 
-    toast.success('Logout bem-sucedido!'); 
+    sessionStorage.removeItem("isAuthenticated");
+    setIsAuthenticated(false);
+    toast.success("Logout bem-sucedido!");
   };
 
   return (
     <>
       <Toolbar
         sx={{
-          pr: '24px',
-          display: 'flex',
+          pr: "24px",
+          display: "flex",
           gap: 1,
         }}
       >
         <Breadcrumbs
           separator={
-            <NavigateNextIcon fontSize="small" sx={{ color: 'white' }} />
+            <NavigateNextIcon fontSize="small" sx={{ color: "white" }} />
           }
           aria-label="breadcrumb"
           sx={{ flexGrow: 1 }}
         >
           <Typography
             variant="h6"
-            color={'white'}
-            sx={{ fontWeight: '700', letterSpacing: 0.5 }}
+            color={"white"}
+            sx={{ fontWeight: "700", letterSpacing: 0.5 }}
           >
             Alfa ID
           </Typography>
           <Typography
             variant="h6"
-            color={'white'}
-            sx={{ fontWeight: '700', letterSpacing: 0.5, wordSpacing: 2.5 }}
+            color={"white"}
+            sx={{ fontWeight: "700", letterSpacing: 0.5, wordSpacing: 2.5 }}
           >
             {route.name}
           </Typography>
         </Breadcrumbs>
         <Button
           sx={{
-            textTransform: 'none',
-            color: '#3366FF',
-            borderColor: '#3366FF',
+            textTransform: "none",
+            color: "#3366FF",
+            borderColor: "#3366FF",
             mr: 2,
           }}
           variant="outlined"
@@ -104,8 +104,8 @@ const ToolbarCustom = ({ setIsAuthenticated }) => {
         </Button>
         <Typography
           variant="h6"
-          color={'white'}
-          sx={{ fontWeight: '700', letterSpacing: 0.5 }}
+          color={"white"}
+          sx={{ fontWeight: "700", letterSpacing: 0.5 }}
         >
           Mateus Oliveira Barreto
         </Typography>
@@ -124,21 +124,21 @@ const ToolbarCustom = ({ setIsAuthenticated }) => {
             anchorEl={anchorElUser}
             open={open}
             onClose={handleCloseUserMenu}
-            sx={{ mt: 1, '& ul': { p: 0 } }}
+            sx={{ mt: 1, "& ul": { p: 0 } }}
           >
             <Box
               sx={{
-                width: isMobileOnly ? '20vw' : '10vw',
-                backgroundColor: '#222b45',
+                width: isMobileOnly ? "20vw" : "10vw",
+                backgroundColor: "#222b45",
               }}
             >
               {settings.map((setting) => (
                 <Button
-                  sx={{ color: 'white' }}
+                  sx={{ color: "white" }}
                   component="label"
                   fullWidth
                   key={setting}
-                  onClick={handleLogout} 
+                  onClick={handleLogout}
                 >
                   {setting}
                 </Button>

@@ -1,8 +1,8 @@
-import { React, useEffect, useState } from 'react';
-import ModalStyle from '../Modal/ModalStyle';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { Divider } from '@mui/material';
+import { React, useEffect, useState } from "react";
+import ModalStyle from "../Modal/ModalStyle";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { Divider } from "@mui/material";
 
 const ModalUser = ({ open, close, color }) => {
   const [novidades, setNovidades] = useState(null);
@@ -21,8 +21,8 @@ const ModalUser = ({ open, close, color }) => {
                 fontSize: 25,
                 pt: 0,
                 pb: 0,
-                fontWeight: '700',
-                color: 'white',
+                fontWeight: "700",
+                color: "white",
               }}
             >
               Perfil - Mateus Oliveira Barreto
@@ -34,22 +34,16 @@ const ModalUser = ({ open, close, color }) => {
           <>
             <Box
               sx={{
-                width: '60vw',
-                height: '40vh',
-                '& li': {
-                  listStyle: 'inside !important',
+                width: "60vw",
+                height: "40vh",
+                "& li": {
+                  listStyle: "inside !important",
                 },
               }}
-            >
-            
-            </Box>
+            ></Box>
           </>
         }
-        action={
-          <>
-            
-          </>
-        }
+        action={<></>}
       />
     </Box>
   );
