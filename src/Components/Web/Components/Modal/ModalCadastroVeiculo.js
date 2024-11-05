@@ -92,7 +92,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        toast.success("Veículo cadastrado com sucesso!");
+        // toast.success("Veículo cadastrado com sucesso!");
         getVeiculos();
         clearFields();
         close();

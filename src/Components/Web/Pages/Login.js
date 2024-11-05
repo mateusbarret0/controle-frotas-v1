@@ -39,7 +39,7 @@ const Login = ({ setIsAuthenticated }) => {
         console.log(json.message);
         setIsAuthenticated(true);
         sessionStorage.setItem("isAuthenticated", "true");
-        toast.success("Login bem-sucedido!");
+        // toast.success("Login bem-sucedido!");
       } else {
         toast.error("Usuário ou senha incorretos.");
         console.log(json.message);

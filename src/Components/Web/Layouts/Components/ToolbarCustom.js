@@ -56,7 +56,7 @@ const ToolbarCustom = ({ setIsAuthenticated }) => {
   const handleLogout = () => {
     sessionStorage.removeItem("isAuthenticated");
     setIsAuthenticated(false);
-    toast.success("Logout bem-sucedido!");
+    // toast.success("Logout bem-sucedido!");
   };
 
   return (

@@ -78,7 +78,7 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        toast.success("Veículo atualizado com sucesso!");
+        // toast.success("Veículo atualizado com sucesso!");
         getVeiculos();
         close();
       } else {

@@ -73,7 +73,7 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
       if (response.ok) {
         getUsuarios();
         clearFields();
-        toast.success("Usuário cadastrado com sucesso!");
+        // toast.success("Usuário cadastrado com sucesso!");
         close();
       } else {
         console.log("Erro ao cadastrar o usuário:", json);
