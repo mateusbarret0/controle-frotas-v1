@@ -1,29 +1,37 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Divider, IconButton, TextField } from "@mui/material";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import Grid from "../../../Components/Grid/Grid";
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
-import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModalEditVeiculo from "../../../Components/Modal/ModalEditVeiculo";
-import ModalQrCode from "../../../Components/Modal/ModalQrCode";
-import ModalDeleteVeiculo from "../../../Components/Modal/ModalDeleteVeiculo";
-import { useNavigate } from "react-router-dom";
-import { GET_VEICULOS } from "../../../../../api";
-import HeaderFrotas from "./HeaderFrotas";
-import ModalCadastroVeiculo from "../../../Components/Modal/ModalCadastroVeiculo";
-import ModalCreateRotas from "../../../Components/Modal/ModalCreateRotas";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
-import MapIcon from "@mui/icons-material/Map";
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, Button, Divider, IconButton, TextField } from '@mui/material';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import Grid from '../../../Components/Grid/Grid';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ModalEditVeiculo from '../../../Components/Modal/ModalEditVeiculo';
+import ModalQrCode from '../../../Components/Modal/ModalQrCode';
+import ModalDeleteVeiculo from '../../../Components/Modal/ModalDeleteVeiculo';
+import { useNavigate } from 'react-router-dom';
+import { GET_VEICULOS } from '../../../../../api';
+import HeaderFrotas from './HeaderFrotas';
+import ModalCadastroVeiculo from '../../../Components/Modal/ModalCadastroVeiculo';
+import ModalCreateRotas from '../../../Components/Modal/ModalCreateRotas';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import MapIcon from '@mui/icons-material/Map';
+import dayjs from 'dayjs';
 const BodyFrotas = () => {
   const columns = [
-    { field: "modelo", headerName: "MODELO", flex: 1 },
-    { field: "placa", headerName: "PLACA", flex: 1 },
-    { field: "capacidade", headerName: "CAPACIDADE", flex: 1 },
-    { field: "dt_ultim_manu", headerName: "MANUTENÇÃO", flex: 1 },
+    { field: 'modelo', headerName: 'MODELO', flex: 1 },
+    { field: 'placa', headerName: 'PLACA', flex: 1 },
+    { field: 'capacidade', headerName: 'CAPACIDADE', flex: 1 },
+    {
+      field: 'dt_prox_manu',
+      headerName: 'PRÓX MANUTENÇÃO',
+      flex: 1,
+      valueFormatter: (params) => {
+        return dayjs(params.value).format('DD/MM/YYYY');
+      },
+    },
     // {
     //   field: 'rota',
     //   headerName: 'ROTAS', flex: 1,
@@ -36,48 +44,48 @@ const BodyFrotas = () => {
     //   ),
     // },
     {
-      field: "histórico",
-      headerName: "HISTÓRICO",
+      field: 'histórico',
+      headerName: 'HISTÓRICO',
       flex: 1,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: "1px solid #00FF57", width: "50%" }}
-          onClick={() => navigate("/historico")}
+          sx={{ border: '1px solid #00FF57', width: '50%' }}
+          onClick={() => navigate('/historico')}
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: "100%", color: "#00FF57" }}
+            sx={{ p: 0, width: '100%', color: '#00FF57' }}
           >
             <HistoryOutlinedIcon fontSize="small" />
           </IconButton>
         </Button>
       ),
     },
+    // {
+    //   field: 'qrCode',
+    //   headerName: 'QR CODE',
+    //   flex: 1,
+    //   cellRenderer: ({ data }) => (
+    //     <Button
+    //       sx={{ border: '1px solid #ffff', width: '50%' }}
+    //       onClick={() => {
+    //         setQr(true);
+    //         setSelectedRow(data);
+    //       }}
+    //     >
+    //       <IconButton size="large" sx={{ p: 0, width: '100%', color: '#ffff' }}>
+    //         <QrCodeScannerOutlinedIcon fontSize="small" />
+    //       </IconButton>
+    //     </Button>
+    //   ),
+    // },
     {
-      field: "qrCode",
-      headerName: "QR CODE",
+      field: 'editar',
+      headerName: 'EDITAR',
       flex: 1,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: "1px solid #ffff", width: "50%" }}
-          onClick={() => {
-            setQr(true);
-            setSelectedRow(data);
-          }}
-        >
-          <IconButton size="large" sx={{ p: 0, width: "100%", color: "#ffff" }}>
-            <QrCodeScannerOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Button>
-      ),
-    },
-    {
-      field: "editar",
-      headerName: "EDITAR",
-      flex: 1,
-      cellRenderer: ({ data }) => (
-        <Button
-          sx={{ border: "1px solid #FFAA00", width: "50%" }}
+          sx={{ border: '1px solid #FFAA00', width: '50%' }}
           onClick={() => {
             setOpenEdit(true);
             setSelectedRow(data);
@@ -85,7 +93,7 @@ const BodyFrotas = () => {
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: "100%", color: "#FFAA00" }}
+            sx={{ p: 0, width: '100%', color: '#FFAA00' }}
           >
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
@@ -93,12 +101,12 @@ const BodyFrotas = () => {
       ),
     },
     {
-      field: "apagar",
-      headerName: "APAGAR",
+      field: 'apagar',
+      headerName: 'APAGAR',
       flex: 1,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: "1px solid #FF3D71", width: "50%" }}
+          sx={{ border: '1px solid #FF3D71', width: '50%' }}
           onClick={() => {
             setDelete(true);
             setSelectedRow(data);
@@ -106,7 +114,7 @@ const BodyFrotas = () => {
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: "100%", color: "#FF3D71" }}
+            sx={{ p: 0, width: '100%', color: '#FF3D71' }}
           >
             <DeleteOutlineOutlinedIcon fontSize="small" />
           </IconButton>
@@ -136,12 +144,12 @@ const BodyFrotas = () => {
       const json = await response.json();
       if (response.ok) {
         setRows(json);
-        console.log("🚀 ~ BodyFrotas ~ rows:", rows);
+        console.log('🚀 ~ BodyFrotas ~ rows:', rows);
       } else {
-        console.log("Erro ao buscar veículos");
+        console.log('Erro ao buscar veículos');
       }
     } catch (error) {
-      console.error("Erro na requisição:", error);
+      console.error('Erro na requisição:', error);
     }
   };
 
@@ -150,7 +158,7 @@ const BodyFrotas = () => {
   }, []);
 
   const [openCadastro, setOpenCadastro] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleClick = () => {
     setOpenCadastro(true);
@@ -170,10 +178,10 @@ const BodyFrotas = () => {
 
       <Box
         sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           mb: 2,
         }}
       >
@@ -181,10 +189,10 @@ const BodyFrotas = () => {
           label={
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                color: "#FFFFFF",
-                fontSize: "15px",
+                display: 'flex',
+                alignItems: 'center',
+                color: '#FFFFFF',
+                fontSize: '15px',
               }}
             >
               <SearchIcon sx={{ marginRight: 1 }} />
@@ -193,15 +201,15 @@ const BodyFrotas = () => {
           }
           variant="filled"
           sx={{
-            backgroundColor: "#192038",
+            backgroundColor: '#192038',
             borderRadius: 3,
-            color: "#FFFFFF",
-            width: "40%",
+            color: '#FFFFFF',
+            width: '40%',
           }}
           InputProps={{
             style: {
-              color: "#FFFFFF",
-              fontSize: "15px",
+              color: '#FFFFFF',
+              fontSize: '15px',
             },
           }}
           value={searchTerm}
@@ -209,14 +217,14 @@ const BodyFrotas = () => {
         />
         <Button
           sx={{
-            textTransform: "none",
-            color: "#3366FF",
-            borderColor: "#3366FF",
-            width: "30%",
+            textTransform: 'none',
+            color: '#3366FF',
+            borderColor: '#3366FF',
+            width: '30%',
             height: 40,
-            "&:hover": {
-              color: "#FFFFFF",
-              border: "2px solid #FFFFFF",
+            '&:hover': {
+              color: '#FFFFFF',
+              border: '2px solid #FFFFFF',
             },
           }}
           variant="outlined"
@@ -229,7 +237,7 @@ const BodyFrotas = () => {
 
       <Divider sx={{ mb: 2 }} />
 
-      <Box sx={{ height: 670, width: "100%", color: "white" }}>
+      <Box sx={{ height: 670, width: '100%', color: 'white' }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 
