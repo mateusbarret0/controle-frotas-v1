@@ -145,7 +145,7 @@ const BodyFrotas = () => {
   const navigate = useNavigate();
 
   const getVeiculos = async () => {
-    const { url, options } = GET_VEICULOS();
+    const { url, options } = GET_VEICULOS(searchTerm);
     try {
       const response = await fetch(url, options);
       const json = await response.json();
@@ -232,6 +232,7 @@ const BodyFrotas = () => {
           }}
           value={searchTerm}
           onChange={handleSearchChange}
+          onBlur={getVeiculos}
         />
         <Button
           sx={{

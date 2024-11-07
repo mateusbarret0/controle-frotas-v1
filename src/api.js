@@ -31,10 +31,10 @@ export function GET_USUR() {
   };
 }
 
-export function GET_VEICULOS() {
+export function GET_VEICULOS(searchTerm) {
   const token = localStorage.getItem('token');
   return {
-    url: API_URL + `veiculos`,
+    url: API_URL + `veiculos?search=${searchTerm}`,
     options: {
       method: 'GET',
       headers: {
