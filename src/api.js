@@ -203,3 +203,18 @@ export function DELETE_USUARIOS(data) {
     },
   };
 }
+export function EDIT_STATUS_VEICULO(data, status) {
+  const token = localStorage.getItem('token');
+  return fetch(API_URL + 'edit/status/veiculo', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      placa: data.placa,
+      status: status,
+    }),
+  });
+}

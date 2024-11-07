@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Divider, IconButton, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Switch,
+  TextField,
+} from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Grid from '../../../Components/Grid/Grid';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModalEditVeiculo from '../../../Components/Modal/ModalEditVeiculo';
 import ModalQrCode from '../../../Components/Modal/ModalQrCode';
 import ModalDeleteVeiculo from '../../../Components/Modal/ModalDeleteVeiculo';
 import { useNavigate } from 'react-router-dom';
-import { GET_VEICULOS } from '../../../../../api';
-import HeaderFrotas from './HeaderFrotas';
+import { EDIT_STATUS_VEICULO, GET_VEICULOS } from '../../../../../api';
 import ModalCadastroVeiculo from '../../../Components/Modal/ModalCadastroVeiculo';
-import ModalCreateRotas from '../../../Components/Modal/ModalCreateRotas';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import MapIcon from '@mui/icons-material/Map';
 import dayjs from 'dayjs';
 const BodyFrotas = () => {
   const columns = [
@@ -32,17 +35,19 @@ const BodyFrotas = () => {
         return dayjs(params.value).format('DD/MM/YYYY');
       },
     },
-    // {
-    //   field: 'rota',
-    //   headerName: 'ROTAS', flex: 1,
-    //   cellRenderer: ({ data }) => (
-    //     <Button sx={{ border: '1px solid #23f6bb', width: '50%' }} onClick={() => { setCreateRotas(true); setSelectedRow(data); }}>
-    //       <IconButton size="large" sx={{ p: 0, width: '100%', color: '#23f6bb' }}>
-    //         <MapIcon fontSize="small" />
-    //       </IconButton>
-    //     </Button>
-    //   ),
-    // },
+    {
+      field: 'status',
+      headerName: 'STATUS',
+      flex: 0.5,
+      cellRenderer: ({ data }) => (
+        <Switch
+          checked={data.status === 'disponivel'}
+          onChange={(event) => handleChange(event, data)}
+          size="large"
+          color="secondary"
+        />
+      ),
+    },
     {
       field: 'histórico',
       headerName: 'HISTÓRICO',
@@ -130,6 +135,8 @@ const BodyFrotas = () => {
   const [openDelete, setDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
+  const [openCadastro, setOpenCadastro] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const closeEdit = () => setOpenEdit(false);
   const closeQr = () => setQr(false);
   const closeDelete = () => setDelete(false);
@@ -157,9 +164,6 @@ const BodyFrotas = () => {
     getVeiculos();
   }, []);
 
-  const [openCadastro, setOpenCadastro] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
   const handleClick = () => {
     setOpenCadastro(true);
   };
@@ -170,6 +174,20 @@ const BodyFrotas = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleChange = async (event, data) => {
+    try {
+      const newStatus = event.target.checked ? 'disponivel' : 'indisponivel';
+      const updatedRows = rows.map((row) =>
+        row.placa === data.placa ? { ...row, status: newStatus } : row,
+      );
+      setRows(updatedRows);
+      await EDIT_STATUS_VEICULO(data, newStatus);
+      console.log('Status atualizado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao atualizar o status do veículo:', error);
+    }
   };
 
   return (
