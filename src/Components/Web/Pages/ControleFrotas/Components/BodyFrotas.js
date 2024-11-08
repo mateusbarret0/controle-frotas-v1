@@ -19,6 +19,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import dayjs from 'dayjs';
+import { Switch } from '@mui/material';
+
 const BodyFrotas = () => {
   const columns = [
     { field: 'modelo', headerName: 'MODELO', flex: 1 },
@@ -121,7 +123,21 @@ const BodyFrotas = () => {
         </Button>
       ),
     },
-  ];
+
+  {
+    field: "status",
+    headerName: "STATUS",
+    flex: 1,
+    cellRenderer: ({ data }) => (
+      <Switch
+        checked={data.status}
+        onChange={() => handleStatusChange(data)}
+        color="primary"
+        inputProps={{ 'aria-label': 'controlled' }}
+      />
+    ),
+  },
+];
 
   const gridRef = useRef(null);
 
@@ -150,6 +166,37 @@ const BodyFrotas = () => {
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
+    }
+  };
+
+  const handleStatusChange = async (data) => {
+    console.log("Dados recebidos:", data);
+    if (!data.id) {
+      console.error("ID do veículo não encontrado.");
+      return;
+    }
+  
+    const updatedStatus = !data.status;
+  
+    try {
+      const response = await fetch(`/api/update-status/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: updatedStatus }),
+      });
+  
+      if (response.ok) {
+        const updatedRows = rows.map((row) =>
+          row.id === data.id ? { ...row, status: updatedStatus } : row
+        );
+        setRows(updatedRows);
+      } else {
+        console.error('Erro ao atualizar o status');
+      }
+    } catch (error) {
+      console.error('Erro de rede:', error);
     }
   };
 
