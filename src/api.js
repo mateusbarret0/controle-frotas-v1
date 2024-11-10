@@ -31,10 +31,10 @@ export function GET_USUR() {
   };
 }
 
-export function GET_VEICULOS() {
+export function GET_VEICULOS(searchTerm) {
   const token = localStorage.getItem('token');
   return {
-    url: API_URL + `veiculos`,
+    url: API_URL + `veiculos?search=${searchTerm}`,
     options: {
       method: 'GET',
       headers: {
@@ -202,4 +202,19 @@ export function DELETE_USUARIOS(data) {
       body: JSON.stringify({ cpf: data.cpf }),
     },
   };
+}
+export function EDIT_STATUS_VEICULO(data, status) {
+  const token = localStorage.getItem('token');
+  return fetch(API_URL + 'edit/status/veiculo', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      placa: data.placa,
+      status: status,
+    }),
+  });
 }
