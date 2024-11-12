@@ -22,6 +22,10 @@ import ModalCadastroVeiculo from '../../../Components/Modal/ModalCadastroVeiculo
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import dayjs from 'dayjs';
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 const BodyFrotas = () => {
   const columns = [
     { field: 'modelo', headerName: 'MODELO', flex: 1 },
@@ -55,7 +59,11 @@ const BodyFrotas = () => {
       cellRenderer: ({ data }) => (
         <Button
           sx={{ border: '1px solid #00FF57', width: '50%' }}
+<<<<<<< Updated upstream
           onClick={() => navigate('/historico')}
+=======
+          onClick={() => handleHistoricoClick(data)}
+>>>>>>> Stashed changes
         >
           <IconButton
             size="large"
@@ -188,6 +196,11 @@ const BodyFrotas = () => {
     } catch (error) {
       console.error('Erro ao atualizar o status do veículo:', error);
     }
+  };
+
+  const handleHistoricoClick = (veiculo) => {
+    // Navega para a página de histórico e envia o veículo selecionado via state
+    navigate('/historico', { state: { veiculo } });
   };
 
   return (

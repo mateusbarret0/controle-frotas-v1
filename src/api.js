@@ -74,6 +74,21 @@ export function CREATE_VEICULOS(data) {
     },
   };
 }
+export function CREATE_ROTAS(data) {
+  const token = localStorage.getItem('token');
+  return {
+    url: API_URL + 'insert/rotas',
+    options: {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(data),
+    },
+  };
+}
 export function DELETE_VEICULOS(data) {
   const token = localStorage.getItem('token');
   return {
@@ -217,4 +232,18 @@ export function EDIT_STATUS_VEICULO(data, status) {
       status: status,
     }),
   });
+}
+export function GET_CEP(cep) {
+  const token = localStorage.getItem('token');
+  return {
+    url: `${API_URL}busca/cep/${cep}`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    },
+  };
 }
