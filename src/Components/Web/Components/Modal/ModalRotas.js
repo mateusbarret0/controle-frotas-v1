@@ -2,11 +2,20 @@ import { React, useEffect, useState } from "react";
 import ModalStyle from "../Modal/ModalStyle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Divider, IconButton } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import AltRouteIcon from "@mui/icons-material/AltRoute";
 import teste from "../../../../Assets/imgteste.png";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import dayjs from "dayjs";
 
-const ModalUser = ({ open, close, color }) => {
+const ModalRotas = ({ open, close, color, data }) => {
+  // console.log("🚀 ~ ModalRotas ~ data:", data);
   const [novidades, setNovidades] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +38,7 @@ const ModalUser = ({ open, close, color }) => {
                 fontWeight: "bold",
               }}
             >
-              Rota 1 - Chevrolet Astra - ABC1234
+              Rota {data?.ID} - {data?.veiculo?.modelo} / {data?.veiculo?.placa}
             </Typography>
           </>
         }
@@ -40,6 +49,10 @@ const ModalUser = ({ open, close, color }) => {
               sx={{
                 width: "55vw",
                 height: "55vh",
+                backgroundColor: "#222b45",
+                color: "#FFFFFF",
+                borderRadius: 2,
+                padding: 2,
                 "& li": {
                   listStyle: "inside !important",
                 },
@@ -57,98 +70,131 @@ const ModalUser = ({ open, close, color }) => {
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    flexDirection: "column",
+                    gap: 2,
                     width: "100%",
+                    m: 0,
                   }}
                 >
-                  <Box
+                  <Accordion
+                    defaultExpanded
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 2,
-                      alignItems: "flex-start",
+                      backgroundColor: "#1a2035",
+                      color: "#FFFFFF",
                     }}
                   >
-                    <Typography
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon sx={{ color: "#FFFFFF" }} />}
+                    >
+                      <Typography variant="h5">
+                        Informações de Partida
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
                       sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
                       }}
                     >
-                      Local Partida: Divinópolis - MG
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      Data Partida: 01/09/2024
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      Horário Partida: 12:30
-                    </Typography>
-                  </Box>
-                  <Box
+                      <Box sx={{ width: "50%", textAlign: "left" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          CEP: {data?.CEP_PARTIDA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Número: {data?.NUMERO_PARTIDA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Rua: {data?.RUA_PARTIDA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Bairro: {data?.BAIRRO_PARTIDA}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "50%", textAlign: "left" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Cidade: {data?.CIDADE_PARTIDA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Estado: {data?.ESTADO_PARTIDA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Data e Hora:{" "}
+                          {dayjs(data?.DATA_HORA_PARTIDA).format(
+                            "DD/MM/YYYY - HH:mm"
+                          )}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Complemento: {data?.COMPLEMENTO_PARTIDA}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "100%" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Descrição: {data?.DESCRICAO_PARTIDA}
+                        </Typography>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion
+                    defaultExpanded
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 2,
-                      alignItems: "flex-start",
+                      backgroundColor: "#1a2035",
+                      color: "#FFFFFF",
                     }}
                   >
-                    <Typography
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon sx={{ color: "#FFFFFF" }} />}
+                    >
+                      <Typography variant="h5">
+                        Informações de Chegada
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
                       sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
                       }}
                     >
-                      Local Chegada: Belo Horizonte - MG
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      Data Chegada: 01/09/2024
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 20,
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      Horário Chegada: 14:30
-                    </Typography>
-                  </Box>
+                      <Box sx={{ width: "50%", textAlign: "left" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          CEP: {data?.CEP_CHEGADA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Número: {data?.NUMERO_CHEGADA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Rua: {data?.RUA_CHEGADA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Bairro: {data?.BAIRRO_CHEGADA}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "50%", textAlign: "left" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Cidade: {data?.CIDADE_CHEGADA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Estado: {data?.ESTADO_CHEGADA}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Data e Hora:{" "}
+                          {dayjs(data?.DATA_HORA_CHEGADA).format(
+                            "DD/MM/YYYY - HH:mm"
+                          )}
+                        </Typography>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Complemento: {data?.COMPLEMENTO_CHEGADA}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "100%" }}>
+                        <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
+                          Descrição: {data?.DESCRICAO_CHEGADA}
+                        </Typography>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
                 </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  height: "40vh",
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={teste}
-                  alt="Descrição da Imagem"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "cover",
-                  }}
-                />
               </Box>
             </Box>
           </>
@@ -159,4 +205,4 @@ const ModalUser = ({ open, close, color }) => {
   );
 };
 
-export default ModalUser;
+export default ModalRotas;
