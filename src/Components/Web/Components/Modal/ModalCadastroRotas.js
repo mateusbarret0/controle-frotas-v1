@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const ModalCadastroVeiculo = ({ open, close, color, getRotas }) => {
+const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   const [loading, setLoading] = useState(false);
   const [cepPartida, setCepPartida] = useState('');
   const [cepChegada, setCepChegada] = useState('');
@@ -99,6 +99,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas }) => {
     }
 
     const { url, options } = CREATE_ROTAS({
+      veiculo,
       cepPartida,
       cepChegada,
       numeroPartida,
