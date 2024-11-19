@@ -22,7 +22,13 @@ import dayjs from "dayjs";
 
 const Historico = () => {
   const columns = [
-    { field: "ID", headerName: "CÓDIGO", flex: 0.5 },
+    {
+      field: "COD_ROTA",
+      headerName: "CÓDIGO",
+      flex: 0.4,
+      cellStyle: { textAlign: "center" },
+      headerClass: "header-center",
+    },
     {
       field: "status",
       headerName: "STATUS",

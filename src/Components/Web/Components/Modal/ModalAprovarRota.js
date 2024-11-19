@@ -73,7 +73,7 @@ const ModalAprovarRota = ({ open, close, color, data, getRotas }) => {
                   mr: 42,
                 }}
               >
-                Aprovar Rota - {data?.ID}
+                Aprovar Rota - {data?.COD_ROTA}
               </Typography>
             </Box>
           </>
