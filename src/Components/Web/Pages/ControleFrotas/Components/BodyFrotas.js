@@ -56,7 +56,7 @@ const BodyFrotas = () => {
       cellRenderer: ({ data }) => (
         <Button
           sx={{ border: "1px solid #00FF57", width: "50%" }}
-          onClick={() => navigate("/historico")}
+          onClick={() => handleHistoricoClick(data)}
         >
           <IconButton
             size="large"
@@ -189,6 +189,10 @@ const BodyFrotas = () => {
     } catch (error) {
       console.error("Erro ao atualizar o status do veículo:", error);
     }
+  };
+
+  const handleHistoricoClick = (veiculo) => {
+    navigate("/historico", { state: { veiculo } });
   };
 
   return (
