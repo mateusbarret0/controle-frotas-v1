@@ -10,7 +10,7 @@ import BoxStyleCard from "../Box/BoxStyleCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 
-const ModalRotas = ({ open, close, data }) => {
+const ModalRotas = ({ open, close, data, getRotas }) => {
   const [openAprovar, setOpenAprovar] = useState(false);
   const [openReprovar, setOpenReprovar] = useState(false);
 
@@ -179,11 +179,17 @@ const ModalRotas = ({ open, close, data }) => {
           </Box>
         </BoxStyleCard>
       </ModalMultCard>
-      <ModalAprovarRota open={openAprovar} close={closeAprovar} data={data} />
+      <ModalAprovarRota
+        open={openAprovar}
+        close={closeAprovar}
+        data={data}
+        getRotas={getRotas}
+      />
       <ModalReprovarRota
         open={openReprovar}
         close={closeReprovar}
         data={data}
+        getRotas={getRotas}
       />
     </>
   );

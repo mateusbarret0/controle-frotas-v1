@@ -8,7 +8,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UPDATE_STATUS_ROTA } from "../../../../api";
 
-const ModalAprovarRota = ({ open, close, color, data, getVeiculos }) => {
+const ModalAprovarRota = ({ open, close, color, data, getRotas }) => {
   console.log("🚀 - ModalAprovarRota - data:", data);
   const [loading, setLoading] = useState(false);
   const [descAprovado, setDescAprovado] = useState("");
@@ -44,6 +44,7 @@ const ModalAprovarRota = ({ open, close, color, data, getVeiculos }) => {
       console.log("Resposta do servidor:", json);
 
       if (json.status === "success") {
+        getRotas();
         close();
       } else {
         console.error("Erro ao aprovar a rota:", json.message);
