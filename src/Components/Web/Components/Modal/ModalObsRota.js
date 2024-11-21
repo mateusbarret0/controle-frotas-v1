@@ -6,12 +6,15 @@ import { Button, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { UPDATE_STATUS_ROTA } from '../../../../api';
+import { UPDATE_OBS_ROTA } from '../../../../api';
 
-const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
-  console.log('🚀 - ModalAprovarRota - data:', data);
+const ModalObsRota = ({ open, close, color, data, getRotas }) => {
   const [loading, setLoading] = useState(false);
-  const [descReprovado, setDescReprovado] = useState('');
+  const [alertasDesvios, setAlertasDesvios] = useState('');
+  const [pontosParada, setPontosParada] = useState('');
+  const [registroIncidentes, setRegistroIncidentes] = useState('');
+  const [rotaAlternativa, setRotaAlternativa] = useState('');
+
   const status = 'reprovado';
 
   const darkTheme = createTheme({
@@ -28,8 +31,13 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
     },
   });
 
-  const reprovarRota = async () => {
-    const { url, options } = UPDATE_STATUS_ROTA(data, status, descReprovado);
+  const obsRota = async () => {
+    const { url, options } = UPDATE_OBS_ROTA(data, {
+      alertasDesvios,
+      pontosParada,
+      registroIncidentes,
+      rotaAlternativa,
+    });
     setLoading(true);
     try {
       const response = await fetch(url, options);
@@ -43,11 +51,11 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
       const json = await response.json();
       console.log('Resposta do servidor:', json);
 
-      if (json.status === 'success') {
+      if (json.success) {
         getRotas();
         close();
       } else {
-        console.error('Erro ao aprovar a rota:', json.message);
+        console.error('Erro ao atualizar a rota:', json.message);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -55,6 +63,38 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
       setLoading(false);
     }
   };
+
+  const renderTextInput = (label, value, setValue) => (
+    <Box>
+      <Typography sx={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
+        {label}
+      </Typography>
+      <TextField
+        sx={{
+          backgroundColor: '#192038',
+          borderRadius: 3,
+          mt: 1,
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#3e4a61',
+            },
+            '&:hover fieldset': {
+              borderColor: '#5e6e85',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#8f9db5',
+            },
+          },
+        }}
+        variant="outlined"
+        fullWidth
+        multiline
+        rows={3}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </Box>
+  );
 
   return (
     <Box>
@@ -73,7 +113,7 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
                   mr: 42,
                 }}
               >
-                Reprovar Rota - {data?.COD_ROTA}
+                Adicionar Observações - {data?.COD_ROTA}
               </Typography>
             </Box>
           </>
@@ -81,12 +121,7 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
         color={color}
         content={
           <>
-            <Box
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
-            >
+            <Box sx={{ width: '100%', height: '100%' }}>
               <ThemeProvider theme={darkTheme}>
                 <Box
                   sx={{
@@ -97,24 +132,26 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
                     mb: 2,
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                    }}
-                  >
-                    <TextField
-                      sx={{
-                        backgroundColor: '#192038',
-                        borderRadius: 3,
-                      }}
-                      variant="outlined"
-                      label="Se necessário, adicione uma descrição:"
-                      fullWidth
-                      onChange={(e) => setDescReprovado(e.target.value)}
-                    />
-                  </Box>
+                  {renderTextInput(
+                    'Descreva os alertas de desvios encontrados nesta rota:',
+                    alertasDesvios,
+                    setAlertasDesvios,
+                  )}
+                  {renderTextInput(
+                    'Informe os pontos de parada realizados nesta rota:',
+                    pontosParada,
+                    setPontosParada,
+                  )}
+                  {renderTextInput(
+                    'Descreva os incidentes registrados durante o percurso (se houver):',
+                    registroIncidentes,
+                    setRegistroIncidentes,
+                  )}
+                  {renderTextInput(
+                    'Informe sobre a rota alternativa utilizada, se aplicável:',
+                    rotaAlternativa,
+                    setRotaAlternativa,
+                  )}
                 </Box>
               </ThemeProvider>
             </Box>
@@ -156,9 +193,9 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
                 }}
                 variant="outlined"
                 startIcon={<CheckIcon />}
-                onClick={reprovarRota}
+                onClick={obsRota}
               >
-                OK
+                ADICIONAR
               </Button>
             </Box>
           </>
@@ -168,4 +205,4 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
   );
 };
 
-export default ModalReprovarRota;
+export default ModalObsRota;
