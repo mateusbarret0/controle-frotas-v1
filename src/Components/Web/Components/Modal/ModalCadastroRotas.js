@@ -27,14 +27,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     cidade: '',
     estado: '',
   });
-  console.log('🚀 ~ ModalCadastroVeiculo ~ enderecoPartida:', enderecoPartida);
   const [enderecoChegada, setEnderecoChegada] = useState({
     rua: '',
     bairro: '',
     cidade: '',
     estado: '',
   });
-  console.log('🚀 ~ ModalCadastroVeiculo ~ enderecoChegada:', enderecoChegada);
 
   const darkTheme = createTheme({
     palette: {

@@ -9,7 +9,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { UPDATE_STATUS_ROTA } from '../../../../api';
 
 const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
-  console.log('🚀 - ModalAprovarRota - data:', data);
   const [loading, setLoading] = useState(false);
   const [descReprovado, setDescReprovado] = useState('');
   const status = 'reprovado';
