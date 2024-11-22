@@ -19,6 +19,7 @@ import { GET_ROTAS } from '../../../../api';
 import CircleIcon from '@mui/icons-material/Circle';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
 import dayjs from 'dayjs';
+import ModalPdfXlsx from '../../Components/Modal/ModalPdfXlsx';
 
 const Historico = () => {
   const columns = [
@@ -126,6 +127,7 @@ const Historico = () => {
   const gridRef = useRef(null);
   const [openRotas, setOpenRotas] = useState(false);
   const [openCadastro, setOpenCadastro] = useState(false);
+  const [openRelatorio, setOpenRelatorio] = useState(false);
   const [rows, setRows] = useState(false);
   const [selectedRota, setSelectedRota] = useState(null);
   const closeRotas = () => setOpenRotas(false);
@@ -136,6 +138,13 @@ const Historico = () => {
 
   const handleCloseModal = () => {
     setOpenCadastro(false);
+  };
+  const handleOpenRelatorio = (e) => {
+    setOpenRelatorio(true);
+  };
+
+  const handleCloseRelatorio = () => {
+    setOpenRelatorio(false);
   };
 
   const getRotas = async () => {
@@ -200,7 +209,7 @@ const Historico = () => {
             }}
             variant="outlined"
             startIcon={<PictureAsPdfIcon />}
-            // onClick={handleClick}
+            onClick={handleOpenRelatorio}
           >
             GERAR RELATÓRIO
           </Button>
@@ -240,6 +249,7 @@ const Historico = () => {
         data={selectedRota}
         getRotas={getRotas}
       />
+      <ModalPdfXlsx open={openRelatorio} close={handleCloseRelatorio} />
     </>
   );
 };
