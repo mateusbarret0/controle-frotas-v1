@@ -10,6 +10,35 @@ import "./Grid.css";
 import HeaderGrid from "./HeaderGrid";
 import { toast } from "react-toastify";
 
+const localeTextPTBR = {
+  page: "Página",
+  more: "Mais",
+  to: "até",
+  of: "de",
+  next: "Próximo",
+  last: "Último",
+  first: "Primeiro",
+  previous: "Anterior",
+  loadingOoo: "Carregando...",
+  noRowsToShow: "Nenhum dado disponível",
+  selectAll: "Selecionar Todos",
+  searchOoo: "Pesquisar...",
+  blanks: "Em branco",
+  filterOoo: "Filtrar...",
+  applyFilter: "Aplicar Filtro...",
+  equals: "Igual a",
+  notEqual: "Diferente de",
+  lessThan: "Menor que",
+  greaterThan: "Maior que",
+  lessThanOrEqual: "Menor ou igual a",
+  greaterThanOrEqual: "Maior ou igual a",
+  inRange: "No intervalo",
+  contains: "Contém",
+  notContains: "Não contém",
+  startsWith: "Começa com",
+  endsWith: "Termina com",
+};
+
 const Grid = forwardRef(
   (
     { columns, rows, loading, blockNavigate = false, preferences, ...props },
@@ -209,6 +238,7 @@ const Grid = forwardRef(
           navigateToNextCell={navigateToNextCell}
           components={components}
           pagination={true}
+          localeText={localeTextPTBR}
         />
       </div>
     );
