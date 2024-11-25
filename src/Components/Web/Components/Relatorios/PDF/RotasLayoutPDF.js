@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { Document, Page, View, Text } from "@react-pdf/renderer";
-import { StyleSheet, Font, PDFViewer } from "@react-pdf/renderer";
-import { Box, Button } from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import ModalTitlePDF from "./ModalTitlePDF";
-import dayjs from "dayjs";
-import { GET_RELATORIO_ROTAS } from "../../../../../api";
+import { useState } from 'react';
+import { Document, Page, View, Text } from '@react-pdf/renderer';
+import { StyleSheet, Font, PDFViewer } from '@react-pdf/renderer';
+import { Box, Button } from '@mui/material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ModalTitlePDF from './ModalTitlePDF';
+import dayjs from 'dayjs';
+import { GET_RELATORIO_ROTAS } from '../../../../../api';
 
 const RelatorioRotasLayoutPDF = ({ placa }) => {
-  console.log("🚀 ~ RelatorioRotasLayoutPDF ~ placa:", placa);
+  console.log('🚀 ~ RelatorioRotasLayoutPDF ~ placa:', placa);
 
   const [documentGenerated, setDocumentGenerated] = useState(false);
   const [data, setData] = useState([]);
-  console.log("🚀 - RelatorioCrsedDev - data:", data);
+  console.log('🚀 - RelatorioRotasLayoutPDF - data:', data);
 
   const handlePrint = async () => {
     const { url, options } = GET_RELATORIO_ROTAS(placa);
@@ -28,10 +28,10 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
 
   const styles = StyleSheet.create({
     page: {
-      fontFamily: "Poppins",
-      backgroundColor: "#fff",
-      color: "#000000",
-      fontSize: "8px",
+      fontFamily: 'Poppins',
+      backgroundColor: '#fff',
+      color: '#000000',
+      fontSize: '8px',
       paddingTop: 35,
       paddingBottom: 65,
       paddingHorizontal: 25,
@@ -40,10 +40,10 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
       maxWidth: 250,
     },
     headerOrca: {
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      flexDirection: "row",
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
       paddingBottom: 2,
     },
     title: {
@@ -54,44 +54,45 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
     },
     smallText: {
       fontSize: 7,
-      textAlign: "right",
+      textAlign: 'right',
     },
     divider: {
-      borderBottom: "1px #000 solid",
+      borderBottom: '1px #000 solid',
     },
     container: {
-      padding: "10px 0px",
+      padding: '10px 0px',
     },
     dadosNota: {
-      display: "flex",
-      flexDirection: "row",
+      display: 'flex',
+      flexDirection: 'row',
     },
     viewer: {
-      width: "100%",
-      height: "100%",
+      width: '100%',
+      height: '100%',
     },
     table: {
-      display: "table",
-      width: "auto",
+      display: 'table',
+      width: 'auto',
     },
     tableRow: {
-      margin: "auto",
-      flexDirection: "row",
+      margin: 'auto',
+      flexDirection: 'row',
     },
     tableCol: {
-      width: "12.5%",
+      width: '12.5%',
     },
     tableCell: {
       marginTop: 5,
       fontSize: 8,
+      textAlign: 'center',
     },
     boxImage: {
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
     },
     image: {
-      width: "40%",
+      width: '40%',
     },
     sectionTitle: {
       fontSize: 10,
@@ -112,9 +113,9 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
             <Text style={styles.title}>Relatório de Rotas</Text>
             <View>
               <Text style={styles.smallText}>
-                {new Intl.DateTimeFormat("pt-BR", {
-                  dateStyle: "short",
-                  timeStyle: "medium",
+                {new Intl.DateTimeFormat('pt-BR', {
+                  dateStyle: 'short',
+                  timeStyle: 'medium',
                 }).format(new Date())}
               </Text>
               <Text
@@ -148,60 +149,66 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
           <View style={styles.container}>
             <Text style={styles.sectionTitle}>Viagens</Text>
             <View style={styles.tableRow}>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
+                <Text style={styles.tableCell}>Cód Rota</Text>
+              </View>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Hora Partida</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Hora Chegada</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Tempo gasto</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Km Inicial</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Km Final</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Total Km</Text>
               </View>
-              <View style={{ width: "14%" }}>
+              <View style={{ width: '12%' }}>
                 <Text style={styles.tableCell}>Qtd. Pessoas</Text>
               </View>
             </View>
 
             {data.map((viagem, index) => (
               <View key={index} style={styles.tableRow}>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
+                  <Text style={styles.tableCell}>{viagem.COD_ROTA}</Text>
+                </View>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>
-                    {dayjs(viagem.DATA_HORA_INICIO).format("HH:mm")}
+                    {dayjs(viagem.DATA_HORA_INICIO).format('HH:mm')}
                   </Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>
-                    {dayjs(viagem.DATA_HORA_CHEGADA).format("HH:mm")}
+                    {dayjs(viagem.DATA_HORA_CHEGADA).format('HH:mm')}
                   </Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>
                     {dayjs(viagem.DATA_HORA_CHEGADA).diff(
                       dayjs(viagem.DATA_HORA_INICIO),
-                      "hour"
-                    )}{" "}
+                      'hour',
+                    )}{' '}
                     horas
                   </Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>100 km</Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>150 km</Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>50 km</Text>
                 </View>
-                <View style={{ width: "14%" }}>
+                <View style={{ width: '12%' }}>
                   <Text style={styles.tableCell}>4 pessoas</Text>
                 </View>
               </View>
@@ -212,14 +219,14 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
             <Text style={styles.sectionTitle}>Serviço Executado</Text>
             <Text style={styles.field}>
               {data[0]?.servicoExecutado ||
-                "Descrição do serviço não disponível."}
+                'Descrição do serviço não disponível.'}
             </Text>
           </View>
 
           <View style={styles.container}>
             <Text style={styles.sectionTitle}>Observações</Text>
             <Text style={styles.field}>
-              {data[0]?.observacoes || "Nenhuma observação disponível."}
+              {data[0]?.observacoes || 'Nenhuma observação disponível.'}
             </Text>
           </View>
 
@@ -236,8 +243,8 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
   };
 
   Font.register({
-    family: "Poppins",
-    src: "https://grupocimcal.net.br/img-ecommerce/Poppins-Regular.ttf",
+    family: 'Poppins',
+    src: 'https://grupocimcal.net.br/img-ecommerce/Poppins-Regular.ttf',
   });
 
   return (
@@ -246,16 +253,16 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
         <Button
           onClick={handlePrint}
           variant="outlined"
-          startIcon={<PictureAsPdfIcon sx={{ fontSize: "1.5vw" }} />}
+          startIcon={<PictureAsPdfIcon sx={{ fontSize: '1.5vw' }} />}
           sx={{
             fontSize: 15,
-            textTransform: "none",
-            color: "#e30809",
+            textTransform: 'none',
+            color: '#e30809',
             height: 40,
-            borderColor: "#e30809",
-            "&:hover": {
-              color: "#FFFFFF",
-              border: "2px solid #FFFFFF",
+            borderColor: '#e30809',
+            '&:hover': {
+              color: '#FFFFFF',
+              border: '2px solid #FFFFFF',
             },
           }}
         >
@@ -267,7 +274,7 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
           close={() => setDocumentGenerated(false)}
           title="Relatório de Rotas"
           content={
-            <Box sx={{ width: "70vw", height: 670 }}>
+            <Box sx={{ width: '70vw', height: 670 }}>
               <PDFViewer style={styles.viewer}>
                 <MyDocument />
               </PDFViewer>
