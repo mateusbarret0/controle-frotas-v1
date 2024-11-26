@@ -5,22 +5,23 @@ import RotasLayoutPDF from "../Relatorios/PDF/RotasLayoutPDF";
 import * as XLSX from "xlsx";
 import dayjs from "dayjs";
 import { GET_RELATORIO_ROTAS } from "../../../../api";
+import { toast } from "react-toastify";
 
-const ModalPdfXlsx = ({ open, close, placa, orcamento, color = "detail4" }) => {
+const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
   const handleGenerateExcel = async () => {
     try {
       const { url, options } = GET_RELATORIO_ROTAS(placa);
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        alert("Erro ao buscar os dados do relatório. Tente novamente.");
+        toast.error("Erro ao buscar os dados do relatório. Tente novamente.");
         return;
       }
 
       const data = await response.json();
 
       if (data.length === 0) {
-        alert("Nenhum dado retornado para o relatório.");
+        toast.error("Nenhum dado retornado para o relatório.");
         return;
       }
 
@@ -28,7 +29,10 @@ const ModalPdfXlsx = ({ open, close, placa, orcamento, color = "detail4" }) => {
         "Código da Rota": item.COD_ROTA,
         "Data e Hora de Início": item.DATA_HORA_INICIO,
         "Data e Hora de Chegada": item.DATA_HORA_CHEGADA,
-        "Tempo gasto": item.DATA_HORA_CHEGADA - item.DATA_HORA_INICIO,
+        "Tempo gasto": dayjs(item.DATA_HORA_CHEGADA).diff(
+          dayjs(item.DATA_HORA_INICIO),
+          "hour"
+        ),
         "Km Inicial": "100 Km",
         "Km Final": "150 Km",
         "Total Km": "50 Km",
@@ -46,11 +50,11 @@ const ModalPdfXlsx = ({ open, close, placa, orcamento, color = "detail4" }) => {
       XLSX.utils.book_append_sheet(workbook, worksheet, "Relatório de Rotas");
 
       const today = dayjs().format("YYYY-MM-DD");
-      const fileName = `relatorio_rotas_${today}.xlsx`;
-
+      const fileName = `relatorio_rotas_${today}.xls`;
       XLSX.writeFile(workbook, fileName);
     } catch (error) {
       console.error("Erro ao gerar o relatório:", error);
+      toast.error("Erro ao gerar o relatório:", error);
     }
   };
 

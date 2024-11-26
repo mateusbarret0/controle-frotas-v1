@@ -3,6 +3,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import GroupIcon from "@mui/icons-material/Group";
 import { NavLink } from "react-router-dom";
 import { Divider, Tooltip, Typography } from "@mui/material";
 import { isMobileOnly } from "react-device-detect";
@@ -44,7 +45,7 @@ const MenuList = ({ setOpenModal, setOpenDrawer }) => {
           <NavLink to="/usuarios" key="frotas" sx={{ color: "white" }}>
             <ListItem button>
               <ListItemIcon>
-                <AirportShuttleIcon sx={{ color: "white" }} />
+                <GroupIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText primary="Usuários" sx={{ color: "white" }} />
             </ListItem>

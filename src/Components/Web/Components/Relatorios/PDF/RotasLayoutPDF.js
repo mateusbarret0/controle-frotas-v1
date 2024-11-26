@@ -8,11 +8,8 @@ import dayjs from "dayjs";
 import { GET_RELATORIO_ROTAS } from "../../../../../api";
 
 const RelatorioRotasLayoutPDF = ({ placa }) => {
-  console.log("🚀 ~ RelatorioRotasLayoutPDF ~ placa:", placa);
-
   const [documentGenerated, setDocumentGenerated] = useState(false);
   const [data, setData] = useState([]);
-  console.log("🚀 - RelatorioRotasLayoutPDF - data:", data);
 
   const handlePrint = async () => {
     const { url, options } = GET_RELATORIO_ROTAS(placa);

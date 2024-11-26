@@ -87,21 +87,6 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={7000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        toastStyle={{
-          backgroundColor: "#192038",
-          color: "#FFFFFF",
-        }}
-      />
       <Box>
         <ModalStyle
           loading={loading}

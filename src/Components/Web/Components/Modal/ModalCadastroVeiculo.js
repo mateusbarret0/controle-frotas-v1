@@ -70,7 +70,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
       !motorista ||
       !tipoVeiculo
     ) {
-      console.log("Campos obrigatórios não preenchidos");
       toast.error("Por favor, preencha todos os campos obrigatórios!");
       return;
     }

@@ -1,64 +1,64 @@
-import React, { useState } from 'react';
-import ModalStyle from '../Modal/ModalStyle';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { Button, Divider, TextField } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import CheckIcon from '@mui/icons-material/Check';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CREATE_ROTAS, GET_CEP } from '../../../../api';
-import { toast } from 'react-toastify';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useState } from "react";
+import ModalStyle from "../Modal/ModalStyle";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { Button, Divider, TextField } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CREATE_ROTAS, GET_CEP } from "../../../../api";
+import { toast } from "react-toastify";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   const [loading, setLoading] = useState(false);
-  const [cepPartida, setCepPartida] = useState('');
-  const [cepChegada, setCepChegada] = useState('');
-  const [numeroPartida, setNumeroPartida] = useState('');
-  const [numeroChegada, setNumeroChegada] = useState('');
-  const [descricaoPartida, setDescricaoPartida] = useState('');
-  const [descricaoChegada, setDescricaoChegada] = useState('');
-  const [complementoPartida, setComplementoPartida] = useState('');
-  const [complementoChegada, setComplementoChegada] = useState('');
+  const [cepPartida, setCepPartida] = useState("");
+  const [cepChegada, setCepChegada] = useState("");
+  const [numeroPartida, setNumeroPartida] = useState("");
+  const [numeroChegada, setNumeroChegada] = useState("");
+  const [descricaoPartida, setDescricaoPartida] = useState("");
+  const [descricaoChegada, setDescricaoChegada] = useState("");
+  const [complementoPartida, setComplementoPartida] = useState("");
+  const [complementoChegada, setComplementoChegada] = useState("");
   const [enderecoPartida, setEnderecoPartida] = useState({
-    rua: '',
-    bairro: '',
-    cidade: '',
-    estado: '',
+    rua: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
   });
   const [enderecoChegada, setEnderecoChegada] = useState({
-    rua: '',
-    bairro: '',
-    cidade: '',
-    estado: '',
+    rua: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
   });
 
   const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
+      mode: "dark",
       background: {
-        default: '#121212',
-        paper: '#192038',
+        default: "#121212",
+        paper: "#192038",
       },
       text: {
-        primary: '#FFFFFF',
-        secondary: '#B0B0B0',
+        primary: "#FFFFFF",
+        secondary: "#B0B0B0",
       },
     },
   });
 
   const clearFields = () => {
-    setCepPartida('');
-    setCepChegada('');
-    setNumeroPartida('');
-    setNumeroChegada('');
-    setDescricaoPartida('');
-    setDescricaoChegada('');
-    setComplementoPartida('');
-    setComplementoChegada('');
-    setEnderecoPartida({ rua: '', bairro: '', cidade: '', estado: '' });
-    setEnderecoChegada({ rua: '', bairro: '', cidade: '', estado: '' });
+    setCepPartida("");
+    setCepChegada("");
+    setNumeroPartida("");
+    setNumeroChegada("");
+    setDescricaoPartida("");
+    setDescricaoChegada("");
+    setComplementoPartida("");
+    setComplementoChegada("");
+    setEnderecoPartida({ rua: "", bairro: "", cidade: "", estado: "" });
+    setEnderecoChegada({ rua: "", bairro: "", cidade: "", estado: "" });
   };
 
   const fetchEndereco = async (cep, setEndereco) => {
@@ -73,12 +73,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
           cidade: json.localidade,
           estado: json.uf,
         });
-        console.log('🚀 - fetchEndereco - json:', json);
+        console.log("🚀 - fetchEndereco - json:", json);
       } else {
-        toast.error('CEP inválido');
+        toast.error("CEP inválido");
       }
     } catch (error) {
-      console.error('Erro ao buscar endereço:', error);
+      console.error("Erro ao buscar endereço:", error);
     }
   };
 
@@ -91,8 +91,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
 
   const createRota = async () => {
     if (!cepPartida || !cepChegada || !numeroPartida || !numeroChegada) {
-      toast.error('Por favor, preencha todos os campos obrigatórios!');
-      console.log('Por favor, preencha todos os campos obrigatórios!');
+      console.log("Por favor, preencha todos os campos obrigatórios!");
+      toast.error("Por favor, preencha todos os campos obrigatórios!");
       return;
     }
 
@@ -119,11 +119,11 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
         clearFields();
         close();
       } else {
-        toast.error('Erro ao cadastrar o veículo');
-        console.log('Erro ao cadastrar o veículo:', json);
+        toast.error("Erro ao cadastrar o veículo");
+        console.log("Erro ao cadastrar o veículo:", json);
       }
     } catch (error) {
-      console.error('Erro na requisição:', error);
+      console.error("Erro na requisição:", error);
     } finally {
       setLoading(false);
     }
@@ -135,33 +135,33 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
         loading={loading}
         open={open}
         close={close}
-        sx={{ width: '45%' }}
+        sx={{ width: "45%" }}
         title={
-          <Typography sx={{ fontSize: 25, fontWeight: '700', color: 'white' }}>
+          <Typography sx={{ fontSize: 25, fontWeight: "700", color: "white" }}>
             Cadastrar Rota
           </Typography>
         }
         color={color}
         content={
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ width: '100%', height: '100%' }}>
+            <Box sx={{ width: "100%", height: "100%" }}>
               <ThemeProvider theme={darkTheme}>
                 <Typography
                   sx={{
                     fontSize: 20,
-                    fontWeight: '700',
-                    color: 'white',
+                    fontWeight: "700",
+                    color: "white",
                     mb: 2,
                   }}
                 >
                   Local de Partida:
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="CEP:"
                     variant="outlined"
@@ -170,15 +170,15 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                       handleCepChange(
                         e.target.value,
                         setCepPartida,
-                        setEnderecoPartida,
+                        setEnderecoPartida
                       )
                     }
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Número:"
                     variant="outlined"
@@ -186,12 +186,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     onChange={(e) => setNumeroPartida(e.target.value)}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Rua:"
                     variant="outlined"
@@ -200,9 +200,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Bairro:"
                     variant="outlined"
@@ -210,12 +210,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     InputProps={{ readOnly: true }}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Cidade:"
                     variant="outlined"
@@ -224,9 +224,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Estado:"
                     variant="outlined"
@@ -234,12 +234,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     InputProps={{ readOnly: true }}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Descrição:"
                     variant="outlined"
@@ -248,9 +248,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Complemento:"
                     variant="outlined"
@@ -261,19 +261,19 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                 <Typography
                   sx={{
                     fontSize: 20,
-                    fontWeight: '700',
-                    color: 'white',
+                    fontWeight: "700",
+                    color: "white",
                     mb: 2,
                   }}
                 >
                   Local de Chegada:
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="CEP:"
                     variant="outlined"
@@ -282,15 +282,15 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                       handleCepChange(
                         e.target.value,
                         setCepChegada,
-                        setEnderecoChegada,
+                        setEnderecoChegada
                       )
                     }
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Número:"
                     variant="outlined"
@@ -298,12 +298,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     onChange={(e) => setNumeroChegada(e.target.value)}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Rua:"
                     variant="outlined"
@@ -312,9 +312,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Bairro:"
                     variant="outlined"
@@ -322,12 +322,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     InputProps={{ readOnly: true }}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Cidade:"
                     variant="outlined"
@@ -336,9 +336,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Estado:"
                     variant="outlined"
@@ -346,12 +346,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     InputProps={{ readOnly: true }}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '60%',
+                      width: "60%",
                     }}
                     label="Descrição:"
                     variant="outlined"
@@ -360,9 +360,9 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                   />
                   <TextField
                     sx={{
-                      backgroundColor: '#192038',
+                      backgroundColor: "#192038",
                       borderRadius: 3,
-                      width: '40%',
+                      width: "40%",
                     }}
                     label="Complemento:"
                     variant="outlined"
@@ -376,17 +376,17 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
         }
         action={
           <>
-            <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
+            <Box sx={{ width: "100%", display: "flex", gap: 2 }}>
               <Button
                 sx={{
-                  textTransform: 'none',
-                  color: 'red',
-                  borderColor: 'red',
-                  width: '50%',
+                  textTransform: "none",
+                  color: "red",
+                  borderColor: "red",
+                  width: "50%",
                   height: 40,
-                  '&:hover': {
-                    color: '#e00000',
-                    border: '2px solid #e00000',
+                  "&:hover": {
+                    color: "#e00000",
+                    border: "2px solid #e00000",
                   },
                 }}
                 variant="outlined"
@@ -398,14 +398,14 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
 
               <Button
                 sx={{
-                  textTransform: 'none',
-                  color: 'green',
-                  borderColor: 'green',
-                  width: '50%',
+                  textTransform: "none",
+                  color: "green",
+                  borderColor: "green",
+                  width: "50%",
                   height: 40,
-                  '&:hover': {
-                    color: '#00c500',
-                    border: '2px solid #00c500',
+                  "&:hover": {
+                    color: "#00c500",
+                    border: "2px solid #00c500",
                   },
                 }}
                 variant="outlined"

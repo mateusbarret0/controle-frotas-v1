@@ -15,6 +15,7 @@ import ModalUser from "../../Components/Modal/ModalUser";
 import { toast } from "react-toastify";
 
 const routes = [
+  { name: "Login Alfa ID", path: "/login" },
   { name: "Controle de Frotas", path: "/veiculos" },
   { name: "Historico de Frotas", path: "/historico" },
   { name: "Usuários", path: "/usuarios" },

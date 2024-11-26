@@ -7,6 +7,7 @@ import ControleFrotas from "./Pages/ControleFrotas/ControleFrotas";
 import Historico from "./Pages/ControleFrotas/Historico";
 import BodyUsuarios from "./Pages/Usuarios/Components/BodyUsuarios";
 import Login from "./Pages/Login";
+import { ToastContainer } from "react-toastify";
 
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -251,10 +252,26 @@ const Web = () => {
   );
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <HashRouter>
+          <ToastContainer
+            position="top-right"
+            autoClose={7000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            toastStyle={{
+              backgroundColor: "#192038",
+              color: "#FFFFFF",
+            }}
+          />
           {!isAuthenticated ? (
             <Login path="/login" setIsAuthenticated={setIsAuthenticated} />
           ) : (
