@@ -20,6 +20,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import AddRoadIcon from "@mui/icons-material/AddRoad";
 import dayjs from "dayjs";
 import ModalPdfXlsx from "../../Components/Modal/ModalPdfXlsx";
+import MapComponent from "../../Components/Maps/Teste";
 
 const Historico = () => {
   const columns = [
@@ -243,6 +244,7 @@ const Historico = () => {
       <Box sx={{ height: 670, width: "100%", color: "white" }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
+      <MapComponent />
       <ModalRotas
         open={openRotas}
         close={closeRotas}
