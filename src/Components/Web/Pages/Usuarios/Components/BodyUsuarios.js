@@ -24,6 +24,13 @@ import "react-toastify/dist/ReactToastify.css";
 const BodyFrotas = () => {
   const columns = [
     {
+      field: "cod_usur",
+      headerName: "CÓDIGO",
+      flex: 0.4,
+      cellStyle: { textAlign: "center" },
+      headerClass: "header-center",
+    },
+    {
       field: "status",
       headerName: "STATUS",
       flex: 0.4,

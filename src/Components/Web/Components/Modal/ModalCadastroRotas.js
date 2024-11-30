@@ -115,12 +115,13 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
+        toast.success("Rota cadastrada com sucesso!");
         getRotas();
         clearFields();
         close();
       } else {
-        toast.error("Erro ao cadastrar o veículo");
-        console.log("Erro ao cadastrar o veículo:", json);
+        toast.error("Erro ao cadastrar a rota");
+        console.log("Erro ao cadastrar a rota:", json);
       }
     } catch (error) {
       console.error("Erro na requisição:", error);

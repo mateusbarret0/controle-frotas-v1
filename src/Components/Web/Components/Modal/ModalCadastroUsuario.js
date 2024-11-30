@@ -125,9 +125,9 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                         borderRadius: 1,
                       }}
                     >
-                      <MenuItem value="funcionário">Funcionário</MenuItem>
-                      <MenuItem value="terceiro">Terceiro</MenuItem>
-                      <MenuItem value="motorista">Motorista</MenuItem>
+                      <MenuItem value="Funcionário">Funcionário</MenuItem>
+                      <MenuItem value="Terceiro">Terceiro</MenuItem>
+                      <MenuItem value="Motorista">Motorista</MenuItem>
                     </Select>
                   </FormControl>
                 </ThemeProvider>

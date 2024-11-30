@@ -275,14 +275,34 @@ const Web = () => {
           {!isAuthenticated ? (
             <Login path="/login" setIsAuthenticated={setIsAuthenticated} />
           ) : (
-            <Main setIsAuthenticated={setIsAuthenticated}>
-              <Routes>
-                <Route path="*" element={<Navigate to="/veiculos" replace />} />
-                <Route path="/veiculos" element={<ControleFrotas />} />
-                <Route path="/historico" element={<Historico />} />
-                <Route path="/usuarios" element={<BodyUsuarios />} />
-              </Routes>
-            </Main>
+            <>
+              <ToastContainer
+                position="top-right"
+                autoClose={7000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                toastStyle={{
+                  backgroundColor: "#192038",
+                  color: "#FFFFFF",
+                }}
+              />
+              <Main setIsAuthenticated={setIsAuthenticated}>
+                <Routes>
+                  <Route
+                    path="*"
+                    element={<Navigate to="/veiculos" replace />}
+                  />
+                  <Route path="/veiculos" element={<ControleFrotas />} />
+                  <Route path="/historico" element={<Historico />} />
+                  <Route path="/usuarios" element={<BodyUsuarios />} />
+                </Routes>
+              </Main>
+            </>
           )}
         </HashRouter>
       </ThemeProvider>
