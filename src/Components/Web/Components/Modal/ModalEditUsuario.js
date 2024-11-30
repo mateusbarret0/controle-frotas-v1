@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import ModalStyle from './ModalStyle';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from "react";
+import ModalStyle from "./ModalStyle";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import {
   Button,
   FormControl,
@@ -9,25 +9,26 @@ import {
   MenuItem,
   Select,
   TextField,
-} from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import CheckIcon from '@mui/icons-material/Check';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { EDIT_USUARIO } from '../../../../api';
-import { toast, ToastContainer } from 'react-toastify';
-import InputDate from '../Input/InputDate';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import InputMask from 'react-input-mask';
+} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { EDIT_USUARIO } from "../../../../api";
+import { toast, ToastContainer } from "react-toastify";
+import InputDate from "../Input/InputDate";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import InputMask from "react-input-mask";
 
 const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
   const [loading, setLoading] = useState(false);
-  const [nome, setNome] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('');
-  const [tipoUsuario, setTipoUsuario] = useState('');
+  const [nome, setNome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
+  const [tipoUsuario, setTipoUsuario] = useState("");
+  const [codUsur, setCodUsur] = useState("");
 
   useEffect(() => {
     if (data) {
@@ -36,19 +37,20 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       setEmail(data.email);
       setStatus(data.status);
       setTipoUsuario(data.tipo);
+      setCodUsur(data.cod_usur);
     }
   }, [data]);
 
   const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
+      mode: "dark",
       background: {
-        default: '#121212',
-        paper: '#192038',
+        default: "#121212",
+        paper: "#192038",
       },
       text: {
-        primary: '#FFFFFF',
-        secondary: '#B0B0B0',
+        primary: "#FFFFFF",
+        secondary: "#B0B0B0",
       },
     },
   });
@@ -60,6 +62,7 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       email,
       status,
       tipoUsuario,
+      codUsur,
     });
 
     setLoading(true);
@@ -68,14 +71,14 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       const json = await response.json();
       if (response.ok) {
         getUsuarios();
-        // toast.success('Usuário atualizado com sucesso!');
+        toast.success("Usuário atualizado com sucesso!");
         close();
       } else {
-        toast.error('Erro ao atualizar o usuário');
-        console.log('Erro ao atualizar o usuário:', json);
+        toast.error("Erro ao atualizar o usuário");
+        console.log("Erro ao atualizar o usuário:", json);
       }
     } catch (error) {
-      console.error('Erro na requisição:', error);
+      console.error("Erro na requisição:", error);
     } finally {
       setLoading(false);
     }
@@ -83,7 +86,7 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
 
   return (
     <>
-      {' '}
+      {" "}
       <ToastContainer
         position="top-right"
         autoClose={7000}
@@ -95,8 +98,8 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
         draggable
         pauseOnHover
         toastStyle={{
-          backgroundColor: '#192038',
-          color: '#FFFFFF',
+          backgroundColor: "#192038",
+          color: "#FFFFFF",
         }}
       />
       <Box>
@@ -106,12 +109,12 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
           close={close}
           title={
             <>
-              <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: "flex" }}>
                 <Typography
                   sx={{
                     fontSize: 25,
-                    fontWeight: '700',
-                    color: 'white',
+                    fontWeight: "700",
+                    color: "white",
                     mr: 42,
                   }}
                 >
@@ -122,7 +125,7 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                   <FormControl sx={{ width: 200 }}>
                     <InputLabel
                       id="demo-simple-select-label"
-                      sx={{ color: '#FFFFFF' }}
+                      sx={{ color: "#FFFFFF" }}
                     >
                       Tipo de Usuário
                     </InputLabel>
@@ -133,14 +136,14 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                       onChange={(e) => setTipoUsuario(e.target.value)}
                       label="Tipo de Usuário"
                       sx={{
-                        color: '#FFFFFF',
-                        backgroundColor: '#192038',
+                        color: "#FFFFFF",
+                        backgroundColor: "#192038",
                         borderRadius: 1,
                       }}
                     >
-                      <MenuItem value="funcionário">Funcionário</MenuItem>
-                      <MenuItem value="terceiro">Terceiro</MenuItem>
-                      <MenuItem value="motorista">Motorista</MenuItem>
+                      <MenuItem value="Funcionario">Funcionário</MenuItem>
+                      <MenuItem value="Terceiro">Terceiro</MenuItem>
+                      <MenuItem value="Motorista">Motorista</MenuItem>
                     </Select>
                   </FormControl>
                 </ThemeProvider>
@@ -150,15 +153,15 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
           color={color}
           content={
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box sx={{ width: '100%', height: '100%' }}>
-                <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
+              <Box sx={{ width: "100%", height: "100%" }}>
+                <Box sx={{ width: "100%", display: "flex", gap: 2, mb: 2 }}>
                   <ThemeProvider theme={darkTheme}>
                     <TextField
                       sx={{
-                        backgroundColor: '#192038',
+                        backgroundColor: "#192038",
                         borderRadius: 3,
-                        width: '75%',
-                        fontSize: '1rem',
+                        width: "75%",
+                        fontSize: "1rem",
                       }}
                       id="nome"
                       label="Insira o nome do funcionário:"
@@ -175,10 +178,10 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                       {() => (
                         <TextField
                           sx={{
-                            backgroundColor: '#192038',
+                            backgroundColor: "#192038",
                             borderRadius: 3,
-                            width: '25%',
-                            fontSize: '1rem',
+                            width: "25%",
+                            fontSize: "1rem",
                           }}
                           id="cpf"
                           label="CPF"
@@ -190,14 +193,14 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                   </ThemeProvider>
                 </Box>
 
-                <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
+                <Box sx={{ width: "100%", display: "flex", gap: 2, mb: 2 }}>
                   <ThemeProvider theme={darkTheme}>
                     <TextField
                       sx={{
-                        backgroundColor: '#192038',
+                        backgroundColor: "#192038",
                         borderRadius: 3,
-                        width: '75%',
-                        fontSize: '1rem',
+                        width: "75%",
+                        fontSize: "1rem",
                       }}
                       id="email"
                       label="E-MAIL"
@@ -205,10 +208,10 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <FormControl sx={{ width: '25%' }}>
+                    <FormControl sx={{ width: "25%" }}>
                       <InputLabel
                         id="demo-simple-select-label"
-                        sx={{ color: '#FFFFFF' }}
+                        sx={{ color: "#FFFFFF" }}
                       >
                         Status
                       </InputLabel>
@@ -219,8 +222,8 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                         onChange={(e) => setStatus(e.target.value)}
                         label="Status"
                         sx={{
-                          color: '#FFFFFF',
-                          backgroundColor: '#192038',
+                          color: "#FFFFFF",
+                          backgroundColor: "#192038",
                           borderRadius: 1,
                         }}
                       >
@@ -234,17 +237,17 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
             </LocalizationProvider>
           }
           action={
-            <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
+            <Box sx={{ width: "100%", display: "flex", gap: 2 }}>
               <Button
                 sx={{
-                  textTransform: 'none',
-                  color: 'red',
-                  borderColor: 'red',
-                  width: '50%',
+                  textTransform: "none",
+                  color: "red",
+                  borderColor: "red",
+                  width: "50%",
                   height: 40,
-                  '&:hover': {
-                    color: '#e00000',
-                    border: '2px solid #e00000',
+                  "&:hover": {
+                    color: "#e00000",
+                    border: "2px solid #e00000",
                   },
                 }}
                 variant="outlined"
@@ -256,14 +259,14 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
 
               <Button
                 sx={{
-                  textTransform: 'none',
-                  color: 'green',
-                  borderColor: 'green',
-                  width: '50%',
+                  textTransform: "none",
+                  color: "green",
+                  borderColor: "green",
+                  width: "50%",
                   height: 40,
-                  '&:hover': {
-                    color: '#00c500',
-                    border: '2px solid #00c500',
+                  "&:hover": {
+                    color: "#00c500",
+                    border: "2px solid #00c500",
                   },
                 }}
                 variant="outlined"
