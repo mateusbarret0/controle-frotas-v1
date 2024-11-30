@@ -1,12 +1,68 @@
-import { React, useEffect, useState } from "react";
+import { React, useRef } from "react";
 import ModalStyle from "../Modal/ModalStyle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Divider, IconButton } from "@mui/material";
-import AltRouteIcon from "@mui/icons-material/AltRoute";
-import teste from "../../../../Assets/imgqrcode.png";
+import Button from "@mui/material/Button";
+import { QRCodeCanvas } from "qrcode.react";
 
-const ModalUser = ({ open, close, color }) => {
+const ModalQrCode = ({ open, close, color, data }) => {
+  const qrRef = useRef();
+  const qrCodeData = JSON.stringify(data);
+
+  const handlePrint = () => {
+    const canvas = qrRef.current.querySelector("canvas");
+    if (!canvas) {
+      console.error("Canvas não encontrado!");
+      return;
+    }
+
+    const qrImage = canvas.toDataURL("image/png");
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.top = "-1000px";
+    iframe.style.left = "-1000px";
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <html>
+        <head>
+          <title>QR Code</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              height: 100%;
+              margin: 0;
+            }
+            h1 {
+              font-size: 18px;
+              margin-bottom: 10px;
+            }
+            img {
+              width: 70mm; /* Ajusta o tamanho do QR Code para o papel */
+              height: 70mm;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>QR Code / ${data?.placa}</h1> 
+          <img src="${qrImage}" alt="QR Code" />
+        </body>
+      </html>
+    `);
+
+    doc.close();
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    document.body.removeChild(iframe);
+  };
+
   return (
     <Box>
       <ModalStyle
@@ -25,7 +81,7 @@ const ModalUser = ({ open, close, color }) => {
                 fontWeight: "bold",
               }}
             >
-              QR CODE - ABC1234
+              QR CODE / {data?.placa}
             </Typography>
           </>
         }
@@ -38,28 +94,53 @@ const ModalUser = ({ open, close, color }) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "100%",
-                  height: "40vh",
+                  width: "90%",
+                  height: "39vh",
                   backgroundColor: "#ffffff",
-                  borderRadius: 8,
+                  borderRadius: 4,
+                  margin: "auto",
                 }}
+                ref={qrRef}
               >
-                <img
-                  src={teste}
-                  alt="Descrição da Imagem"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                  }}
+                <QRCodeCanvas
+                  value={qrCodeData}
+                  size={350}
+                  bgColor={"#ffffff"}
+                  fgColor={"#000000"}
+                  level={"H"}
                 />
               </Box>
             </Box>
           </>
         }
-        action={<></>}
+        action={
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handlePrint}
+              sx={{
+                width: "70%",
+                backgroundColor: "#222b45",
+                border: "1px solid #3263f7",
+                color: "#3263f7",
+                "&:hover": { border: "1px solid #ffffff", color: "#ffffff" },
+              }}
+            >
+              Imprimir QR Code
+            </Button>
+          </Box>
+        }
       />
     </Box>
   );
 };
 
-export default ModalUser;
+export default ModalQrCode;
