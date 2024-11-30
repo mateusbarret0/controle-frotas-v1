@@ -13,7 +13,7 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { EDIT_VEICULOS } from "../../../../api";
+import { EDIT_VEICULOS, GET_MOTORISTAS } from "../../../../api";
 import { toast } from "react-toastify";
 import InputDate from "../Input/InputDate";
 import dayjs from "dayjs";
@@ -31,6 +31,7 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
   const [dataUltManutencao, setDataUltManutencao] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [motorista, setMotorista] = useState("");
+  const [selectMotoristas, setSelectMotoristas] = useState([]);
   const [tipoVeiculo, setTipoVeiculo] = useState("");
 
   useEffect(() => {
@@ -81,8 +82,8 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        // toast.success("Veículo atualizado com sucesso!");
         getVeiculos();
+        toast.success(`Veículo ${data.placa} autalizado com sucesso!`);
         close();
       } else {
         toast.error("Erro ao atualizar o veículo");
@@ -95,6 +96,18 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
     }
   };
 
+  const getMotoristas = async () => {
+    const { url, options } = GET_MOTORISTAS();
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log(json);
+    if (response.ok) setSelectMotoristas(json);
+    else console.log("Erro ao buscar motoristas:", json);
+  };
+
+  useEffect(() => {
+    getMotoristas();
+  }, []);
   return (
     <Box>
       <ModalStyle
@@ -230,7 +243,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                 </ThemeProvider>
               </Box>
 
-              {/* Campos de empresa e motorista */}
               <Box sx={{ width: "100%", display: "flex", gap: 2, mb: 2 }}>
                 <ThemeProvider theme={darkTheme}>
                   <TextField
@@ -246,19 +258,31 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                     value={empresa}
                     onChange={(e) => setEmpresa(e.target.value)}
                   />
-                  <TextField
-                    sx={{
-                      backgroundColor: "#192038",
-                      borderRadius: 3,
-                      width: "50%",
-                      fontSize: "1rem",
-                    }}
-                    id="motorista"
-                    label="Motorista responsável"
-                    variant="outlined"
-                    value={motorista}
-                    onChange={(e) => setMotorista(e.target.value)}
-                  />
+                  <FormControl sx={{ width: "50%" }}>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      sx={{ color: "#FFFFFF" }}
+                    >
+                      Motoristas
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={motorista}
+                      label="Motoristas"
+                      onChange={(e) => setMotorista(e.target.value)}
+                      sx={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#192038",
+                      }}
+                    >
+                      {selectMotoristas.map((motorista) => (
+                        <MenuItem value={motorista.nome}>
+                          {motorista.nome}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </ThemeProvider>
               </Box>
             </Box>

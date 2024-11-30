@@ -198,6 +198,7 @@ export function EDIT_USUARIO(data) {
         email: data.email,
         status: data.status,
         tipo: data.tipoUsuario,
+        codUsur: data.codUsur,
       }),
     },
   };
@@ -306,6 +307,21 @@ export function GET_RELATORIO_ROTAS(placa) {
   const token = localStorage.getItem("token");
   return {
     url: API_URL + `get/relatorio/rotas?placa=${placa}`,
+    options: {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    },
+  };
+}
+
+export function GET_MOTORISTAS() {
+  const token = localStorage.getItem("token");
+  return {
+    url: API_URL + `get/motoristas`,
     options: {
       method: "GET",
       headers: {
