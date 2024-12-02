@@ -36,7 +36,7 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
 
   useEffect(() => {
     if (data) {
-      setNumVeiculo(data?.id);
+      setNumVeiculo(data?.cod_veic);
       setModelo(data?.modelo);
       setPlaca(data?.placa);
       setAno(data?.ano);
