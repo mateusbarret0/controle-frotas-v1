@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import ModalStyle from "../Modal/ModalStyle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, Divider, TextField } from "@mui/material";
+import { Button, Divider, TextField, IconButton } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CREATE_ROTAS, GET_CEP } from "../../../../api";
 import { toast } from "react-toastify";
@@ -33,6 +35,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     cidade: "",
     estado: "",
   });
+  const [paradas, setParadas] = useState([]);
+  console.log("🚀 ~ ModalCadastroVeiculo ~ paradas:", paradas);
 
   const darkTheme = createTheme({
     palette: {
@@ -59,6 +63,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     setComplementoChegada("");
     setEnderecoPartida({ rua: "", bairro: "", cidade: "", estado: "" });
     setEnderecoChegada({ rua: "", bairro: "", cidade: "", estado: "" });
+    setParadas([]);
   };
 
   const fetchEndereco = async (cep, setEndereco) => {
@@ -73,7 +78,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
           cidade: json.localidade,
           estado: json.uf,
         });
-        console.log("🚀 - fetchEndereco - json:", json);
       } else {
         toast.error("CEP inválido");
       }
@@ -89,10 +93,48 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     }
   };
 
+  const addParada = () => {
+    setParadas([
+      ...paradas,
+      {
+        cep: "",
+        numero: "",
+        descricao: "",
+        complemento: "",
+        endereco: { rua: "", bairro: "", cidade: "", estado: "" },
+      },
+    ]);
+  };
+
+  const removeParada = (index) => {
+    const updatedParadas = paradas.filter((_, i) => i !== index);
+    setParadas(updatedParadas);
+  };
+
+  const handleParadaChange = (index, field, value) => {
+    const updatedParadas = [...paradas];
+    if (field === "cep" && value.length === 8) {
+      fetchEndereco(value, (endereco) => {
+        updatedParadas[index].endereco = endereco;
+        setParadas(updatedParadas);
+      });
+    }
+    updatedParadas[index][field] = value;
+    setParadas(updatedParadas);
+  };
+
   const createRota = async () => {
-    if (!cepPartida || !cepChegada || !numeroPartida || !numeroChegada) {
-      console.log("Por favor, preencha todos os campos obrigatórios!");
-      toast.error("Por favor, preencha todos os campos obrigatórios!");
+    const camposVazios = [];
+
+    if (!cepPartida) camposVazios.push("CEP de Partida");
+    if (!numeroPartida) camposVazios.push("Número de Partida");
+    if (!cepChegada) camposVazios.push("CEP de Chegada");
+    if (!numeroChegada) camposVazios.push("Número de Chegada");
+
+    if (camposVazios.length > 0) {
+      toast.error(
+        `Por favor, preencha os seguintes campos: ${camposVazios.join(", ")}`
+      );
       return;
     }
 
@@ -108,6 +150,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
       complementoChegada,
       enderecoPartida,
       enderecoChegada,
+      paradas,
     });
 
     setLoading(true);
@@ -115,13 +158,11 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        toast.success("Rota cadastrada com sucesso!");
         getRotas();
         clearFields();
         close();
       } else {
         toast.error("Erro ao cadastrar a rota");
-        console.log("Erro ao cadastrar a rota:", json);
       }
     } catch (error) {
       console.error("Erro na requisição:", error);
@@ -259,6 +300,133 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     onChange={(e) => setComplementoPartida(e.target.value)}
                   />
                 </Box>
+                <Typography
+                  sx={{
+                    fontSize: 20,
+                    fontWeight: "700",
+                    color: "white",
+                    mb: 2,
+                  }}
+                >
+                  Paradas:
+                </Typography>
+                {paradas.map((parada, index) => (
+                  <Box
+                    key={index}
+                    sx={{ mb: 3, borderBottom: "1px solid gray", pb: 2 }}
+                  >
+                    <Typography sx={{ color: "white", mb: 1 }}>
+                      Parada {index + 1}
+                    </Typography>
+                    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "60%",
+                        }}
+                        label="CEP:"
+                        variant="outlined"
+                        value={parada.cep}
+                        onChange={(e) =>
+                          handleParadaChange(index, "cep", e.target.value)
+                        }
+                      />
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "40%",
+                        }}
+                        label="Número:"
+                        variant="outlined"
+                        value={parada.numero}
+                        onChange={(e) =>
+                          handleParadaChange(index, "numero", e.target.value)
+                        }
+                      />
+                    </Box>
+                    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "60%",
+                        }}
+                        label="Rua:"
+                        variant="outlined"
+                        value={parada.endereco.rua}
+                        InputProps={{ readOnly: true }}
+                      />
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "40%",
+                        }}
+                        label="Bairro:"
+                        variant="outlined"
+                        value={parada.endereco.bairro}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Box>
+                    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "60%",
+                        }}
+                        label="Cidade:"
+                        variant="outlined"
+                        value={parada.endereco.cidade}
+                        InputProps={{ readOnly: true }}
+                      />
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "40%",
+                        }}
+                        label="Estado:"
+                        variant="outlined"
+                        value={parada.endereco.estado}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Box>
+                    <Button
+                      startIcon={<DeleteIcon />}
+                      sx={{
+                        textTransform: "none",
+                        width: "30%",
+                        "&:hover": {
+                          color: "#e00000",
+                          border: "2px solid #e00000",
+                        },
+                      }}
+                      onClick={() => removeParada(index)}
+                      variant="outlined"
+                    >
+                      Remover Parada - {index + 1}
+                    </Button>
+                  </Box>
+                ))}
+                <Button
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  sx={{
+                    textTransform: "none",
+                    width: "30%",
+                    mb: 2,
+                    "&:hover": {
+                      color: "#00c500",
+                      border: "2px solid #00c500",
+                    },
+                  }}
+                  onClick={addParada}
+                >
+                  Adicionar Parada
+                </Button>
                 <Typography
                   sx={{
                     fontSize: 20,
