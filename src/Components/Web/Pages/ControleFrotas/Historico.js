@@ -130,6 +130,7 @@ const Historico = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const [openRelatorio, setOpenRelatorio] = useState(false);
   const [rows, setRows] = useState(false);
+  console.log("🚀 ~ Historico ~ rows:", rows);
   const [selectedRota, setSelectedRota] = useState(null);
   const closeRotas = () => setOpenRotas(false);
 

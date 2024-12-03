@@ -12,6 +12,7 @@ import { CREATE_ROTAS, GET_CEP } from "../../../../api";
 import { toast } from "react-toastify";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   const [loading, setLoading] = useState(false);
@@ -66,9 +67,12 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     setParadas([]);
   };
 
+  const [loadingCep, setLoadingCep] = useState(false);
+
   const fetchEndereco = async (cep, setEndereco) => {
-    const { url, options } = GET_CEP(cep);
+    setLoadingCep(true);
     try {
+      const { url, options } = GET_CEP(cep);
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
@@ -83,6 +87,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
       }
     } catch (error) {
       console.error("Erro ao buscar endereço:", error);
+    } finally {
+      setLoadingCep(false);
     }
   };
 
@@ -112,31 +118,33 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   };
 
   const handleParadaChange = (index, field, value) => {
-    const updatedParadas = [...paradas];
-    if (field === "cep" && value.length === 8) {
-      fetchEndereco(value, (endereco) => {
-        updatedParadas[index].endereco = endereco;
-        setParadas(updatedParadas);
-      });
-    }
-    updatedParadas[index][field] = value;
-    setParadas(updatedParadas);
+    setParadas((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   };
 
-  const createRota = async () => {
-    const camposVazios = [];
-
-    if (!cepPartida) camposVazios.push("CEP de Partida");
-    if (!numeroPartida) camposVazios.push("Número de Partida");
-    if (!cepChegada) camposVazios.push("CEP de Chegada");
-    if (!numeroChegada) camposVazios.push("Número de Chegada");
-
-    if (camposVazios.length > 0) {
+  const validarCampos = () => {
+    const camposObrigatorios = [
+      { campo: cepPartida, nome: "CEP de Partida" },
+      { campo: numeroPartida, nome: "Número de Partida" },
+      { campo: cepChegada, nome: "CEP de Chegada" },
+      { campo: numeroChegada, nome: "Número de Chegada" },
+    ];
+    const camposVazios = camposObrigatorios.filter(({ campo }) => !campo);
+    if (camposVazios.length) {
       toast.error(
-        `Por favor, preencha os seguintes campos: ${camposVazios.join(", ")}`
+        `Por favor, preencha os seguintes campos: ${camposVazios
+          .map(({ nome }) => nome)
+          .join(", ")}`
       );
-      return;
+      return false;
     }
+    return true;
+  };
+  const createRota = async () => {
+    if (!validarCampos()) return;
 
     const { url, options } = CREATE_ROTAS({
       veiculo,
@@ -158,6 +166,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
+        toast.success("Rota cadastrada com sucesso!");
         getRotas();
         clearFields();
         close();
@@ -319,6 +328,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                       Parada {index + 1}
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                      {/* cep de parada */}
                       <TextField
                         sx={{
                           backgroundColor: "#192038",
@@ -332,6 +342,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                           handleParadaChange(index, "cep", e.target.value)
                         }
                       />
+
                       <TextField
                         sx={{
                           backgroundColor: "#192038",
@@ -353,10 +364,14 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                           borderRadius: 3,
                           width: "60%",
                         }}
-                        label="Rua:"
-                        variant="outlined"
+                        label="Rua"
                         value={parada.endereco.rua}
-                        InputProps={{ readOnly: true }}
+                        InputProps={{
+                          readOnly: true,
+                          endAdornment: loadingCep ? (
+                            <CircularProgress size={20} />
+                          ) : null,
+                        }}
                       />
                       <TextField
                         sx={{
@@ -392,6 +407,38 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                         variant="outlined"
                         value={parada.endereco.estado}
                         InputProps={{ readOnly: true }}
+                      />
+                    </Box>
+                    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "60%",
+                        }}
+                        label="Descrição:"
+                        variant="outlined"
+                        value={parada.descricao}
+                        onChange={(e) =>
+                          handleParadaChange(index, "descricao", e.target.value)
+                        }
+                      />
+                      <TextField
+                        sx={{
+                          backgroundColor: "#192038",
+                          borderRadius: 3,
+                          width: "40%",
+                        }}
+                        label="Complemento:"
+                        variant="outlined"
+                        value={parada.complemento}
+                        onChange={(e) =>
+                          handleParadaChange(
+                            index,
+                            "complemento",
+                            e.target.value
+                          )
+                        }
                       />
                     </Box>
                     <Button
@@ -581,7 +628,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                 startIcon={<CheckIcon />}
                 onClick={createRota}
               >
-                CADASTRAR
+                {loading ? "Salvando..." : "Salvar Rota"}
               </Button>
             </Box>
           </>
