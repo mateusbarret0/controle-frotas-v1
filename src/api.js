@@ -182,6 +182,7 @@ export function GET_USUARIOS(searchTerm) {
   };
 }
 export function EDIT_USUARIO(data) {
+  console.log("🚀 ~ EDIT_USUARIO ~ data:", data);
   const token = localStorage.getItem("token");
   return {
     url: API_URL + "edit/usuario",
@@ -214,7 +215,7 @@ export function DELETE_USUARIOS(data) {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({ cpf: data.cpf }),
+      body: JSON.stringify({ codUsur: data.cod_usuario }),
     },
   };
 }

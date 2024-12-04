@@ -22,6 +22,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputMask from "react-input-mask";
 
 const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
+  console.log("🚀 ~ ModalEditUsuario ~ data:", data);
   const [loading, setLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -30,14 +31,20 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
   const [tipoUsuario, setTipoUsuario] = useState("");
   const [codUsur, setCodUsur] = useState("");
 
+  const tipoUsuarioMap = {
+    Funcionario: "1",
+    Terceiro: "2",
+    Motorista: "3",
+  };
+
   useEffect(() => {
     if (data) {
       setNome(data.nome);
       setCpf(data.cpf);
       setEmail(data.email);
       setStatus(data.status);
-      setTipoUsuario(data.tipo);
-      setCodUsur(data.cod_usur);
+      setTipoUsuario(tipoUsuarioMap[data.descricao]);
+      setCodUsur(data.cod_usuario);
     }
   }, [data]);
 
@@ -71,7 +78,7 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
       const json = await response.json();
       if (response.ok) {
         getUsuarios();
-        toast.success("Usuário atualizado com sucesso!");
+        // toast.success("Usuário atualizado com sucesso!");
         close();
       } else {
         toast.error("Erro ao atualizar o usuário");
@@ -141,9 +148,9 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
                         borderRadius: 1,
                       }}
                     >
-                      <MenuItem value="Funcionario">Funcionário</MenuItem>
-                      <MenuItem value="Terceiro">Terceiro</MenuItem>
-                      <MenuItem value="Motorista">Motorista</MenuItem>
+                      <MenuItem value="1">Funcionário</MenuItem>
+                      <MenuItem value="2">Terceiro</MenuItem>
+                      <MenuItem value="3">Motorista</MenuItem>
                     </Select>
                   </FormControl>
                 </ThemeProvider>

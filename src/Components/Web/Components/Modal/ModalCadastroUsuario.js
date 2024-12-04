@@ -70,6 +70,7 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
+      console.log("🚀 ~ createUsuario ~ json:", json);
       if (response.ok) {
         getUsuarios();
         clearFields();
@@ -125,9 +126,9 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                         borderRadius: 1,
                       }}
                     >
-                      <MenuItem value="Funcionário">Funcionário</MenuItem>
-                      <MenuItem value="Terceiro">Terceiro</MenuItem>
-                      <MenuItem value="Motorista">Motorista</MenuItem>
+                      <MenuItem value="1">Funcionário</MenuItem>
+                      <MenuItem value="2">Terceiro</MenuItem>
+                      <MenuItem value="3">Motorista</MenuItem>
                     </Select>
                   </FormControl>
                 </ThemeProvider>
