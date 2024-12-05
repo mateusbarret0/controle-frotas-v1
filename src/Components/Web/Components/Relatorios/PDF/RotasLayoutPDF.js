@@ -7,12 +7,12 @@ import ModalTitlePDF from "./ModalTitlePDF";
 import dayjs from "dayjs";
 import { GET_RELATORIO_ROTAS } from "../../../../../api";
 
-const RelatorioRotasLayoutPDF = ({ placa }) => {
+const RelatorioRotasLayoutPDF = ({ cod_veiculo }) => {
   const [documentGenerated, setDocumentGenerated] = useState(false);
   const [data, setData] = useState([]);
 
   const handlePrint = async () => {
-    const { url, options } = GET_RELATORIO_ROTAS(placa);
+    const { url, options } = GET_RELATORIO_ROTAS(cod_veiculo);
     const response = await fetch(url, options);
     if (response.ok) {
       const json = await response.json();
@@ -126,7 +126,7 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
           {/* <View style={styles.tableRow}> */}
           <View style={styles.container}>
             <Text style={styles.sectionTitle}>Veículo</Text>
-            <Text style={styles.field}>Placa: {data[0]?.veiculo_placa}</Text>
+            <Text style={styles.field}>Placa: {data[0]?.placa}</Text>
             <Text style={styles.field}>Modelo: {data[0]?.modelo}</Text>
             <Text style={styles.field}>Empresa: {data[0]?.empresa}</Text>
             {/* <Text style={styles.field}>
@@ -136,10 +136,9 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
 
           <View style={styles.container}>
             <Text style={styles.sectionTitle}>Motorista</Text>
-            <Text style={styles.field}>Nome: {data[0]?.motorista_nome}</Text>
-            <Text style={styles.field}>CPF: {data[0]?.motorista_cpf}</Text>
-            <Text style={styles.field}>Cargo: {data[0]?.motorista_tipo}</Text>
-            <Text style={styles.field}>E-mail: {data[0]?.motorista_email}</Text>
+            <Text style={styles.field}>Nome: {data[0]?.motorista}</Text>
+            <Text style={styles.field}>CPF: {data[0]?.cpf}</Text>
+            <Text style={styles.field}>E-mail: {data[0]?.email}</Text>
           </View>
           {/* </View> */}
           {/* </Box> */}
@@ -175,22 +174,22 @@ const RelatorioRotasLayoutPDF = ({ placa }) => {
             {data.map((viagem, index) => (
               <View key={index} style={styles.tableRow}>
                 <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>{viagem.COD_ROTA}</Text>
+                  <Text style={styles.tableCell}>{viagem.cod_rota}</Text>
                 </View>
                 <View style={{ width: "12%" }}>
                   <Text style={styles.tableCell}>
-                    {dayjs(viagem.DATA_HORA_INICIO).format("HH:mm")}
+                    {dayjs(viagem.data_hora_partida).format("HH:mm")}
                   </Text>
                 </View>
                 <View style={{ width: "12%" }}>
                   <Text style={styles.tableCell}>
-                    {dayjs(viagem.DATA_HORA_CHEGADA).format("HH:mm")}
+                    {dayjs(viagem.data_hora_chegada).format("HH:mm")}
                   </Text>
                 </View>
                 <View style={{ width: "12%" }}>
                   <Text style={styles.tableCell}>
-                    {dayjs(viagem.DATA_HORA_CHEGADA).diff(
-                      dayjs(viagem.DATA_HORA_INICIO),
+                    {dayjs(viagem.data_hora_chegada).diff(
+                      dayjs(viagem.data_hora_partida),
                       "hour"
                     )}{" "}
                     horas

@@ -7,6 +7,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UPDATE_STATUS_ROTA } from "../../../../api";
+import { toast } from "react-toastify";
 
 const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,10 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
   });
 
   const reprovarRota = async () => {
+    if (!descReprovado) {
+      toast.error("Por favor, adicione uma descrição!");
+      return;
+    }
     const { url, options } = UPDATE_STATUS_ROTA(data, status, descReprovado);
     setLoading(true);
     try {
@@ -109,7 +114,7 @@ const ModalReprovarRota = ({ open, close, color, data, getRotas }) => {
                         borderRadius: 3,
                       }}
                       variant="outlined"
-                      label="Se necessário, adicione uma descrição:"
+                      label="Adicione uma descrição:"
                       fullWidth
                       onChange={(e) => setDescReprovado(e.target.value)}
                     />

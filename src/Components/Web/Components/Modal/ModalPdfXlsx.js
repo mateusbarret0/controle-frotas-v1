@@ -7,10 +7,10 @@ import dayjs from "dayjs";
 import { GET_RELATORIO_ROTAS } from "../../../../api";
 import { toast } from "react-toastify";
 
-const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
+const ModalPdfXlsx = ({ open, close, cod_veiculo, color = "detail4" }) => {
   const handleGenerateExcel = async () => {
     try {
-      const { url, options } = GET_RELATORIO_ROTAS(placa);
+      const { url, options } = GET_RELATORIO_ROTAS(cod_veiculo);
       const response = await fetch(url, options);
 
       if (!response.ok) {
@@ -19,6 +19,7 @@ const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
       }
 
       const data = await response.json();
+      console.log("🚀 ~ handleGenerateExcel ~ data:", data);
 
       if (data.length === 0) {
         toast.error("Nenhum dado retornado para o relatório.");
@@ -26,11 +27,11 @@ const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
       }
 
       const formattedData = data.map((item) => ({
-        "Código da Rota": item.COD_ROTA,
-        "Data e Hora de Início": item.DATA_HORA_INICIO,
-        "Data e Hora de Chegada": item.DATA_HORA_CHEGADA,
-        "Tempo gasto": dayjs(item.DATA_HORA_CHEGADA).diff(
-          dayjs(item.DATA_HORA_INICIO),
+        "Código da Rota": item.cod_rota,
+        "Data e Hora de Início": item.data_hora_partida,
+        "Data e Hora de Chegada": item.data_hora_chegada,
+        "Tempo gasto": dayjs(item.data_hora_chegada).diff(
+          dayjs(item.data_hora_partida),
           "hour"
         ),
         "Km Inicial": "100 Km",
@@ -38,11 +39,11 @@ const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
         "Total Km": "50 Km",
         "Qtd. Pessoas": "60",
         "Modelo do Veículo": item.modelo,
-        "Placa do Veículo": item.veiculo_placa,
+        "Placa do Veículo": item.placa,
         Empresa: item.empresa,
-        "Nome do Motorista": item.motorista_nome,
-        "CPF do Motorista": item.motorista_cpf,
-        "E-mail do Motorista": item.motorista_email,
+        "Nome do Motorista": item.motorista,
+        "CPF do Motorista": item.cpf,
+        "E-mail do Motorista": item.email,
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
@@ -67,7 +68,7 @@ const ModalPdfXlsx = ({ open, close, placa, color = "detail4" }) => {
       content={
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <FormControl>
-            <RotasLayoutPDF placa={placa} />
+            <RotasLayoutPDF cod_veiculo={cod_veiculo} />
             <Button
               onClick={handleGenerateExcel}
               variant="outlined"

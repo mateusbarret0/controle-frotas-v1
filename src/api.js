@@ -305,10 +305,11 @@ export function GET_OBS_ROTAS(cod_veiculo, cod_rota) {
     },
   };
 }
-export function GET_RELATORIO_ROTAS(placa) {
+export function GET_RELATORIO_ROTAS(cod_veiculo) {
+  console.log("🚀 ~ GET_RELATORIO_ROTAS ~ cod_veiculo:", cod_veiculo);
   const token = localStorage.getItem("token");
   return {
-    url: API_URL + `get/relatorio/rotas?placa=${placa}`,
+    url: API_URL + `get/relatorio/rotas?cod_veiculo=${cod_veiculo}`,
     options: {
       method: "GET",
       headers: {

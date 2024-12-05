@@ -254,7 +254,7 @@ const Historico = () => {
       <ModalPdfXlsx
         open={openRelatorio}
         close={handleCloseRelatorio}
-        placa={veiculo.placa}
+        cod_veiculo={veiculo.cod_veiculo}
       />
     </>
   );
