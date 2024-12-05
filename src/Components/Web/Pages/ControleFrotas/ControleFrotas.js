@@ -29,7 +29,7 @@ import { toast } from "react-toastify";
 const ControleFrotas = () => {
   const columns = [
     {
-      field: "cod_veic",
+      field: "cod_veiculo",
       headerName: "CÓDIGO",
       flex: 0.5,
       cellStyle: { textAlign: "center" },
@@ -150,6 +150,7 @@ const ControleFrotas = () => {
   const [openDelete, setDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
+  console.log("🚀 ~ ControleFrotas ~ rows:", rows);
   console.log("🚀 ~ ControleFrotas ~ rows:", rows);
   const [openCadastro, setOpenCadastro] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

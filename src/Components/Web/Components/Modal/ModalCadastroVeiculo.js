@@ -291,8 +291,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
                         }}
                       >
                         {selectMotoristas.map((motorista) => (
-                          <MenuItem value={motorista.nome}>
-                            {motorista.nome}
+                          <MenuItem value={motorista.cod_usuario}>
+                            {motorista.cod_usuario} - {motorista.nome}
                           </MenuItem>
                         ))}
                       </Select>

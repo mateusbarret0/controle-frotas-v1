@@ -45,10 +45,10 @@ export function GET_VEICULOS(searchTerm) {
     },
   };
 }
-export function GET_ROTAS(placa) {
+export function GET_ROTAS(cod_veiculo) {
   const token = localStorage.getItem("token");
   return {
-    url: API_URL + `get/rotas?placa=${placa}`,
+    url: API_URL + `get/rotas?cod_veiculo=${cod_veiculo}`,
     options: {
       method: "GET",
       headers: {
@@ -182,7 +182,6 @@ export function GET_USUARIOS(searchTerm) {
   };
 }
 export function EDIT_USUARIO(data) {
-  console.log("🚀 ~ EDIT_USUARIO ~ data:", data);
   const token = localStorage.getItem("token");
   return {
     url: API_URL + "edit/usuario",
@@ -261,8 +260,8 @@ export function UPDATE_STATUS_ROTA(data, status, desc) {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        codRota: data.COD_ROTA,
-        placa: data.veiculo.placa,
+        codRota: data.cod_rota,
+        cod_veiculo: data.veiculo.cod_veiculo,
         status: status,
         desc: desc,
       }),
@@ -281,7 +280,8 @@ export function UPDATE_OBS_ROTA(data, desc) {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        placa: data.veiculo.placa,
+        cod_veiculo: data.veiculo.cod_veiculo,
+        cod_rota: data.cod_rota,
         desvios: desc.alertasDesvios,
         paradas: desc.pontosParada,
         incidentes: desc.registroIncidentes,
@@ -290,10 +290,11 @@ export function UPDATE_OBS_ROTA(data, desc) {
     },
   };
 }
-export function GET_OBS_ROTAS(placa, codRota) {
+export function GET_OBS_ROTAS(cod_veiculo, cod_rota) {
   const token = localStorage.getItem("token");
   return {
-    url: API_URL + `get/obs/rotas?placa=${placa}&codRota=${codRota}`,
+    url:
+      API_URL + `get/obs/rotas?cod_veiculo=${cod_veiculo}&cod_rota=${cod_rota}`,
     options: {
       method: "GET",
       headers: {

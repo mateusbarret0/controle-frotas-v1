@@ -28,9 +28,7 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
   const [obs, setObs] = useState(false);
   const [directions, setDirections] = useState(null);
   const [startLocation, setStartLocation] = useState(null);
-  console.log("🚀 - ModalRotas - startLocation:", startLocation);
   const [endLocation, setEndLocation] = useState(null);
-  console.log("🚀 - ModalRotas - endLocation:", endLocation);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
 
@@ -52,7 +50,10 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
   const closeObs = () => setOpenObs(false);
 
   const getObsRotas = async () => {
-    const { url, options } = GET_OBS_ROTAS(data?.veiculo.placa, data?.COD_ROTA);
+    const { url, options } = GET_OBS_ROTAS(
+      data?.veiculo.cod_veiculo,
+      data?.cod_rota
+    );
     try {
       const response = await fetch(url, options);
       const json = await response.json();
@@ -82,12 +83,12 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
   };
 
   const fetchRoute = async () => {
-    const start = await getCoordinatesFromCEP(data?.CEP_PARTIDA);
-    const end = await getCoordinatesFromCEP(data?.CEP_CHEGADA);
+    const start = await getCoordinatesFromCEP(data?.partida.cep);
+    const end = await getCoordinatesFromCEP(data?.chegada.cep);
 
     const waypoints = await Promise.all(
       data.paradas?.map(async (parada) => {
-        const coords = await getCoordinatesFromCEP(parada.CEP);
+        const coords = await getCoordinatesFromCEP(parada.cep);
         return coords ? { location: coords, stopover: true } : null;
       })
     ).then((res) => res.filter((wp) => wp !== null));
@@ -183,32 +184,32 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
               <Divider sx={{ mb: 1, backgroundColor: "#FFFFFF", height: 2 }} />
               <Box sx={{ textAlign: "left" }}>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  CEP: {data?.CEP_PARTIDA}
+                  CEP: {data?.partida.cep}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Número: {data?.NUMERO_PARTIDA}
+                  Número: {data?.partida.numero}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Rua: {data?.RUA_PARTIDA}
+                  Rua: {data?.partida.rua}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Bairro: {data?.BAIRRO_PARTIDA}
+                  Bairro: {data?.partida.bairro}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Cidade: {data?.CIDADE_PARTIDA}
+                  Cidade: {data?.partida.cidade}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Estado: {data?.ESTADO_PARTIDA}
+                  Estado: {data?.partida.estado}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
                   Data e Hora:{" "}
-                  {dayjs(data?.DATA_HORA_INICIO).format("DD/MM/YYYY - HH:mm")}
+                  {dayjs(data?.partida.data_hora).format("DD/MM/YYYY - HH:mm")}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Complemento: {data?.COMPLEMENTO_PARTIDA}
+                  Complemento: {data?.partida.complemento}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Descrição: {data?.DESCRICAO_PARTIDA}
+                  Descrição: {data?.partida.descricao}
                 </Typography>
               </Box>
             </BoxStyleCard>
@@ -220,32 +221,32 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
               <Divider sx={{ mb: 1, backgroundColor: "#FFFFFF", height: 2 }} />
               <Box sx={{ textAlign: "left" }}>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  CEP: {data?.CEP_CHEGADA}
+                  CEP: {data?.chegada.cep}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Número: {data?.NUMERO_CHEGADA}
+                  Número: {data?.chegada.numero}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Rua: {data?.RUA_CHEGADA}
+                  Rua: {data?.chegada.rua}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Bairro: {data?.BAIRRO_CHEGADA}
+                  Bairro: {data?.chegada.bairro}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Cidade: {data?.CIDADE_CHEGADA}
+                  Cidade: {data?.chegada.cidade}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Estado: {data?.ESTADO_CHEGADA}
+                  Estado: {data?.chegada.estado}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
                   Data e Hora:{" "}
-                  {dayjs(data?.DATA_HORA_CHEGADA).format("DD/MM/YYYY - HH:mm")}
+                  {dayjs(data?.chegada.data_hora).format("DD/MM/YYYY - HH:mm")}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Complemento: {data?.COMPLEMENTO_CHEGADA}
+                  Complemento: {data?.chegada.complemento}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                  Descrição: {data?.DESCRICAO_CHEGADA}
+                  Descrição: {data?.chegada.descricao}
                 </Typography>
               </Box>
             </BoxStyleCard>
@@ -258,13 +259,13 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
               {data.paradas?.map((item, index) => (
                 <Box sx={{ textAlign: "left" }}>
                   <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                    Parada: {item.COD_PARADA}
+                    Parada: {item.cod_parada}
                   </Typography>
                   <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                    CEP Parada {item.COD_PARADA}: {item.CEP}
+                    CEP Parada: {item.cep}
                   </Typography>
                   <Typography sx={{ fontSize: 18, color: "#FFFFFF" }}>
-                    Número: {item.COD_PARADA}
+                    Número: {item.numero}
                   </Typography>
                   <Divider sx={{ mb: 1, mt: 1, backgroundColor: "#FFFFFF" }} />
                 </Box>

@@ -25,7 +25,7 @@ import MapComponent from "../../Components/Maps/Teste";
 const Historico = () => {
   const columns = [
     {
-      field: "COD_ROTA",
+      field: "cod_rota",
       headerName: "CÓD ROTA",
       flex: 0.6,
       cellStyle: { textAlign: "center" },
@@ -66,32 +66,32 @@ const Historico = () => {
       },
     },
     {
-      field: "DATA_HORA_INICIO",
+      field: "partida.data_hora",
       headerName: "DATA INÍCIO",
       flex: 1,
       valueFormatter: (params) => {
         return dayjs(params.value).format("DD/MM/YYYY - HH:mm");
       },
     },
-    { field: "CIDADE_PARTIDA", headerName: "CIDADE ORIGEM", flex: 1 },
-    { field: "ESTADO_PARTIDA", headerName: "UF", flex: 0.3 },
+    { field: "partida.cidade", headerName: "CIDADE ORIGEM", flex: 1 },
+    { field: "partida.estado", headerName: "UF", flex: 0.3 },
     {
-      field: "DATA_HORA_CHEGADA",
+      field: "chegada.data_hora",
       headerName: "DATA TÉRMINO",
       flex: 1,
       valueFormatter: (params) => {
         return dayjs(params.value).format("DD/MM/YYYY - HH:mm");
       },
     },
-    { field: "CIDADE_CHEGADA", headerName: "CIDADE DESTINO", flex: 1 },
-    { field: "ESTADO_CHEGADA", headerName: "UF", flex: 0.3 },
+    { field: "chegada.cidade", headerName: "CIDADE DESTINO", flex: 1 },
+    { field: "chegada.estado", headerName: "UF", flex: 0.3 },
     {
-      field: "TEMPO_GASTO",
+      field: "tempo_gasto",
       headerName: "TEMPO GASTO",
       flex: 1,
       valueGetter: (params) => {
-        const inicio = dayjs(params.data.DATA_HORA_INICIO);
-        const chegada = dayjs(params.data.DATA_HORA_CHEGADA);
+        const inicio = dayjs(params.data.partida.data_hora);
+        const chegada = dayjs(params.data.chegada.data_hora);
         return chegada.diff(inicio, "minute");
       },
       valueFormatter: (params) => {
@@ -130,7 +130,6 @@ const Historico = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const [openRelatorio, setOpenRelatorio] = useState(false);
   const [rows, setRows] = useState(false);
-  console.log("🚀 ~ Historico ~ rows:", rows);
   const [selectedRota, setSelectedRota] = useState(null);
   const closeRotas = () => setOpenRotas(false);
 
@@ -150,7 +149,7 @@ const Historico = () => {
   };
 
   const getRotas = async () => {
-    const { url, options } = GET_ROTAS(veiculo.placa);
+    const { url, options } = GET_ROTAS(veiculo.cod_veiculo);
     try {
       const response = await fetch(url, options);
       const json = await response.json();

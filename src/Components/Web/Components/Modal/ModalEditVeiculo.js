@@ -36,7 +36,7 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
 
   useEffect(() => {
     if (data) {
-      setNumVeiculo(data?.cod_veic);
+      setNumVeiculo(data?.cod_veiculo);
       setModelo(data?.modelo);
       setPlaca(data?.placa);
       setAno(data?.ano);
@@ -277,8 +277,8 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                       }}
                     >
                       {selectMotoristas.map((motorista) => (
-                        <MenuItem value={motorista.nome}>
-                          {motorista.nome}
+                        <MenuItem value={motorista.cod_usuario}>
+                          {motorista.cod_usuario} - {motorista.nome}
                         </MenuItem>
                       ))}
                     </Select>

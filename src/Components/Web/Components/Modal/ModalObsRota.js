@@ -29,7 +29,6 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
     },
   });
 
-  // Carregar valores existentes no banco ao abrir o modal
   useEffect(() => {
     setAlertasDesvios(obs?.[0]?.DESVIOS || data?.DESVIOS || "");
     setPontosParada(obs?.[0]?.PARADAS || data?.PARADAS || "");

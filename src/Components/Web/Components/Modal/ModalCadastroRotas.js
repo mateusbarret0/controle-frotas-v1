@@ -118,11 +118,31 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   };
 
   const handleParadaChange = (index, field, value) => {
-    setParadas((prev) => {
-      const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: value };
-      return updated;
-    });
+    setParadas((prevParadas) =>
+      prevParadas.map((parada, i) =>
+        i === index
+          ? {
+              ...parada,
+              [field]: value,
+            }
+          : parada
+      )
+    );
+
+    if (field === "cep" && value.length === 8) {
+      fetchEndereco(value, (endereco) => {
+        setParadas((prevParadas) =>
+          prevParadas.map((parada, i) =>
+            i === index
+              ? {
+                  ...parada,
+                  endereco,
+                }
+              : parada
+          )
+        );
+      });
+    }
   };
 
   const validarCampos = () => {
