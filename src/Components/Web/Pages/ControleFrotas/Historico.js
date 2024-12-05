@@ -38,9 +38,9 @@ const Historico = () => {
       cellRenderer: ({ data }) => {
         const statusConfig = (status) => {
           switch (status) {
-            case 'aprovado':
+            case 'Aprovado':
               return { color: '#03ef55', tooltip: 'Rota Aprovada' };
-            case 'reprovado':
+            case 'Reprovado':
               return { color: '#ff3d71', tooltip: 'Rota Reprovada' };
             default:
               return { color: '#ffc107', tooltip: 'Rota Não Verificada' };
@@ -132,6 +132,7 @@ const Historico = () => {
   const [openInfoRota, setOpenInfoRota] = useState(false);
   const [rows, setRows] = useState(false);
   const [selectedRota, setSelectedRota] = useState(null);
+  console.log('🚀 - Historico - selectedRota:', selectedRota);
   const closeRotas = () => setOpenRotas(false);
 
   const handleClick = (e) => {

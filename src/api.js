@@ -1,15 +1,15 @@
-export const API_URL = "http://localhost:8000/api/";
+export const API_URL = 'http://localhost:8000/api/';
 
 export function LOGIN(usuario, senha) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "auth/login",
+    url: API_URL + 'auth/login',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ usuario, senha }),
     },
@@ -17,103 +17,103 @@ export function LOGIN(usuario, senha) {
 }
 
 export function GET_USUR() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/usur`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 
 export function GET_VEICULOS(searchTerm) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: API_URL + `veiculos?search=${searchTerm}`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 export function GET_ROTAS(cod_veiculo) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/rotas?cod_veiculo=${cod_veiculo}`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 export function CREATE_VEICULOS(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "insert/veiculos",
+    url: API_URL + 'insert/veiculos',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(data),
     },
   };
 }
 export function CREATE_ROTAS(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "insert/rotas",
+    url: API_URL + 'insert/rotas',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(data),
     },
   };
 }
 export function DELETE_VEICULOS(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "delete/veiculos",
+    url: API_URL + 'delete/veiculos',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ placa: data.placa }),
     },
   };
 }
 export function EDIT_VEICULOS(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "edit/veiculos",
+    url: API_URL + 'edit/veiculos',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
         numVeiculo: data.numVeiculo,
@@ -131,15 +131,15 @@ export function EDIT_VEICULOS(data) {
   };
 }
 export function INSERT_ROTA(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "insert/rota",
+    url: API_URL + 'insert/rota',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
         localPartida: data.localPartida,
@@ -149,48 +149,48 @@ export function INSERT_ROTA(data) {
   };
 }
 export function CREATE_USUARIO(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "insert/usuario",
+    url: API_URL + 'insert/usuario',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(data),
     },
   };
 }
 export function GET_USUARIOS(searchTerm) {
-  const token = localStorage.getItem("token");
-  const url = new URL(API_URL + "usuarios");
+  const token = localStorage.getItem('token');
+  const url = new URL(API_URL + 'usuarios');
   if (searchTerm) {
-    url.searchParams.append("search", searchTerm);
+    url.searchParams.append('search', searchTerm);
   }
   return {
     url: url.toString(),
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 export function EDIT_USUARIO(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "edit/usuario",
+    url: API_URL + 'edit/usuario',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
         cpf: data.cpf,
@@ -204,28 +204,28 @@ export function EDIT_USUARIO(data) {
   };
 }
 export function DELETE_USUARIOS(data) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
-    url: API_URL + "delete/usuario",
+    url: API_URL + 'delete/usuario',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ codUsur: data.cod_usuario }),
     },
   };
 }
 export function EDIT_STATUS_VEICULO(data, status) {
-  const token = localStorage.getItem("token");
-  return fetch(API_URL + "edit/status/veiculo", {
-    method: "POST",
+  const token = localStorage.getItem('token');
+  return fetch(API_URL + 'edit/status/veiculo', {
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify({
       placa: data.placa,
@@ -234,30 +234,30 @@ export function EDIT_STATUS_VEICULO(data, status) {
   });
 }
 export function GET_CEP(cep) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: `${API_URL}busca/cep/${cep}`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 
 export function UPDATE_STATUS_ROTA(data, status, desc) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: `${API_URL}edit/status/rota`,
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
         codRota: data.cod_rota,
@@ -269,15 +269,15 @@ export function UPDATE_STATUS_ROTA(data, status, desc) {
   };
 }
 export function UPDATE_OBS_ROTA(data, desc) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: `${API_URL}update/obs/rota`,
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
         cod_veiculo: data.veiculo.cod_veiculo,
@@ -291,46 +291,62 @@ export function UPDATE_OBS_ROTA(data, desc) {
   };
 }
 export function GET_OBS_ROTAS(cod_veiculo, cod_rota) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url:
       API_URL + `get/obs/rotas?cod_veiculo=${cod_veiculo}&cod_rota=${cod_rota}`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    },
+  };
+}
+export function GET_STATUS_ROTAS(cod_veiculo, cod_rota) {
+  const token = localStorage.getItem('token');
+  return {
+    url:
+      API_URL +
+      `get/status/rotas?cod_veiculo=${cod_veiculo}&cod_rota=${cod_rota}`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 export function GET_RELATORIO_ROTAS(cod_veiculo) {
-  console.log("🚀 ~ GET_RELATORIO_ROTAS ~ cod_veiculo:", cod_veiculo);
-  const token = localStorage.getItem("token");
+  console.log('🚀 ~ GET_RELATORIO_ROTAS ~ cod_veiculo:', cod_veiculo);
+  const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/relatorio/rotas?cod_veiculo=${cod_veiculo}`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
 }
 
 export function GET_MOTORISTAS() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/motoristas`,
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     },
   };
