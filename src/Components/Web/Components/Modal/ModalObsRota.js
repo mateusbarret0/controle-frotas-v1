@@ -120,7 +120,7 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
                   mr: 42,
                 }}
               >
-                Adicionar Observações - {data?.COD_ROTA}
+                Observações da rota - {data?.cod_rota}
               </Typography>
             </Box>
           </>
@@ -203,7 +203,7 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
                 startIcon={<CheckIcon />}
                 onClick={obsRota}
               >
-                ADICIONAR
+                OK
               </Button>
             </Box>
           </>

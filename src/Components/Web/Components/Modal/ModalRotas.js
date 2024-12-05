@@ -367,7 +367,7 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
                   startIcon={<AddCircleOutlineIcon />}
                   onClick={openObsRota}
                 >
-                  ADICIONAR OBSERVAÇÕES
+                  OBSERVAÇÕES DA ROTA
                 </Button>
               </Box>
               <Divider sx={{ backgroundColor: "#FFFFFF", height: 2 }} />
