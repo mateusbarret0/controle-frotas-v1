@@ -1,6 +1,6 @@
 export const API_URL = 'http://localhost:8000/api/';
 
-export function LOGIN(usuario, senha) {
+export function LOGIN(usuario, password) {
   const token = localStorage.getItem('token');
   return {
     url: API_URL + 'auth/login',
@@ -11,7 +11,7 @@ export function LOGIN(usuario, senha) {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify({ usuario, senha }),
+      body: JSON.stringify({ usuario, password }),
     },
   };
 }

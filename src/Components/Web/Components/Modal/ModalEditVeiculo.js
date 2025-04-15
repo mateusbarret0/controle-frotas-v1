@@ -32,9 +32,7 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
   const [dataUltManutencao, setDataUltManutencao] = useState('');
   const [empresa, setEmpresa] = useState('');
   const [motorista, setMotorista] = useState('');
-  console.log('🚀 - ModalEditVeiculo - motorista:', motorista);
   const [selectMotoristas, setSelectMotoristas] = useState([]);
-  console.log('🚀 - ModalEditVeiculo - selectMotoristas:', selectMotoristas);
   const [tipoVeiculo, setTipoVeiculo] = useState('');
 
   useEffect(() => {
@@ -149,8 +147,8 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                     borderRadius: 3,
                   }}
                 >
-                  <MenuItem value="Van">Van</MenuItem>
-                  <MenuItem value="Ônibus">Ônibus</MenuItem>
+                  <MenuItem value="1">Van</MenuItem>
+                  <MenuItem value="2">Ônibus</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -280,8 +278,8 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                       }}
                     >
                       {selectMotoristas.map((motorista) => (
-                        <MenuItem value={motorista.cod_usuario}>
-                          {motorista.cod_usuario} - {motorista.nome}
+                        <MenuItem value={motorista.id}>
+                          {motorista.id} - {motorista.nome}
                         </MenuItem>
                       ))}
                     </Select>
