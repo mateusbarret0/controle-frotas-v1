@@ -28,8 +28,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
   const [capacidade, setCapacidade] = useState('');
   const [dataProxManutencao, setDataProxManutencao] = useState('');
   const [dataUltManutencao, setDataUltManutencao] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [motorista, setMotorista] = useState('');
+  // const [empresa, setEmpresa] = useState('');
+  // const [motorista, setMotorista] = useState('');
   const [selectMotoristas, setSelectMotoristas] = useState([]);
   const [tipoVeiculo, setTipoVeiculo] = useState('');
 
@@ -54,8 +54,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
     setCapacidade('');
     setDataProxManutencao('');
     setDataUltManutencao('');
-    setEmpresa('');
-    setMotorista('');
+    // setEmpresa('');
+    // setMotorista('');
     setTipoVeiculo('');
   };
 
@@ -82,8 +82,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
       capacidade,
       dataProxManutencao,
       dataUltManutencao,
-      empresa,
-      motorista,
       tipoVeiculo,
     });
 
@@ -257,7 +255,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
                   </ThemeProvider>
                 </Box>
 
-                <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
+                {/* <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
                   <ThemeProvider theme={darkTheme}>
                     <TextField
                       sx={{
@@ -298,7 +296,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
                       </Select>
                     </FormControl>
                   </ThemeProvider>
-                </Box>
+                </Box> */}
               </Box>
             </LocalizationProvider>
           }
