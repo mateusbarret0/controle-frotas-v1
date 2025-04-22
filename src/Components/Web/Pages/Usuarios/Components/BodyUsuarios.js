@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -6,38 +6,38 @@ import {
   IconButton,
   TextField,
   Tooltip,
-} from "@mui/material";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import Grid from "../../../Components/Grid/Grid";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModalEditUsuario from "../../../Components/Modal/ModalEditUsuario";
-import ModalDeleteUsuario from "../../../Components/Modal/ModalDeleteUsuario";
-import ModalCadastroUsuario from "../../../Components/Modal/ModalCadastroUsuario";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
-import CircleIcon from "@mui/icons-material/Circle";
-import { GET_USUARIOS } from "../../../../../api";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from '@mui/material';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import Grid from '../../../Components/Grid/Grid';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ModalEditUsuario from '../../../Components/Modal/ModalEditUsuario';
+import ModalDeleteUsuario from '../../../Components/Modal/ModalDeleteUsuario';
+import ModalCadastroUsuario from '../../../Components/Modal/ModalCadastroUsuario';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import CircleIcon from '@mui/icons-material/Circle';
+import { GET_USUARIOS } from '../../../../../api';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const BodyFrotas = () => {
   const columns = [
     {
-      field: "cod_usuario",
-      headerName: "CÓDIGO",
+      field: 'cod_usur',
+      headerName: 'CÓDIGO',
       flex: 0.4,
-      cellStyle: { textAlign: "center" },
-      headerClass: "header-center",
+      cellStyle: { textAlign: 'center' },
+      headerClass: 'header-center',
     },
     {
-      field: "status",
-      headerName: "STATUS",
+      field: 'status',
+      headerName: 'STATUS',
       flex: 0.4,
       cellRenderer: ({ data }) => {
-        const iconColor = data.status === "ativo" ? "#03ef55" : "#ff3d71";
+        const iconColor = data.status === 'ativo' ? '#03ef55' : '#ff3d71';
         const tooltipText =
-          data.status === "ativo" ? "Usuário Ativo" : "Usuário Inativo";
+          data.status === 'ativo' ? 'Usuário Ativo' : 'Usuário Inativo';
 
         return (
           <Box
@@ -55,21 +55,21 @@ const BodyFrotas = () => {
         );
       },
     },
-    { field: "nome", headerName: "NOME", flex: 1 },
-    { field: "cpf", headerName: "CPF", flex: 1 },
-    { field: "email", headerName: "EMAIL", flex: 1 },
+    { field: 'nome', headerName: 'NOME', flex: 1 },
+    { field: 'cpf', headerName: 'CPF', flex: 1 },
+    { field: 'email', headerName: 'EMAIL', flex: 1 },
     {
-      field: "descricao",
-      headerName: "TIPO",
+      field: 'descricao',
+      headerName: 'TIPO',
       flex: 1,
     },
     {
-      field: "editar",
-      headerName: "EDITAR",
+      field: 'editar',
+      headerName: 'EDITAR',
       flex: 1,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: "1px solid #FFAA00", width: "50%" }}
+          sx={{ border: '1px solid #FFAA00', width: '50%' }}
           onClick={() => {
             setOpenEdit(true);
             setSelectedRow(data);
@@ -77,7 +77,7 @@ const BodyFrotas = () => {
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: "100%", color: "#FFAA00" }}
+            sx={{ p: 0, width: '100%', color: '#FFAA00' }}
           >
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
@@ -85,12 +85,12 @@ const BodyFrotas = () => {
       ),
     },
     {
-      field: "apagar",
-      headerName: "APAGAR",
+      field: 'apagar',
+      headerName: 'APAGAR',
       flex: 1,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: "1px solid #FF3D71", width: "50%" }}
+          sx={{ border: '1px solid #FF3D71', width: '50%' }}
           onClick={() => {
             setDelete(true);
             setSelectedRow(data);
@@ -98,7 +98,7 @@ const BodyFrotas = () => {
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: "100%", color: "#FF3D71" }}
+            sx={{ p: 0, width: '100%', color: '#FF3D71' }}
           >
             <DeleteOutlineOutlinedIcon fontSize="small" />
           </IconButton>
@@ -115,7 +115,7 @@ const BodyFrotas = () => {
   const closeEdit = () => setOpenEdit(false);
   const closeDelete = () => setDelete(false);
   const [openCadastroUsuario, setOpenCadastroUsuario] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const getUsuarios = async (searchTerm) => {
     const { url, options } = GET_USUARIOS(searchTerm);
@@ -125,10 +125,10 @@ const BodyFrotas = () => {
       if (response.ok) {
         setRows(json);
       } else {
-        toast.error("Erro ao buscar usuários");
+        toast.error('Erro ao buscar usuários');
       }
     } catch (error) {
-      toast.error("Erro na requisição: " + error.message);
+      toast.error('Erro na requisição: ' + error.message);
     }
   };
 
@@ -165,16 +165,16 @@ const BodyFrotas = () => {
         draggable
         pauseOnHover
         toastStyle={{
-          backgroundColor: "#192038",
-          color: "#FFFFFF",
+          backgroundColor: '#192038',
+          color: '#FFFFFF',
         }}
       />
       <Box
         sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           mb: 2,
         }}
       >
@@ -182,10 +182,10 @@ const BodyFrotas = () => {
           label={
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                color: "#FFFFFF",
-                fontSize: "15px",
+                display: 'flex',
+                alignItems: 'center',
+                color: '#FFFFFF',
+                fontSize: '15px',
               }}
             >
               <SearchIcon sx={{ marginRight: 1 }} />
@@ -194,15 +194,15 @@ const BodyFrotas = () => {
           }
           variant="filled"
           sx={{
-            backgroundColor: "#192038",
+            backgroundColor: '#192038',
             borderRadius: 3,
-            color: "#FFFFFF",
-            width: "40%",
+            color: '#FFFFFF',
+            width: '40%',
           }}
           InputProps={{
             style: {
-              color: "#FFFFFF",
-              fontSize: "15px",
+              color: '#FFFFFF',
+              fontSize: '15px',
             },
           }}
           value={searchTerm}
@@ -211,14 +211,14 @@ const BodyFrotas = () => {
         />
         <Button
           sx={{
-            textTransform: "none",
-            color: "#3366FF",
-            borderColor: "#3366FF",
-            width: "30%",
+            textTransform: 'none',
+            color: '#3366FF',
+            borderColor: '#3366FF',
+            width: '30%',
             height: 40,
-            "&:hover": {
-              color: "#FFFFFF",
-              border: "2px solid #FFFFFF",
+            '&:hover': {
+              color: '#FFFFFF',
+              border: '2px solid #FFFFFF',
             },
           }}
           variant="outlined"
@@ -231,7 +231,7 @@ const BodyFrotas = () => {
 
       <Divider sx={{ mb: 2 }} />
 
-      <Box sx={{ height: 670, width: "100%", color: "white" }}>
+      <Box sx={{ height: 670, width: '100%', color: 'white' }}>
         <Grid ref={gridRef} columns={columns} rows={rows} />
       </Box>
 

@@ -30,8 +30,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
   const [capacidade, setCapacidade] = useState('');
   const [dataProxManutencao, setDataProxManutencao] = useState('');
   const [dataUltManutencao, setDataUltManutencao] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [motorista, setMotorista] = useState('');
   const [selectMotoristas, setSelectMotoristas] = useState([]);
   const [tipoVeiculo, setTipoVeiculo] = useState('');
 
@@ -44,8 +42,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
       setCapacidade(data?.capacidade);
       setDataProxManutencao(data?.dt_prox_manu);
       setDataUltManutencao(data?.dt_ultim_manu);
-      setEmpresa(data?.empresa);
-      setMotorista(data?.cod_motorista);
       setTipoVeiculo(data?.tipo_veiculo);
     }
   }, [data]);
@@ -73,8 +69,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
       capacidade,
       dataProxManutencao,
       dataUltManutencao,
-      empresa,
-      motorista,
       tipoVeiculo,
     });
 
@@ -241,49 +235,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
                       fontSize: '1rem',
                     }}
                   />
-                </ThemeProvider>
-              </Box>
-
-              <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
-                <ThemeProvider theme={darkTheme}>
-                  <TextField
-                    sx={{
-                      backgroundColor: '#192038',
-                      borderRadius: 3,
-                      width: '50%',
-                      fontSize: '1rem',
-                    }}
-                    id="empresa"
-                    label="Empresa responsável"
-                    variant="outlined"
-                    value={empresa}
-                    onChange={(e) => setEmpresa(e.target.value)}
-                  />
-                  <FormControl sx={{ width: '50%' }}>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      sx={{ color: '#FFFFFF' }}
-                    >
-                      Motoristas
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={motorista}
-                      label="Motoristas"
-                      onChange={(e) => setMotorista(e.target.value)}
-                      sx={{
-                        color: '#FFFFFF',
-                        backgroundColor: '#192038',
-                      }}
-                    >
-                      {selectMotoristas.map((motorista) => (
-                        <MenuItem value={motorista.id}>
-                          {motorista.id} - {motorista.nome}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
                 </ThemeProvider>
               </Box>
             </Box>

@@ -90,13 +90,24 @@ const Historico = () => {
       headerName: 'TEMPO GASTO',
       flex: 1,
       valueGetter: (params) => {
-        const inicio = dayjs(params.data.partida.data_hora);
-        const chegada = dayjs(params.data.chegada.data_hora);
-        return chegada.diff(inicio, 'minute');
+        const partida = params.data.partida?.data_hora;
+        const chegada = params.data.chegada?.data_hora;
+
+        if (!partida || !chegada) return null;
+
+        const inicio = dayjs(partida);
+        const fim = dayjs(chegada);
+
+        return fim.diff(inicio, 'minute');
       },
       valueFormatter: (params) => {
+        if (params.value === null || params.value === undefined) {
+          return 'Indefinido';
+        }
+
         const hours = Math.floor(params.value / 60);
         const minutes = params.value % 60;
+
         return `${hours}h ${minutes}m`;
       },
     },
@@ -158,8 +169,9 @@ const Historico = () => {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
+      console.log('🚀 - Historico - getRotas - json:', json);
       if (response.ok) {
-        setRows(json);
+        setRows(json.rotas);
       } else {
         console.log('Erro ao buscar veículos');
       }

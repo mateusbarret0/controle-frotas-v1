@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import ModalStyle from "./ModalStyle";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import React, { useState } from 'react';
+import ModalStyle from './ModalStyle';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import {
   Button,
   FormControl,
@@ -9,53 +9,53 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import CheckIcon from "@mui/icons-material/Check";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CREATE_USUARIO } from "../../../../api";
-import { toast, ToastContainer } from "react-toastify";
-import InputDate from "../Input/InputDate";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import InputMask from "react-input-mask";
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import CheckIcon from '@mui/icons-material/Check';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CREATE_USUARIO } from '../../../../api';
+import { toast, ToastContainer } from 'react-toastify';
+import InputDate from '../Input/InputDate';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import InputMask from 'react-input-mask';
 
 const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
   const [loading, setLoading] = useState(false);
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
-  const [tipoUsuario, setTipoUsuario] = useState("");
+  const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('');
+  const [tipoUsuario, setTipoUsuario] = useState('');
 
   const darkTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: 'dark',
       background: {
-        default: "#121212",
-        paper: "#192038",
+        default: '#121212',
+        paper: '#192038',
       },
       text: {
-        primary: "#FFFFFF",
-        secondary: "#B0B0B0",
+        primary: '#FFFFFF',
+        secondary: '#B0B0B0',
       },
     },
   });
 
   const clearFields = () => {
-    setNome("");
-    setCpf("");
-    setTipoUsuario("");
-    setStatus("");
-    setEmail("");
+    setNome('');
+    setCpf('');
+    setTipoUsuario('');
+    setStatus('');
+    setEmail('');
   };
 
   const createUsuario = async () => {
     if (loading) return;
 
     if (!nome || !cpf || !tipoUsuario || !status || !email) {
-      toast.error("Por favor, preencha todos os campos obrigatórios!");
+      toast.error('Por favor, preencha todos os campos obrigatórios!');
       return;
     }
 
@@ -70,17 +70,17 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
-      console.log("🚀 ~ createUsuario ~ json:", json);
+      console.log('🚀 ~ createUsuario ~ json:', json);
       if (response.ok) {
         getUsuarios();
         clearFields();
         // toast.success("Usuário cadastrado com sucesso!");
         close();
       } else {
-        console.log("Erro ao cadastrar o usuário:", json);
+        console.log('Erro ao cadastrar o usuário:', json);
       }
     } catch (error) {
-      console.error("Erro na requisição:", error);
+      console.error('Erro na requisição:', error);
     } finally {
       setLoading(false);
     }
@@ -95,12 +95,12 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
           close={close}
           title={
             <>
-              <Box sx={{ display: "flex" }}>
+              <Box sx={{ display: 'flex' }}>
                 <Typography
                   sx={{
                     fontSize: 25,
-                    fontWeight: "700",
-                    color: "white",
+                    fontWeight: '700',
+                    color: 'white',
                     mr: 42,
                   }}
                 >
@@ -110,7 +110,7 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                   <FormControl sx={{ width: 200 }}>
                     <InputLabel
                       id="demo-simple-select-label"
-                      sx={{ color: "#FFFFFF" }}
+                      sx={{ color: '#FFFFFF' }}
                     >
                       Tipo de Usuário
                     </InputLabel>
@@ -121,14 +121,13 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                       onChange={(e) => setTipoUsuario(e.target.value)}
                       label="Tipo de Usuário"
                       sx={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#192038",
+                        color: '#FFFFFF',
+                        backgroundColor: '#192038',
                         borderRadius: 1,
                       }}
                     >
-                      <MenuItem value="1">Funcionário</MenuItem>
-                      <MenuItem value="2">Terceiro</MenuItem>
-                      <MenuItem value="3">Motorista</MenuItem>
+                      <MenuItem value="1">Supervisor</MenuItem>
+                      <MenuItem value="2">Motorista</MenuItem>
                     </Select>
                   </FormControl>
                 </ThemeProvider>
@@ -138,15 +137,15 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
           color={color}
           content={
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box sx={{ width: "100%", height: "100%" }}>
-                <Box sx={{ width: "100%", display: "flex", gap: 2, mb: 2 }}>
+              <Box sx={{ width: '100%', height: '100%' }}>
+                <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
                   <ThemeProvider theme={darkTheme}>
                     <TextField
                       sx={{
-                        backgroundColor: "#192038",
+                        backgroundColor: '#192038',
                         borderRadius: 3,
-                        width: "75%",
-                        fontSize: "1rem",
+                        width: '75%',
+                        fontSize: '1rem',
                       }}
                       id="nome"
                       label="Insira o nome do funcionário:"
@@ -163,10 +162,10 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                       {() => (
                         <TextField
                           sx={{
-                            backgroundColor: "#192038",
+                            backgroundColor: '#192038',
                             borderRadius: 3,
-                            width: "25%",
-                            fontSize: "1rem",
+                            width: '25%',
+                            fontSize: '1rem',
                           }}
                           id="cpf"
                           label="CPF"
@@ -177,14 +176,14 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                   </ThemeProvider>
                 </Box>
 
-                <Box sx={{ width: "100%", display: "flex", gap: 2, mb: 2 }}>
+                <Box sx={{ width: '100%', display: 'flex', gap: 2, mb: 2 }}>
                   <ThemeProvider theme={darkTheme}>
                     <TextField
                       sx={{
-                        backgroundColor: "#192038",
+                        backgroundColor: '#192038',
                         borderRadius: 3,
-                        width: "75%",
-                        fontSize: "1rem",
+                        width: '75%',
+                        fontSize: '1rem',
                       }}
                       id="email"
                       label="E-MAIL"
@@ -192,10 +191,10 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <FormControl sx={{ width: "25%" }}>
+                    <FormControl sx={{ width: '25%' }}>
                       <InputLabel
                         id="demo-simple-select-label"
-                        sx={{ color: "#FFFFFF" }}
+                        sx={{ color: '#FFFFFF' }}
                       >
                         Status
                       </InputLabel>
@@ -206,8 +205,8 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
                         onChange={(e) => setStatus(e.target.value)}
                         label="Status"
                         sx={{
-                          color: "#FFFFFF",
-                          backgroundColor: "#192038",
+                          color: '#FFFFFF',
+                          backgroundColor: '#192038',
                           borderRadius: 1,
                         }}
                       >
@@ -222,17 +221,17 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
           }
           action={
             <>
-              <Box sx={{ width: "100%", display: "flex", gap: 2 }}>
+              <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
                 <Button
                   sx={{
-                    textTransform: "none",
-                    color: "red",
-                    borderColor: "red",
-                    width: "50%",
+                    textTransform: 'none',
+                    color: 'red',
+                    borderColor: 'red',
+                    width: '50%',
                     height: 40,
-                    "&:hover": {
-                      color: "#e00000",
-                      border: "2px solid #e00000",
+                    '&:hover': {
+                      color: '#e00000',
+                      border: '2px solid #e00000',
                     },
                   }}
                   variant="outlined"
@@ -244,14 +243,14 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
 
                 <Button
                   sx={{
-                    textTransform: "none",
-                    color: "green",
-                    borderColor: "green",
-                    width: "50%",
+                    textTransform: 'none',
+                    color: 'green',
+                    borderColor: 'green',
+                    width: '50%',
                     height: 40,
-                    "&:hover": {
-                      color: "#00c500",
-                      border: "2px solid #00c500",
+                    '&:hover': {
+                      color: '#00c500',
+                      border: '2px solid #00c500',
                     },
                   }}
                   variant="outlined"
