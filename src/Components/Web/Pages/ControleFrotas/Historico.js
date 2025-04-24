@@ -69,22 +69,48 @@ const Historico = () => {
       field: 'partida.data_hora',
       headerName: 'DATA INÍCIO',
       flex: 1,
+      valueGetter: (params) => params.data.partida?.data_hora || null,
       valueFormatter: (params) => {
-        return dayjs(params.value).format('DD/MM/YYYY - HH:mm');
+        return params.value
+          ? dayjs(params.value).format('DD/MM/YYYY - HH:mm')
+          : 'Não informado';
       },
     },
-    { field: 'partida.cidade', headerName: 'CIDADE ORIGEM', flex: 1 },
-    { field: 'partida.estado', headerName: 'UF', flex: 0.3 },
+    {
+      field: 'partida.cidade',
+      headerName: 'CIDADE ORIGEM',
+      flex: 1,
+      valueGetter: (params) => params.data.partida?.cidade || 'Não informada',
+    },
+    {
+      field: 'partida.estado',
+      headerName: 'UF',
+      flex: 0.3,
+      valueGetter: (params) => params.data.partida?.estado || 'UF',
+    },
     {
       field: 'chegada.data_hora',
       headerName: 'DATA TÉRMINO',
       flex: 1,
+      valueGetter: (params) => params.data.chegada?.data_hora || null,
       valueFormatter: (params) => {
-        return dayjs(params.value).format('DD/MM/YYYY - HH:mm');
+        return params.value
+          ? dayjs(params.value).format('DD/MM/YYYY - HH:mm')
+          : 'Não informado';
       },
     },
-    { field: 'chegada.cidade', headerName: 'CIDADE DESTINO', flex: 1 },
-    { field: 'chegada.estado', headerName: 'UF', flex: 0.3 },
+    {
+      field: 'chegada.cidade',
+      headerName: 'CIDADE DESTINO',
+      flex: 1,
+      valueGetter: (params) => params.data.chegada?.cidade || 'Não informada',
+    },
+    {
+      field: 'chegada.estado',
+      headerName: 'UF',
+      flex: 0.3,
+      valueGetter: (params) => params.data.chegada?.estado || 'UF',
+    },
     {
       field: 'tempo_gasto',
       headerName: 'TEMPO GASTO',

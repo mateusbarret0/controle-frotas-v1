@@ -25,20 +25,20 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   const [loading, setLoading] = useState(false);
-  const [cepPartida, setCepPartida] = useState('');
+  // const [cepPartida, setCepPartida] = useState('');
   const [cepChegada, setCepChegada] = useState('');
-  const [numeroPartida, setNumeroPartida] = useState('');
+  // const [numeroPartida, setNumeroPartida] = useState('');
   const [numeroChegada, setNumeroChegada] = useState('');
-  const [descricaoPartida, setDescricaoPartida] = useState('');
+  // const [descricaoPartida, setDescricaoPartida] = useState('');
   const [descricaoChegada, setDescricaoChegada] = useState('');
-  const [complementoPartida, setComplementoPartida] = useState('');
+  // const [complementoPartida, setComplementoPartida] = useState('');
   const [complementoChegada, setComplementoChegada] = useState('');
-  const [enderecoPartida, setEnderecoPartida] = useState({
-    rua: '',
-    bairro: '',
-    cidade: '',
-    estado: '',
-  });
+  // const [enderecoPartida, setEnderecoPartida] = useState({
+  //   rua: '',
+  //   bairro: '',
+  //   cidade: '',
+  //   estado: '',
+  // });
   const [enderecoChegada, setEnderecoChegada] = useState({
     rua: '',
     bairro: '',
@@ -64,15 +64,15 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
   });
 
   const clearFields = () => {
-    setCepPartida('');
+    // setCepPartida('');
     setCepChegada('');
-    setNumeroPartida('');
+    // setNumeroPartida('');
     setNumeroChegada('');
-    setDescricaoPartida('');
+    // setDescricaoPartida('');
     setDescricaoChegada('');
-    setComplementoPartida('');
+    // setComplementoPartida('');
     setComplementoChegada('');
-    setEnderecoPartida({ rua: '', bairro: '', cidade: '', estado: '' });
+    // setEnderecoPartida({ rua: '', bairro: '', cidade: '', estado: '' });
     setEnderecoChegada({ rua: '', bairro: '', cidade: '', estado: '' });
     setParadas([]);
   };
@@ -157,8 +157,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
 
   const validarCampos = () => {
     const camposObrigatorios = [
-      { campo: cepPartida, nome: 'CEP de Partida' },
-      { campo: numeroPartida, nome: 'Número de Partida' },
+      // { campo: cepPartida, nome: 'CEP de Partida' },
+      // { campo: numeroPartida, nome: 'Número de Partida' },
       { campo: cepChegada, nome: 'CEP de Chegada' },
       { campo: numeroChegada, nome: 'Número de Chegada' },
     ];
@@ -179,15 +179,15 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     const { url, options } = CREATE_ROTAS({
       motorista,
       veiculo,
-      cepPartida,
+      // cepPartida,
       cepChegada,
-      numeroPartida,
+      // numeroPartida,
       numeroChegada,
-      descricaoPartida,
+      // descricaoPartida,
       descricaoChegada,
-      complementoPartida,
+      // complementoPartida,
       complementoChegada,
-      enderecoPartida,
+      // enderecoPartida,
       enderecoChegada,
       paradas,
     });
@@ -268,7 +268,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     ))}
                   </Select>
                 </FormControl>
-                <Typography
+                {/* <Typography
                   sx={{
                     fontSize: 20,
                     fontWeight: '700',
@@ -379,7 +379,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     value={complementoPartida}
                     onChange={(e) => setComplementoPartida(e.target.value)}
                   />
-                </Box>
+                </Box> */}
                 <Typography
                   sx={{
                     fontSize: 20,
