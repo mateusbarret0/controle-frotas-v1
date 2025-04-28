@@ -194,15 +194,14 @@ const ControleFrotas = () => {
       setRows(updatedRows);
       await EDIT_STATUS_VEICULO(data, newStatus);
       let status;
-      if (newStatus == 'Disponível') {
+      if (newStatus === 'Disponível') {
         status = 'DISPONÍVEL';
       } else {
         status = 'INDISPONÍVEL';
       }
-      // toast.success(`Status atualizado para ${status} com sucesso!`);
-      // console.log('Status atualizado com sucesso!');
+      toast.success(`Status atualizado para ${status} com sucesso!`);
     } catch (error) {
-      console.error('Erro ao atualizar o status do veículo:', error);
+      toast.error('Falha ao atualizar o status do veículo.');
     }
   };
 
