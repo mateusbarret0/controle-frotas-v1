@@ -21,7 +21,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
-  console.log('🚀 - ModalEditVeiculo - data:', data);
   const [loading, setLoading] = useState(false);
   const [numVeiculo, setNumVeiculo] = useState('');
   const [modelo, setModelo] = useState('');
@@ -82,7 +81,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
         close();
       } else {
         toast.error('Erro ao atualizar o veículo');
-        console.log('Erro ao atualizar o veículo:', json);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -95,7 +93,6 @@ const ModalEditVeiculo = ({ open, close, color, getVeiculos, data }) => {
     const { url, options } = GET_MOTORISTAS();
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log(json);
     if (response.ok) setSelectMotoristas(json);
     else console.log('Erro ao buscar motoristas:', json);
   };

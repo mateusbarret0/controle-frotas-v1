@@ -96,7 +96,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
         close();
       } else {
         toast.error('Erro ao cadastrar o veículo');
-        console.log('Erro ao cadastrar o veículo:', json);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -109,7 +108,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getVeiculos }) => {
     const { url, options } = GET_MOTORISTAS();
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log(json);
     if (response.ok) setSelectMotoristas(json);
     else console.log('Erro ao buscar motoristas:', json);
   };

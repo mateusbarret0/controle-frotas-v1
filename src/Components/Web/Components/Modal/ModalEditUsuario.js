@@ -22,7 +22,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import InputMask from 'react-input-mask';
 
 const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
-  console.log('🚀 ~ ModalEditUsuario ~ data:', data);
   const [loading, setLoading] = useState(false);
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
@@ -81,7 +80,6 @@ const ModalEditUsuario = ({ open, close, color, getUsuarios, data }) => {
         close();
       } else {
         toast.error('Erro ao atualizar o usuário');
-        console.log('Erro ao atualizar o usuário:', json);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);

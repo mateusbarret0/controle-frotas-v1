@@ -70,7 +70,6 @@ const ModalCadastroUsuario = ({ open, close, color, getUsuarios }) => {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
-      console.log('🚀 ~ createUsuario ~ json:', json);
       if (response.ok) {
         getUsuarios();
         clearFields();

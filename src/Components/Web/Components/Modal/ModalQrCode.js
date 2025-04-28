@@ -1,26 +1,32 @@
-import { React, useRef } from "react";
-import ModalStyle from "../Modal/ModalStyle";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { QRCodeCanvas } from "qrcode.react";
+import { React, useRef } from 'react';
+import ModalStyle from '../Modal/ModalStyle';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const ModalQrCode = ({ open, close, color, data }) => {
   const qrRef = useRef();
-  const qrCodeData = JSON.stringify(data);
+  const qrCodeData = JSON.stringify({
+    linkDriver: [
+      {
+        cod_rota: data?.cod_rota,
+      },
+    ],
+  });
 
   const handlePrint = () => {
-    const canvas = qrRef.current.querySelector("canvas");
+    const canvas = qrRef.current.querySelector('canvas');
     if (!canvas) {
-      console.error("Canvas não encontrado!");
+      console.error('Canvas não encontrado!');
       return;
     }
 
-    const qrImage = canvas.toDataURL("image/png");
-    const iframe = document.createElement("iframe");
-    iframe.style.position = "absolute";
-    iframe.style.top = "-1000px";
-    iframe.style.left = "-1000px";
+    const qrImage = canvas.toDataURL('image/png');
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-1000px';
+    iframe.style.left = '-1000px';
     document.body.appendChild(iframe);
 
     const doc = iframe.contentWindow.document;
@@ -45,13 +51,13 @@ const ModalQrCode = ({ open, close, color, data }) => {
               margin-bottom: 10px;
             }
             img {
-              width: 70mm; /* Ajusta o tamanho do QR Code para o papel */
+              width: 70mm;
               height: 70mm;
             }
           </style>
         </head>
         <body>
-          <h1>QR Code / ${data?.placa}</h1> 
+          <h1>QR CODE - Rota ${data?.cod_rota}</h1> 
           <img src="${qrImage}" alt="QR Code" />
         </body>
       </html>
@@ -75,13 +81,13 @@ const ModalQrCode = ({ open, close, color, data }) => {
                 fontSize: 25,
                 pt: 0,
                 pb: 0,
-                fontWeight: "700",
-                color: "#FFFFFF",
-                textTransform: "uppercase",
-                fontWeight: "bold",
+                fontWeight: '700',
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                fontWeight: 'bold',
               }}
             >
-              QR CODE / {data?.placa}
+              QR CODE - Rota {data?.cod_rota}
             </Typography>
           </>
         }
@@ -91,23 +97,23 @@ const ModalQrCode = ({ open, close, color, data }) => {
             <Box>
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "90%",
-                  height: "39vh",
-                  backgroundColor: "#ffffff",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '90%',
+                  height: '39vh',
+                  backgroundColor: '#ffffff',
                   borderRadius: 4,
-                  margin: "auto",
+                  margin: 'auto',
                 }}
                 ref={qrRef}
               >
                 <QRCodeCanvas
                   value={qrCodeData}
                   size={350}
-                  bgColor={"#ffffff"}
-                  fgColor={"#000000"}
-                  level={"H"}
+                  bgColor={'#ffffff'}
+                  fgColor={'#000000'}
+                  level={'H'}
                 />
               </Box>
             </Box>
@@ -116,10 +122,10 @@ const ModalQrCode = ({ open, close, color, data }) => {
         action={
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
             <Button
@@ -127,11 +133,11 @@ const ModalQrCode = ({ open, close, color, data }) => {
               color="primary"
               onClick={handlePrint}
               sx={{
-                width: "70%",
-                backgroundColor: "#222b45",
-                border: "1px solid #3263f7",
-                color: "#3263f7",
-                "&:hover": { border: "1px solid #ffffff", color: "#ffffff" },
+                width: '70%',
+                backgroundColor: '#222b45',
+                border: '1px solid #3263f7',
+                color: '#3263f7',
+                '&:hover': { border: '1px solid #ffffff', color: '#ffffff' },
               }}
             >
               Imprimir QR Code

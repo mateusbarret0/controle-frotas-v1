@@ -27,7 +27,6 @@ const ModalCreateRotas = ({ open, close, color, data }) => {
   const [localPartida, setLocalPartida] = useState('');
   const [localChegada, setLocalChegada] = useState('');
   const [rows, setRows] = useState([]);
-  console.log('🚀 ~ ModalCreateRotas ~ selectMotoristas:', selectMotoristas);
 
   const gridRef = useRef(null);
 

@@ -52,7 +52,6 @@ const ModalReprovarRota = ({
       }
 
       const json = await response.json();
-      console.log('Resposta do servidor:', json);
 
       if (json.status === 'success') {
         getRotas();

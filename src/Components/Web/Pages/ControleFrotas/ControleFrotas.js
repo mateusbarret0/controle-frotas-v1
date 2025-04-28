@@ -6,6 +6,7 @@ import {
   IconButton,
   Switch,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -21,7 +22,6 @@ import { EDIT_STATUS_VEICULO, GET_VEICULOS } from '../../../../api';
 import ModalDeleteVeiculo from '../../Components/Modal/ModalDeleteVeiculo';
 import ModalQrCode from '../../Components/Modal/ModalQrCode';
 import ModalEditVeiculo from '../../Components/Modal/ModalEditVeiculo';
-import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import Grid from '../../Components/Grid/Grid';
 import ForkLeftOutlinedIcon from '@mui/icons-material/ForkLeftOutlined';
 import { toast } from 'react-toastify';
@@ -52,32 +52,30 @@ const ControleFrotas = () => {
       field: 'status',
       headerName: 'STATUS',
       flex: 0.5,
-      cellRenderer: ({ data }) => (
-        <Switch
-          checked={data.status === 'disponivel'}
-          onChange={(event) => handleChange(event, data)}
-          size="large"
-          color="secondary"
-        />
-      ),
-    },
-    {
-      field: 'qrCode',
-      headerName: 'QR CODE',
-      flex: 0.5,
-      cellRenderer: ({ data }) => (
-        <Button
-          sx={{ border: '1px solid #ffff', width: '100%' }}
-          onClick={() => {
-            setQr(true);
-            setSelectedRow(data);
-          }}
-        >
-          <IconButton size="large" sx={{ p: 0, width: '100%', color: '#ffff' }}>
-            <QrCodeScannerOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Button>
-      ),
+      cellRenderer: ({ data }) => {
+        const statusConfig = (status, obsStatus) => {
+          if (status === 'Disponível') {
+            return { tooltip: 'Disponível' };
+          } else if (obsStatus) {
+            return { tooltip: obsStatus };
+          } else {
+            return { tooltip: 'Indisponível' };
+          }
+        };
+
+        const { tooltip } = statusConfig(data.status, data.obs_status || '');
+
+        return (
+          <Tooltip title={tooltip} arrow>
+            <Switch
+              checked={data.status === 'Disponível'}
+              onChange={(event) => handleChange(event, data)}
+              size="large"
+              color="secondary"
+            />
+          </Tooltip>
+        );
+      },
     },
     {
       field: 'rotas',
@@ -148,12 +146,9 @@ const ControleFrotas = () => {
   const [openDelete, setDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([]);
-  console.log('🚀 ~ ControleFrotas ~ rows:', rows);
-  console.log('🚀 ~ ControleFrotas ~ rows:', rows);
   const [openCadastro, setOpenCadastro] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const closeEdit = () => setOpenEdit(false);
-  const closeQr = () => setQr(false);
   const closeDelete = () => setDelete(false);
   // const closeCreateRotas = () => setCreateRotas(false);
 
@@ -192,20 +187,20 @@ const ControleFrotas = () => {
 
   const handleChange = async (event, data) => {
     try {
-      const newStatus = event.target.checked ? 'disponivel' : 'indisponivel';
+      const newStatus = event.target.checked ? 'Disponível' : 'Indisponível';
       const updatedRows = rows.map((row) =>
         row.placa === data.placa ? { ...row, status: newStatus } : row,
       );
       setRows(updatedRows);
       await EDIT_STATUS_VEICULO(data, newStatus);
       let status;
-      if (newStatus == 'disponivel') {
+      if (newStatus == 'Disponível') {
         status = 'DISPONÍVEL';
       } else {
         status = 'INDISPONÍVEL';
       }
-      toast.success(`Status atualizado para ${status} com sucesso!`);
-      console.log('Status atualizado com sucesso!');
+      // toast.success(`Status atualizado para ${status} com sucesso!`);
+      // console.log('Status atualizado com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar o status do veículo:', error);
     }
@@ -237,7 +232,7 @@ const ControleFrotas = () => {
               }}
             >
               <SearchIcon sx={{ marginRight: 1 }} />
-              Insira o modelo, a placa ou o motorista do veículo.
+              Insira o modelo ou a placa do veículo.
             </Box>
           }
           variant="filled"
@@ -294,7 +289,7 @@ const ControleFrotas = () => {
         data={selectedRow}
         getVeiculos={getVeiculos}
       />
-      <ModalQrCode open={openQr} close={closeQr} data={selectedRow} />
+
       <ModalDeleteVeiculo
         open={openDelete}
         close={closeDelete}

@@ -10,10 +10,7 @@ import { UPDATE_OBS_ROTA } from '../../../../api';
 
 const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
   const [loading, setLoading] = useState(false);
-  const [alertasDesvios, setAlertasDesvios] = useState('');
-  const [pontosParada, setPontosParada] = useState('');
-  const [registroIncidentes, setRegistroIncidentes] = useState('');
-  const [rotaAlternativa, setRotaAlternativa] = useState('');
+  const [observacoesAdicionais, setObservacoesAdicionais] = useState('');
 
   const darkTheme = createTheme({
     palette: {
@@ -30,20 +27,14 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
   });
 
   useEffect(() => {
-    setAlertasDesvios(obs?.[0]?.DESVIOS || data?.DESVIOS || '');
-    setPontosParada(obs?.[0]?.PARADAS || data?.PARADAS || '');
-    setRegistroIncidentes(obs?.[0]?.INCIDENTES || data?.INCIDENTES || '');
-    setRotaAlternativa(
-      obs?.[0]?.ROTA_ALTERNATIVA || data?.ROTA_ALTERNATIVA || '',
+    setObservacoesAdicionais(
+      obs?.[0]?.obs_adicional || data?.obs_adicional || '',
     );
   }, [obs, data]);
 
   const obsRota = async () => {
     const { url, options } = UPDATE_OBS_ROTA(data, {
-      alertasDesvios,
-      pontosParada,
-      registroIncidentes,
-      rotaAlternativa,
+      observacoesAdicionais,
     });
     setLoading(true);
     try {
@@ -56,7 +47,6 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
       }
 
       const json = await response.json();
-      console.log('Resposta do servidor:', json);
 
       if (json.success) {
         getObsRotas();
@@ -71,38 +61,6 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
     }
   };
 
-  const renderTextInput = (label, value, setValue) => (
-    <Box>
-      <Typography sx={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
-        {label}
-      </Typography>
-      <TextField
-        sx={{
-          backgroundColor: '#192038',
-          borderRadius: 3,
-          mt: 1,
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#3e4a61',
-            },
-            '&:hover fieldset': {
-              borderColor: '#5e6e85',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#8f9db5',
-            },
-          },
-        }}
-        variant="outlined"
-        fullWidth
-        multiline
-        rows={3}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </Box>
-  );
-
   return (
     <Box>
       <ModalStyle
@@ -110,103 +68,106 @@ const ModalObsRota = ({ open, close, color, data, getObsRotas, obs }) => {
         open={open}
         close={close}
         title={
-          <>
-            <Box sx={{ display: 'flex' }}>
-              <Typography
-                sx={{
-                  fontSize: 25,
-                  fontWeight: '700',
-                  color: 'white',
-                  mr: 42,
-                }}
-              >
-                Adicionar Observações - {data?.COD_ROTA}
-              </Typography>
-            </Box>
-          </>
+          <Box sx={{ display: 'flex' }}>
+            <Typography
+              sx={{
+                fontSize: 25,
+                fontWeight: '700',
+                color: 'white',
+                mr: 4,
+              }}
+            >
+              Adicionar Observações - {data?.cod_rota}
+            </Typography>
+          </Box>
         }
         color={color}
         content={
-          <>
-            <Box sx={{ width: '100%', height: '100%' }}>
-              <ThemeProvider theme={darkTheme}>
-                <Box
+          <Box sx={{ width: '100%', height: '100%' }}>
+            <ThemeProvider theme={darkTheme}>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  mb: 2,
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: '500', color: 'white' }}
+                >
+                  Observações adicionais:
+                </Typography>
+                <TextField
                   sx={{
                     width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
-                    mb: 2,
+                    backgroundColor: '#192038',
+                    borderRadius: 3,
+                    mt: 1,
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#3e4a61',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#5e6e85',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#8f9db5',
+                      },
+                    },
                   }}
-                >
-                  {renderTextInput(
-                    'Descreva os alertas de desvios de rota encontrados nesta rota:',
-                    alertasDesvios,
-                    setAlertasDesvios,
-                  )}
-                  {renderTextInput(
-                    'Descreva os incidentes registrados durante o percurso (se houver):',
-                    registroIncidentes,
-                    setRegistroIncidentes,
-                  )}
-
-                  {/* {renderTextInput(
-                    'Informe sobre a rota alternativa utilizada, se aplicável:',
-                    rotaAlternativa,
-                    setRotaAlternativa,
-                  )} */}
-                  {renderTextInput(
-                    'Informe os pontos de parada não programadas realizados nesta rota:',
-                    pontosParada,
-                    setPontosParada,
-                  )}
-                </Box>
-              </ThemeProvider>
-            </Box>
-          </>
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={5}
+                  value={observacoesAdicionais}
+                  onChange={(e) => setObservacoesAdicionais(e.target.value)}
+                />
+              </Box>
+            </ThemeProvider>
+          </Box>
         }
         action={
-          <>
-            <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
-              <Button
-                sx={{
-                  textTransform: 'none',
-                  color: 'red',
-                  borderColor: 'red',
-                  width: '50%',
-                  height: 40,
-                  '&:hover': {
-                    color: '#e00000',
-                    border: '2px solid #e00000',
-                  },
-                }}
-                variant="outlined"
-                startIcon={<ClearIcon />}
-                onClick={close}
-              >
-                CANCELAR
-              </Button>
+          <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
+            <Button
+              sx={{
+                textTransform: 'none',
+                color: 'red',
+                borderColor: 'red',
+                width: '50%',
+                height: 40,
+                '&:hover': {
+                  color: '#e00000',
+                  border: '2px solid #e00000',
+                },
+              }}
+              variant="outlined"
+              startIcon={<ClearIcon />}
+              onClick={close}
+            >
+              CANCELAR
+            </Button>
 
-              <Button
-                sx={{
-                  textTransform: 'none',
-                  color: 'green',
-                  borderColor: 'green',
-                  width: '50%',
-                  height: 40,
-                  '&:hover': {
-                    color: '#00c500',
-                    border: '2px solid #00c500',
-                  },
-                }}
-                variant="outlined"
-                startIcon={<CheckIcon />}
-                onClick={obsRota}
-              >
-                ADICIONAR
-              </Button>
-            </Box>
-          </>
+            <Button
+              sx={{
+                textTransform: 'none',
+                color: 'green',
+                borderColor: 'green',
+                width: '50%',
+                height: 40,
+                '&:hover': {
+                  color: '#00c500',
+                  border: '2px solid #00c500',
+                },
+              }}
+              variant="outlined"
+              startIcon={<CheckIcon />}
+              onClick={obsRota}
+            >
+              ADICIONAR
+            </Button>
+          </Box>
         }
       />
     </Box>

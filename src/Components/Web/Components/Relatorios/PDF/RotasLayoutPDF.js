@@ -1,11 +1,18 @@
-import { useState } from "react";
-import { Document, Page, View, Text } from "@react-pdf/renderer";
-import { StyleSheet, Font, PDFViewer } from "@react-pdf/renderer";
-import { Box, Button } from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import ModalTitlePDF from "./ModalTitlePDF";
-import dayjs from "dayjs";
-import { GET_RELATORIO_ROTAS } from "../../../../../api";
+import { useState } from 'react';
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  Font,
+  StyleSheet,
+  PDFViewer,
+} from '@react-pdf/renderer';
+import { Box, Button } from '@mui/material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ModalTitlePDF from './ModalTitlePDF';
+import { GET_RELATORIO_ROTAS } from '../../../../../api';
+import dayjs from 'dayjs';
 
 const RelatorioRotasLayoutPDF = ({ cod_veiculo }) => {
   const [documentGenerated, setDocumentGenerated] = useState(false);
@@ -23,225 +30,205 @@ const RelatorioRotasLayoutPDF = ({ cod_veiculo }) => {
     }
   };
 
+  Font.register({
+    family: 'Poppins',
+    src: 'https://grupocimcal.net.br/img-ecommerce/Poppins-Regular.ttf',
+  });
+
   const styles = StyleSheet.create({
+    viewer: { width: '100%', height: '100%' },
     page: {
-      fontFamily: "Poppins",
-      backgroundColor: "#fff",
-      color: "#000000",
-      fontSize: "8px",
-      paddingTop: 35,
-      paddingBottom: 65,
-      paddingHorizontal: 25,
+      fontFamily: 'Poppins',
+      backgroundColor: '#fff',
+      color: '#000',
+      fontSize: 9,
+      padding: 30,
     },
-    break: {
-      maxWidth: 250,
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
     },
-    headerOrca: {
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      flexDirection: "row",
-      paddingBottom: 2,
-    },
-    title: {
-      fontSize: 12,
-    },
-    text: {
-      fontSize: 8,
-    },
-    smallText: {
-      fontSize: 7,
-      textAlign: "right",
-    },
-    divider: {
-      borderBottom: "1px #000 solid",
-    },
-    container: {
-      padding: "10px 0px",
-    },
-    dadosNota: {
-      display: "flex",
-      flexDirection: "row",
-    },
-    viewer: {
-      width: "100%",
-      height: "100%",
-    },
-    table: {
-      display: "table",
-      width: "auto",
-    },
-    tableRow: {
-      margin: "auto",
-      flexDirection: "row",
-    },
-    tableCol: {
-      width: "12.5%",
-    },
-    tableCell: {
-      marginTop: 5,
-      fontSize: 8,
-      textAlign: "center",
-    },
-    boxImage: {
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
-    },
-    image: {
-      width: "40%",
-    },
+    title: { fontSize: 18, fontWeight: 'bold' },
+    smallText: { fontSize: 8 },
     sectionTitle: {
-      fontSize: 10,
+      fontSize: 14,
+      fontWeight: 'bold',
       marginTop: 10,
       marginBottom: 5,
     },
-    field: {
-      fontSize: 8,
-      marginBottom: 5,
+    divider: {
+      marginVertical: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
     },
+    infoGrid: { flexDirection: 'row', flexWrap: 'wrap' },
+    infoItem: { width: '50%', marginBottom: 4 },
+    rotaContainer: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+      padding: 10,
+      marginBottom: 12,
+    },
+    subSection: { marginTop: 6 },
+    enderecoBlock: {
+      marginTop: 4,
+      padding: 6,
+      backgroundColor: '#f5f5f5',
+      borderRadius: 4,
+    },
+    paradaItem: { marginTop: 2, paddingLeft: 8 },
   });
 
-  const MyDocument = () => {
-    return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.headerOrca}>
-            <Text style={styles.title}>Relatório de Rotas</Text>
-            <View>
-              <Text style={styles.smallText}>
-                {new Intl.DateTimeFormat("pt-BR", {
-                  dateStyle: "short",
-                  timeStyle: "medium",
-                }).format(new Date())}
+  const MyDocument = () => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Relatório de Rotas</Text>
+          <View>
+            <Text style={styles.smallText}>
+              {new Intl.DateTimeFormat('pt-BR', {
+                dateStyle: 'short',
+                timeStyle: 'short',
+              }).format(new Date())}
+            </Text>
+            <Text
+              style={styles.smallText}
+              render={({ pageNumber, totalPages }) =>
+                `Página ${pageNumber} de ${totalPages}`
+              }
+            />
+          </View>
+        </View>
+
+        <View style={styles.divider} />
+
+        <View>
+          <Text style={styles.sectionTitle}>Informações do Veículo</Text>
+          {data.length > 0 && (
+            <View style={styles.infoGrid}>
+              <Text style={styles.infoItem}>Placa: {data[0]?.placa}</Text>
+              <Text style={styles.infoItem}>
+                Modelo: {data[0]?.modelo} ({data[0]?.tipo_veiculo})
               </Text>
-              <Text
-                style={styles.smallText}
-                render={({ pageNumber }) => `Página ${pageNumber}`}
-              />
+              <Text style={styles.infoItem}>Ano: {data[0]?.ano}</Text>
+              <Text style={styles.infoItem}>
+                KM Atual: {data[0]?.quilometragem} km
+              </Text>
+              <Text style={styles.infoItem}>
+                Status: {data[0]?.status_veiculo}
+              </Text>
+              <Text style={styles.infoItem}>
+                Última Manutenção:{' '}
+                {data[0]?.dt_ultim_manu
+                  ? dayjs(data[0].dt_ultim_manu).format('DD/MM/YYYY')
+                  : 'Não informada'}
+              </Text>
+              <Text style={styles.infoItem}>
+                Próxima Manutenção:{' '}
+                {data[0]?.dt_prox_manu
+                  ? dayjs(data[0].dt_prox_manu).format('DD/MM/YYYY')
+                  : 'Não informada'}
+              </Text>
             </View>
-          </View>
-          <View style={styles.divider} />
-          {/* <Box> */}
-          {/* <View style={styles.tableRow}> */}
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Veículo</Text>
-            <Text style={styles.field}>Placa: {data[0]?.placa}</Text>
-            <Text style={styles.field}>Modelo: {data[0]?.modelo}</Text>
-            <Text style={styles.field}>Empresa: {data[0]?.empresa}</Text>
-            {/* <Text style={styles.field}>
-              Data: {new Date().toLocaleDateString()}
-            </Text> */}
-          </View>
+          )}
+        </View>
 
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Motorista</Text>
-            <Text style={styles.field}>Nome: {data[0]?.motorista}</Text>
-            <Text style={styles.field}>CPF: {data[0]?.cpf}</Text>
-            <Text style={styles.field}>E-mail: {data[0]?.email}</Text>
-          </View>
-          {/* </View> */}
-          {/* </Box> */}
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Viagens</Text>
-            <View style={styles.tableRow}>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Cód Rota</Text>
+        <View style={styles.divider} />
+
+        <View>
+          <Text style={styles.sectionTitle}>Rotas Registradas</Text>
+          {data.map((rota, index) => (
+            <View key={index} style={styles.rotaContainer}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                Rota #{rota.cod_rota} - Status: {rota.status_rota}
+              </Text>
+
+              <View style={styles.subSection}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  Motorista Responsável:
+                </Text>
+                <Text>Nome: {rota.nome}</Text>
+                <Text>CPF: {rota.cpf}</Text>
+                <Text>Email: {rota.email}</Text>
               </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Hora Partida</Text>
+
+              <View style={styles.subSection}>
+                <Text style={{ fontWeight: 'bold' }}>Partida:</Text>
+                <View style={styles.enderecoBlock}>
+                  <Text>
+                    Data/Hora:{' '}
+                    {dayjs(rota.data_hora_partida).format('DD/MM/YYYY HH:mm')}
+                  </Text>
+                  <Text>
+                    Endereço:{' '}
+                    {`${rota.rua_partida}, ${rota.numero_partida}, ${rota.bairro_partida} - ${rota.cidade_partida}/${rota.estado_partida}`}
+                  </Text>
+                  <Text>CEP: {rota.cep_partida}</Text>
+                  {rota.descricao_partida && (
+                    <Text>Descrição: {rota.descricao_partida}</Text>
+                  )}
+                </View>
               </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Hora Chegada</Text>
+
+              {rota.paradas && rota.paradas.length > 0 && (
+                <View style={styles.subSection}>
+                  <Text style={{ fontWeight: 'bold', marginBottom: 4 }}>
+                    Paradas:
+                  </Text>
+                  {rota.paradas.map((parada, idx) => (
+                    <View key={idx} style={styles.enderecoBlock}>
+                      <Text style={{ fontWeight: 'bold' }}>
+                        Parada {idx + 1}:
+                      </Text>
+                      <Text>
+                        Endereço:{' '}
+                        {`${parada.rua_parada}, ${parada.numero_parada}, ${parada.bairro_parada} - ${parada.cidade_parada}/${parada.estado_parada}`}
+                      </Text>
+                      <Text>CEP: {parada.cep_parada}</Text>
+                      {parada.complemento_parada && (
+                        <Text>Complemento: {parada.complemento_parada}</Text>
+                      )}
+                      {parada.descricao_parada && (
+                        <Text>Descrição: {parada.descricao_parada}</Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              <View style={styles.subSection}>
+                <Text style={{ fontWeight: 'bold' }}>Chegada:</Text>
+                <View style={styles.enderecoBlock}>
+                  <Text>
+                    Data/Hora:{' '}
+                    {dayjs(rota.data_hora_chegada).format('DD/MM/YYYY HH:mm')}
+                  </Text>
+                  <Text>
+                    Endereço:{' '}
+                    {`${rota.rua_chegada}, ${rota.numero_chegada}, ${rota.bairro_chegada} - ${rota.cidade_chegada}/${rota.estado_chegada}`}
+                  </Text>
+                  <Text>CEP: {rota.cep_chegada}</Text>
+                  {rota.descricao_chegada && (
+                    <Text>Descrição: {rota.descricao_chegada}</Text>
+                  )}
+                </View>
               </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Tempo gasto</Text>
-              </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Km Inicial</Text>
-              </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Km Final</Text>
-              </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Total Km</Text>
-              </View>
-              <View style={{ width: "12%" }}>
-                <Text style={styles.tableCell}>Qtd. Pessoas</Text>
-              </View>
+
+              {rota.obs_rota && (
+                <View style={styles.subSection}>
+                  <Text style={{ fontWeight: 'bold' }}>Observações:</Text>
+                  <Text>{rota.obs_rota}</Text>
+                </View>
+              )}
             </View>
-
-            {data.map((viagem, index) => (
-              <View key={index} style={styles.tableRow}>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>{viagem.cod_rota}</Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>
-                    {dayjs(viagem.data_hora_partida).format("HH:mm")}
-                  </Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>
-                    {dayjs(viagem.data_hora_chegada).format("HH:mm")}
-                  </Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>
-                    {dayjs(viagem.data_hora_chegada).diff(
-                      dayjs(viagem.data_hora_partida),
-                      "hour"
-                    )}{" "}
-                    horas
-                  </Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>100 km</Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>150 km</Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>50 km</Text>
-                </View>
-                <View style={{ width: "12%" }}>
-                  <Text style={styles.tableCell}>60 pessoas</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Serviço Executado</Text>
-            <Text style={styles.field}>
-              {data[0]?.servicoExecutado ||
-                "Descrição do serviço não disponível."}
-            </Text>
-          </View>
-
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Observações</Text>
-            <Text style={styles.field}>
-              {data[0]?.observacoes || "Nenhuma observação disponível."}
-            </Text>
-          </View>
-
-          <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Assinaturas</Text>
-            <Text style={styles.field}>_______________________________</Text>
-            <Text style={styles.field}>Motorista</Text>
-            <Text style={styles.field}>_______________________________</Text>
-            <Text style={styles.field}>Responsável</Text>
-          </View>
-        </Page>
-      </Document>
-    );
-  };
-
-  Font.register({
-    family: "Poppins",
-    src: "https://grupocimcal.net.br/img-ecommerce/Poppins-Regular.ttf",
-  });
+          ))}
+        </View>
+      </Page>
+    </Document>
+  );
 
   return (
     <>
@@ -249,16 +236,16 @@ const RelatorioRotasLayoutPDF = ({ cod_veiculo }) => {
         <Button
           onClick={handlePrint}
           variant="outlined"
-          startIcon={<PictureAsPdfIcon sx={{ fontSize: "1.5vw" }} />}
+          startIcon={<PictureAsPdfIcon sx={{ fontSize: '1.5vw' }} />}
           sx={{
             fontSize: 15,
-            textTransform: "none",
-            color: "#e30809",
+            textTransform: 'none',
+            color: '#e30809',
             height: 40,
-            borderColor: "#e30809",
-            "&:hover": {
-              color: "#FFFFFF",
-              border: "2px solid #FFFFFF",
+            borderColor: '#e30809',
+            '&:hover': {
+              color: '#FFFFFF',
+              border: '2px solid #FFFFFF',
             },
           }}
         >
@@ -270,7 +257,7 @@ const RelatorioRotasLayoutPDF = ({ cod_veiculo }) => {
           close={() => setDocumentGenerated(false)}
           title="Relatório de Rotas"
           content={
-            <Box sx={{ width: "70vw", height: 670 }}>
+            <Box sx={{ width: '70vw', height: 670 }}>
               <PDFViewer style={styles.viewer}>
                 <MyDocument />
               </PDFViewer>

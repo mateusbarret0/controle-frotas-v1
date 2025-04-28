@@ -33,6 +33,7 @@ export function GET_USUR() {
 
 export function GET_VEICULOS(searchTerm) {
   const token = localStorage.getItem('token');
+  console.log('oi');
   return {
     url: API_URL + `veiculos?search=${searchTerm}`,
     options: {
@@ -78,6 +79,21 @@ export function CREATE_ROTAS(data) {
   const token = localStorage.getItem('token');
   return {
     url: API_URL + 'insert/rotas',
+    options: {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(data),
+    },
+  };
+}
+export function EDIT_ROTAS(data) {
+  const token = localStorage.getItem('token');
+  return {
+    url: API_URL + 'update/rotas',
     options: {
       method: 'POST',
       headers: {
@@ -282,10 +298,7 @@ export function UPDATE_OBS_ROTA(data, desc) {
       body: JSON.stringify({
         cod_veiculo: data.veiculo.cod_veiculo,
         cod_rota: data.cod_rota,
-        desvios: desc.alertasDesvios,
-        paradas: desc.pontosParada,
-        incidentes: desc.registroIncidentes,
-        rotaAlternativa: desc.rotaAlternativa,
+        observacoesAdicionais: desc.observacoesAdicionais,
       }),
     },
   };
@@ -322,7 +335,6 @@ export function GET_STATUS_ROTAS(cod_veiculo, cod_rota) {
   };
 }
 export function GET_RELATORIO_ROTAS(cod_veiculo) {
-  console.log('🚀 ~ GET_RELATORIO_ROTAS ~ cod_veiculo:', cod_veiculo);
   const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/relatorio/rotas?cod_veiculo=${cod_veiculo}`,
@@ -341,6 +353,20 @@ export function GET_MOTORISTAS() {
   const token = localStorage.getItem('token');
   return {
     url: API_URL + `get/motoristas`,
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    },
+  };
+}
+export function GET_VEICULOS_DISPONIVEIS() {
+  const token = localStorage.getItem('token');
+  return {
+    url: API_URL + `get/veiculos/disponiveis`,
     options: {
       method: 'GET',
       headers: {

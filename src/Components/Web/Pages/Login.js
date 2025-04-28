@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   Button,
@@ -7,24 +7,24 @@ import {
   Box,
   InputAdornment,
   IconButton,
-} from "@mui/material";
-import { LOGIN } from "../../../api";
-import { toast, ToastContainer } from "react-toastify";
-import Logo from "../../../Assets/alfaid_nova_logo_branca.png";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import LoginIcon from "@mui/icons-material/Login";
+} from '@mui/material';
+import { LOGIN } from '../../../api';
+import { toast, ToastContainer } from 'react-toastify';
+import Logo from '../../../Assets/alfaid_nova_logo_branca.png';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoginIcon from '@mui/icons-material/Login';
 
 const Login = ({ setIsAuthenticated }) => {
-  const [usuario, setUsuario] = useState("");
-  const [senha, setSenha] = useState("");
+  const [usuario, setUsuario] = useState('');
+  const [senha, setSenha] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
   useEffect(() => {
-    const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
     if (isAuthenticated) {
       setIsAuthenticated(true);
     }
@@ -36,16 +36,14 @@ const Login = ({ setIsAuthenticated }) => {
       const response = await fetch(url, options);
       const json = await response.json();
       if (response.ok) {
-        console.log(json.message);
         setIsAuthenticated(true);
-        sessionStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem('isAuthenticated', 'true');
         // toast.success("Login bem-sucedido!");
       } else {
-        toast.error("Usuário ou senha incorretos.");
-        console.log(json.message);
+        toast.error('Usuário ou senha incorretos.');
       }
     } catch (error) {
-      console.error("Erro na requisição:", error);
+      console.error('Erro na requisição:', error);
     }
   };
 
@@ -62,64 +60,64 @@ const Login = ({ setIsAuthenticated }) => {
         draggable
         pauseOnHover
         toastStyle={{
-          backgroundColor: "#192038",
-          color: "#FFFFFF",
+          backgroundColor: '#192038',
+          color: '#FFFFFF',
         }}
       />
 
       <Box
         sx={{
-          height: "100vh",
-          width: "100vw",
-          backgroundColor: "#151a30",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden",
-          boxSizing: "border-box",
+          height: '100vh',
+          width: '100vw',
+          backgroundColor: '#151a30',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          boxSizing: 'border-box',
         }}
       >
         <Box
           sx={{
-            backgroundColor: "#222b45",
-            height: "92%",
-            width: "96%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            backgroundColor: '#222b45',
+            height: '92%',
+            width: '96%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             padding: 2,
-            boxSizing: "border-box",
-            borderRadius: "8px",
-            border: "1px solid #101426",
+            boxSizing: 'border-box',
+            borderRadius: '8px',
+            border: '1px solid #101426',
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-              width: "25vw",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100vh',
+              width: '25vw',
             }}
           >
             <img
               src={Logo}
               alt="Logo"
-              style={{ width: "300px", marginBottom: "16px" }}
+              style={{ width: '300px', marginBottom: '16px' }}
             />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 gap: 3,
               }}
             >
-              <Typography variant="h4" gutterBottom sx={{ color: "#fff" }}>
+              <Typography variant="h4" gutterBottom sx={{ color: '#fff' }}>
                 Seja bem-vindo ao ALFAID!
               </Typography>
-              <Typography variant="h6" gutterBottom sx={{ color: "#fff" }}>
+              <Typography variant="h6" gutterBottom sx={{ color: '#fff' }}>
                 Faça o login para acessar o sistema
               </Typography>
             </Box>
@@ -131,31 +129,31 @@ const Login = ({ setIsAuthenticated }) => {
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               sx={{
-                input: { color: "#fff" },
-                label: { color: "#fff" },
-                "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#fff",
+                input: { color: '#fff' },
+                label: { color: '#fff' },
+                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#fff',
                 },
-                "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                  { borderColor: "#fff" },
+                '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
+                  { borderColor: '#fff' },
               }}
             />
             <TextField
               label="Insira a sua senha"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               variant="outlined"
               fullWidth
               margin="normal"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               sx={{
-                input: { color: "#fff" },
-                label: { color: "#fff" },
-                "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#fff",
+                input: { color: '#fff' },
+                label: { color: '#fff' },
+                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#fff',
                 },
-                "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                  { borderColor: "#fff" },
+                '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
+                  { borderColor: '#fff' },
               }}
               InputProps={{
                 endAdornment: (
@@ -163,7 +161,7 @@ const Login = ({ setIsAuthenticated }) => {
                     <IconButton
                       onClick={handleClickShowPassword}
                       edge="end"
-                      sx={{ color: "#fff" }}
+                      sx={{ color: '#fff' }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -173,16 +171,16 @@ const Login = ({ setIsAuthenticated }) => {
             />
             <Button
               sx={{
-                backgroundColor: "#233054",
-                textTransform: "none",
-                color: "#3366FF",
-                border: "2px solid #3366ff",
+                backgroundColor: '#233054',
+                textTransform: 'none',
+                color: '#3366FF',
+                border: '2px solid #3366ff',
                 height: 40,
                 fontSize: 16,
-                "&:hover": {
-                  color: "white",
-                  border: "2px solid white",
-                  backgroundColor: "#233054",
+                '&:hover': {
+                  color: 'white',
+                  border: '2px solid white',
+                  backgroundColor: '#233054',
                 },
                 mt: 2,
               }}

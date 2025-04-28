@@ -21,19 +21,14 @@ import {
 } from '@react-google-maps/api';
 
 const ModalRotas = ({ open, close, data, getRotas }) => {
-  console.log('🚀 ~ ModalRotas ~ data:', data);
   const [openAprovar, setOpenAprovar] = useState(false);
   const [openReprovar, setOpenReprovar] = useState(false);
   const [openObs, setOpenObs] = useState(false);
   const [obs, setObs] = useState(false);
   const [status, setStatus] = useState(false);
-  console.log('🚀 - ModalRotas - status:', status);
-  console.log('🚀 - ModalRotas - obs:', obs);
   const [directions, setDirections] = useState(null);
   const [startLocation, setStartLocation] = useState(null);
   const [endLocation, setEndLocation] = useState(null);
-  const [distance, setDistance] = useState(null);
-  const [duration, setDuration] = useState(null);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -135,47 +130,30 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
     }
   };
 
-  const calculateDistanceAndTime = async () => {
-    const start = await getCoordinatesFromCEP(data?.partida.cep);
-    const end = await getCoordinatesFromCEP(data?.chegada.cep);
+  const calculateRealTimeSpent = () => {
+    if (data?.partida?.data_hora && data?.chegada?.data_hora) {
+      const partida = dayjs(data.partida.data_hora);
+      const chegada = dayjs(data.chegada.data_hora);
 
-    if (start && end) {
-      const distanceService = new window.google.maps.DistanceMatrixService();
-      const request = {
-        origins: [start],
-        destinations: [end],
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      };
+      const diffInMinutes = chegada.diff(partida, 'minute');
 
-      distanceService.getDistanceMatrix(request, (response, status) => {
-        if (status === window.google.maps.DistanceMatrixStatus.OK) {
-          const distance = response.rows[0].elements[0].distance.text;
-          let duration = response.rows[0].elements[0].duration.text;
+      const hours = Math.floor(diffInMinutes / 60);
+      const minutes = diffInMinutes % 60;
 
-          duration = duration
-            .replace('min', 'minuto')
-            .replace('hour', 'hora')
-            .replace('hours', 'horas');
-
-          console.log('Distância:', distance);
-          console.log('Tempo estimado:', duration);
-
-          setDistance(distance);
-          setDuration(duration);
-        } else {
-          console.error('Erro ao calcular a distância e o tempo:', status);
-        }
-      });
+      if (hours > 0) {
+        return `${hours}h ${minutes}min`;
+      } else {
+        return `${minutes} minutos`;
+      }
     }
+    return 'Em andamento';
   };
-
   useEffect(() => {
     getObsRotas();
     getStatusRotas();
     if (open) {
       setDirections(null);
       fetchRoute();
-      calculateDistanceAndTime();
     }
   }, [open]);
 
@@ -206,32 +184,34 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
               <Divider sx={{ mb: 1, backgroundColor: '#FFFFFF', height: 2 }} />
               <Box sx={{ textAlign: 'left' }}>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  CEP: {data?.partida.cep}
+                  CEP: {data?.partida?.cep || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Número: {data?.partida.numero}
+                  Número: {data?.partida?.numero || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Rua: {data?.partida.rua}
+                  Rua: {data?.partida?.rua || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Bairro: {data?.partida.bairro}
+                  Bairro: {data?.partida?.bairro || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Cidade: {data?.partida.cidade}
+                  Cidade: {data?.partida?.cidade || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Estado: {data?.partida.estado}
+                  Estado: {data?.partida?.estado || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
                   Data e Hora:{' '}
-                  {dayjs(data?.partida.data_hora).format('DD/MM/YYYY - HH:mm')}
+                  {data?.partida?.data_hora
+                    ? dayjs(data.partida.data_hora).format('DD/MM/YYYY - HH:mm')
+                    : 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Complemento: {data?.partida.complemento}
+                  Complemento: {data?.partida?.complemento || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Descrição: {data?.partida.descricao}
+                  Descrição: {data?.partida?.descricao || 'Não informado'}
                 </Typography>
               </Box>
             </BoxStyleCard>
@@ -243,32 +223,32 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
               <Divider sx={{ mb: 1, backgroundColor: '#FFFFFF', height: 2 }} />
               <Box sx={{ textAlign: 'left' }}>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  CEP: {data?.chegada.cep}
+                  CEP: {data?.chegada.cep || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Número: {data?.chegada.numero}
+                  Número: {data?.chegada.numero || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Rua: {data?.chegada.rua}
+                  Rua: {data?.chegada.rua || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Bairro: {data?.chegada.bairro}
+                  Bairro: {data?.chegada.bairro || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Cidade: {data?.chegada.cidade}
+                  Cidade: {data?.chegada.cidade || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Estado: {data?.chegada.estado}
+                  Estado: {data?.chegada.estado || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
                   Data e Hora:{' '}
                   {dayjs(data?.chegada.data_hora).format('DD/MM/YYYY - HH:mm')}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Complemento: {data?.chegada.complemento}
+                  Complemento: {data?.chegada.complemento || 'Não informado'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Descrição: {data?.chegada.descricao}
+                  Descrição: {data?.chegada.descricao || 'Não informado'}
                 </Typography>
               </Box>
             </BoxStyleCard>
@@ -278,20 +258,28 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
                 Paradas:
               </Typography>
               <Divider sx={{ mb: 1, backgroundColor: '#FFFFFF', height: 2 }} />
-              {data.paradas?.map((item, index) => (
-                <Box sx={{ textAlign: 'left' }}>
-                  <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                    Parada: {item.cod_parada}
-                  </Typography>
-                  <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                    CEP Parada: {item.cep}
-                  </Typography>
-                  <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                    Número: {item.numero}
-                  </Typography>
-                  <Divider sx={{ mb: 1, mt: 1, backgroundColor: '#FFFFFF' }} />
-                </Box>
-              ))}
+              {data?.paradas && data.paradas.length > 0 ? (
+                data.paradas.map((item, index) => (
+                  <Box key={index} sx={{ textAlign: 'left' }}>
+                    <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
+                      Parada: {item.cod_parada || 'Não informado'}
+                    </Typography>
+                    <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
+                      CEP Parada: {item.cep || 'Não informado'}
+                    </Typography>
+                    <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
+                      Número: {item.numero || 'Não informado'}
+                    </Typography>
+                    <Divider
+                      sx={{ mb: 1, mt: 1, backgroundColor: '#FFFFFF' }}
+                    />
+                  </Box>
+                ))
+              ) : (
+                <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
+                  Nenhuma parada registrada.
+                </Typography>
+              )}
             </BoxStyleCard>
             <BoxStyleCard sx={{ flex: 1, minWidth: '24%' }}>
               <Typography variant="h4" sx={{ mb: 2, color: '#FFFFFF' }}>
@@ -307,21 +295,23 @@ const ModalRotas = ({ open, close, data, getRotas }) => {
                   </>
                 )}
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Distância Percorrida: {distance}
+                  Distância Percorrida: {data?.km_percorrido || 'Não informado'}{' '}
+                  km
                 </Typography>
                 <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                  Tempo Gasto: {duration}
+                  Tempo Gasto: {calculateRealTimeSpent() || 'Não informado'}
                 </Typography>
                 {obs && obs.length > 0 && (
                   <>
                     <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                      Desvios de rota: {obs[0].desvios}
+                      Desvios de rota: {obs[0].desvios || 'Não informado'}
                     </Typography>
                     <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                      Paradas não programadas: {obs[0].paradas}
+                      Paradas não programadas:{' '}
+                      {obs[0].paradas || 'Não informado'}
                     </Typography>
                     <Typography sx={{ fontSize: 18, color: '#FFFFFF' }}>
-                      Incidentes: {obs[0].incidentes}
+                      Incidentes: {obs[0].incidentes || 'Não informado'}
                     </Typography>
                   </>
                 )}

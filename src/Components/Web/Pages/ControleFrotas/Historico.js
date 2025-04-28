@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  alpha,
   Box,
   Button,
   Divider,
@@ -20,7 +21,10 @@ import CircleIcon from '@mui/icons-material/Circle';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
 import dayjs from 'dayjs';
 import ModalPdfXlsx from '../../Components/Modal/ModalPdfXlsx';
-import MapComponent from '../../Components/Maps/Teste';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
+import ModalQrCode from '../../Components/Modal/ModalQrCode';
+import ModalEditRota from '../../Components/Modal/ModalEditRota';
 
 const Historico = () => {
   const columns = [
@@ -138,25 +142,76 @@ const Historico = () => {
       },
     },
     {
-      field: 'rota',
-      headerName: 'OBS ROTA',
-      flex: 1,
+      field: 'qrCode',
+      headerName: 'QR CODE',
+      flex: 0.5,
       cellRenderer: ({ data }) => (
         <Button
-          sx={{ border: '1px solid #FFAA00', width: '50%' }}
-          onClick={() => {
-            setSelectedRota({ ...data, veiculo });
-            setOpenRotas(true);
-          }}
+          sx={{ border: '1px solid #ffff', width: '100%' }}
+          onClick={() => handleOpenModalQrCode(data)}
+        >
+          <IconButton size="large" sx={{ p: 0, width: '100%', color: '#ffff' }}>
+            <QrCodeScannerOutlinedIcon fontSize="small" />
+          </IconButton>
+        </Button>
+      ),
+    },
+    {
+      field: 'rota',
+      headerName: 'OBS ROTA',
+      flex: 0.5,
+      cellRenderer: ({ data }) => (
+        <Button
+          sx={{ border: '1px solid #00FF57', width: '100%' }}
+          onClick={() => handleOpenModalRotas(data)}
         >
           <IconButton
             size="large"
-            sx={{ p: 0, width: '100%', color: '#FFAA00' }}
+            sx={{ p: 0, width: '100%', color: '#00FF57' }}
           >
             <AltRouteIcon fontSize="small" />
           </IconButton>
         </Button>
       ),
+    },
+    {
+      field: 'edtiarRota',
+      headerName: 'EDITAR',
+      flex: 0.5,
+      cellRenderer: ({ data }) => {
+        const isDisabled = !!data.chegada?.data_hora;
+        const yellowColor = '#FFAA00';
+
+        return (
+          <IconButton
+            size="large"
+            onClick={() => handleOpenModalEditRotas(data)}
+            disabled={isDisabled}
+            aria-label="Editar Rota"
+            sx={{
+              width: '100%',
+              border: `1px solid ${yellowColor}`,
+              borderRadius: 1,
+              color: yellowColor,
+              padding: '6px',
+
+              '&.Mui-disabled': {
+                color: alpha(yellowColor, 0.4),
+                borderColor: alpha(yellowColor, 0.3),
+              },
+
+              '&:hover': {
+                backgroundColor: alpha(yellowColor, 0.08),
+                '&.Mui-disabled': {
+                  backgroundColor: 'transparent',
+                },
+              },
+            }}
+          >
+            <EditOutlinedIcon fontSize="small" />
+          </IconButton>
+        );
+      },
     },
   ];
 
@@ -168,9 +223,15 @@ const Historico = () => {
   const [openRelatorio, setOpenRelatorio] = useState(false);
   const [openInfoRota, setOpenInfoRota] = useState(false);
   const [rows, setRows] = useState(false);
+  console.log('🚀 ~ Historico ~ rows:', rows);
+  const [openQr, setQr] = useState(false);
+  const [openEditRotas, setOpenEditRotas] = useState(false);
   const [selectedRota, setSelectedRota] = useState(null);
-  console.log('🚀 - Historico - selectedRota:', selectedRota);
   const closeRotas = () => setOpenRotas(false);
+
+  const closeEditRotas = () => setOpenEditRotas(false);
+
+  const closeQr = () => setQr(false);
 
   const handleClick = (e) => {
     setOpenCadastro(true);
@@ -186,8 +247,18 @@ const Historico = () => {
   const handleCloseRelatorio = () => {
     setOpenRelatorio(false);
   };
-  const handleCloseInfoRota = () => {
-    setOpenInfoRota(false);
+  const handleOpenModalRotas = (rota) => {
+    setSelectedRota({ ...rota, veiculo });
+    setOpenRotas(true);
+  };
+  const handleOpenModalEditRotas = (rota) => {
+    setSelectedRota({ ...rota, veiculo });
+    setOpenEditRotas(true);
+  };
+
+  const handleOpenModalQrCode = (rota) => {
+    setSelectedRota({ ...rota, veiculo });
+    setQr(true);
   };
 
   const getRotas = async () => {
@@ -195,7 +266,6 @@ const Historico = () => {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
-      console.log('🚀 - Historico - getRotas - json:', json);
       if (response.ok) {
         setRows(json.rotas);
       } else {
@@ -211,9 +281,7 @@ const Historico = () => {
   }, []);
 
   const onRowClick = (event) => {
-    console.log('aa');
     setSelectedRota(event.data);
-    setOpenInfoRota(true);
   };
   return (
     <>
@@ -304,10 +372,19 @@ const Historico = () => {
         data={selectedRota}
         getRotas={getRotas}
       />
+      <ModalQrCode open={openQr} close={closeQr} data={selectedRota} />
+      <ModalEditRota
+        open={openEditRotas}
+        close={closeEditRotas}
+        data={selectedRota}
+        getRotas={getRotas}
+        veiculo={veiculo}
+      />
       <ModalPdfXlsx
         open={openRelatorio}
         close={handleCloseRelatorio}
         cod_veiculo={veiculo.cod_veiculo}
+        placa={veiculo.placa}
       />
     </>
   );

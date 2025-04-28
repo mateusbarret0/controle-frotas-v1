@@ -215,7 +215,6 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
     const { url, options } = GET_MOTORISTAS();
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log('aqui', json);
     if (response.ok) setSelectMotoristas(json);
     else console.log('Erro ao buscar motoristas:', json);
   };
@@ -521,6 +520,8 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                           color: '#e00000',
                           border: '2px solid #e00000',
                         },
+                        border: '2px solid',
+                        height: 40,
                       }}
                       onClick={() => removeParada(index)}
                       variant="outlined"
@@ -536,6 +537,7 @@ const ModalCadastroVeiculo = ({ open, close, color, getRotas, veiculo }) => {
                     textTransform: 'none',
                     width: '30%',
                     mb: 2,
+                    border: '2px solid',
                     '&:hover': {
                       color: '#00c500',
                       border: '2px solid #00c500',
